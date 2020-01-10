@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.muyou.mapper.TbLibraryMapper" >
+  <resultMap id="BaseResultMap" type="com.muyou.pojo.TbLibrary" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="classify" property="classify" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="publish" property="publish" jdbcType="VARCHAR" />
+    <result column="introduced" property="introduced" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="sum" property="sum" jdbcType="INTEGER" />
+    <result column="rest" property="rest" jdbcType="INTEGER" />
+    <result column="place" property="place" jdbcType="VARCHAR" />
+    <result column="b_index" property="bIndex" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, classify, name, author, price, publish, introduced, url, sum, rest, place, b_index
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.muyou.pojo.TbLibraryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_library
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_library
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_library
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.muyou.pojo.TbLibraryExample" >
+    delete from tb_library
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.muyou.pojo.TbLibrary" >
+    insert into tb_library (id, classify, name, 
+      author, price, publish, 
+      introduced, url, sum, 
+      rest, place, b_index
+      )
+    values (#{id,jdbcType=INTEGER}, #{classify,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{author,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{publish,jdbcType=VARCHAR}, 
+      #{introduced,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{sum,jdbcType=INTEGER}, 
+      #{rest,jdbcType=INTEGER}, #{place,jdbcType=VARCHAR}, #{bIndex,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.muyou.pojo.TbLibrary" >
+    insert into tb_library
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="classify != null" >
+        classify,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="publish != null" >
+        publish,
+      </if>
+      <if test="introduced != null" >
+        introduced,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="sum != null" >
+        sum,
+      </if>
+      <if test="rest != null" >
+        rest,
+      </if>
+      <if test="place != null" >
+        place,
+      </if>
+      <if test="bIndex != null" >
+        b_index,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="classify != null" >
+        #{classify,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="publish != null" >
+        #{publish,jdbcType=VARCHAR},
+      </if>
+      <if test="introduced != null" >
+        #{introduced,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="sum != null" >
+        #{sum,jdbcType=INTEGER},
+      </if>
+      <if test="rest != null" >
+        #{rest,jdbcType=INTEGER},
+      </if>
+      <if test="place != null" >
+        #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="bIndex != null" >
+        #{bIndex,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.muyou.pojo.TbLibraryExample" resultType="java.lang.Integer" >
+    select count(*) from tb_library
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_library
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.classify != null" >
+        classify = #{record.classify,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null" >
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.publish != null" >
+        publish = #{record.publish,jdbcType=VARCHAR},
+      </if>
+      <if test="record.introduced != null" >
+        introduced = #{record.introduced,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sum != null" >
+        sum = #{record.sum,jdbcType=INTEGER},
+      </if>
+      <if test="record.rest != null" >
+        rest = #{record.rest,jdbcType=INTEGER},
+      </if>
+      <if test="record.place != null" >
+        place = #{record.place,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bIndex != null" >
+        b_index = #{record.bIndex,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_library
+    set id = #{record.id,jdbcType=INTEGER},
+      classify = #{record.classify,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      publish = #{record.publish,jdbcType=VARCHAR},
+      introduced = #{record.introduced,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      sum = #{record.sum,jdbcType=INTEGER},
+      rest = #{record.rest,jdbcType=INTEGER},
+      place = #{record.place,jdbcType=VARCHAR},
+      b_index = #{record.bIndex,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.muyou.pojo.TbLibrary" >
+    update tb_library
+    <set >
+      <if test="classify != null" >
+        classify = #{classify,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="publish != null" >
+        publish = #{publish,jdbcType=VARCHAR},
+      </if>
+      <if test="introduced != null" >
+        introduced = #{introduced,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="sum != null" >
+        sum = #{sum,jdbcType=INTEGER},
+      </if>
+      <if test="rest != null" >
+        rest = #{rest,jdbcType=INTEGER},
+      </if>
+      <if test="place != null" >
+        place = #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="bIndex != null" >
+        b_index = #{bIndex,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.muyou.pojo.TbLibrary" >
+    update tb_library
+    set classify = #{classify,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      publish = #{publish,jdbcType=VARCHAR},
+      introduced = #{introduced,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      sum = #{sum,jdbcType=INTEGER},
+      rest = #{rest,jdbcType=INTEGER},
+      place = #{place,jdbcType=VARCHAR},
+      b_index = #{bIndex,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

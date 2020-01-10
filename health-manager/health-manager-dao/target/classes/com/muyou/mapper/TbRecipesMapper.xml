@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.muyou.mapper.TbRecipesMapper">
+	<resultMap id="BaseResultMap" type="com.muyou.pojo.TbRecipes">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="dish_name" property="dishName"
+			jdbcType="VARCHAR" />
+		<result column="functional" property="functional"
+			jdbcType="VARCHAR" />
+		<result column="flavor" property="flavor" jdbcType="VARCHAR" />
+		<result column="ingredients" property="ingredients"
+			jdbcType="VARCHAR" />
+		<result column="main_process" property="mainProcess"
+			jdbcType="VARCHAR" />
+		<result column="production_time" property="productionTime"
+			jdbcType="VARCHAR" />
+		<result column="picture_url" property="pictureUrl"
+			jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="calorie" property="calorie" jdbcType="VARCHAR" />
+		<result column="components" property="components"
+			jdbcType="VARCHAR" />
+		<result column="classification" property="classification"
+			jdbcType="VARCHAR" />
+		<result column="weeks" property="weeks" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs"
+		type="com.muyou.pojo.TbRecipes" extends="BaseResultMap">
+		<result column="practice" property="practice"
+			jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, dish_name, functional, flavor, ingredients, main_process,
+		production_time, picture_url,
+		type, calorie, components, classification, weeks
+	</sql>
+	<sql id="Blob_Column_List">
+		practice
+	</sql>
+	<select id="selectByExampleWithBLOBs"
+		resultMap="ResultMapWithBLOBs"
+		parameterType="com.muyou.pojo.TbRecipesExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from tb_recipes
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.muyou.pojo.TbRecipesExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from tb_recipes
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<if test="row != null">
+			limit ${row}
+		</if>
+		<if test="size != null">
+			, ${size}
+		</if>
+	</select>
+
+	<select id="getRecipesByThreeMeals" resultMap="BaseResultMap"
+		parameterType="String">
+		SELECT * from tb_recipes where type=#{type} and weeks like #{week}
+	</select>
+
+	<select id="getRecipeDetailByName" resultMap="BaseResultMap"
+		parameterType="String">
+		select * from tb_recipes where dish_name like #{name} limit 1
+	</select>
+
+	<select id="getRecommendRecipes" resultMap="ResultMapWithBLOBs">
+		select id,picture_url,dish_name from tb_recipes ORDER BY RAND() LIMIT
+		10
+	</select>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from tb_recipes
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from tb_recipes
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample"
+		parameterType="com.muyou.pojo.TbRecipesExample">
+		delete from tb_recipes
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.muyou.pojo.TbRecipes">
+		insert into tb_recipes (id, dish_name, functional,
+		flavor, ingredients, main_process,
+		production_time, picture_url, type,
+		calorie, components, classification,
+		weeks, practice)
+		values (#{id,jdbcType=INTEGER}, #{dishName,jdbcType=VARCHAR},
+		#{functional,jdbcType=VARCHAR},
+		#{flavor,jdbcType=VARCHAR}, #{ingredients,jdbcType=VARCHAR}, #{mainProcess,jdbcType=VARCHAR},
+		#{productionTime,jdbcType=VARCHAR}, #{pictureUrl,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		#{calorie,jdbcType=VARCHAR}, #{components,jdbcType=VARCHAR}, #{classification,jdbcType=VARCHAR},
+		#{weeks,jdbcType=VARCHAR}, #{practice,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.muyou.pojo.TbRecipes">
+		insert into tb_recipes
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="dishName != null">
+				dish_name,
+			</if>
+			<if test="functional != null">
+				functional,
+			</if>
+			<if test="flavor != null">
+				flavor,
+			</if>
+			<if test="ingredients != null">
+				ingredients,
+			</if>
+			<if test="mainProcess != null">
+				main_process,
+			</if>
+			<if test="productionTime != null">
+				production_time,
+			</if>
+			<if test="pictureUrl != null">
+				picture_url,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="calorie != null">
+				calorie,
+			</if>
+			<if test="components != null">
+				components,
+			</if>
+			<if test="classification != null">
+				classification,
+			</if>
+			<if test="weeks != null">
+				weeks,
+			</if>
+			<if test="practice != null">
+				practice,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="dishName != null">
+				#{dishName,jdbcType=VARCHAR},
+			</if>
+			<if test="functional != null">
+				#{functional,jdbcType=VARCHAR},
+			</if>
+			<if test="flavor != null">
+				#{flavor,jdbcType=VARCHAR},
+			</if>
+			<if test="ingredients != null">
+				#{ingredients,jdbcType=VARCHAR},
+			</if>
+			<if test="mainProcess != null">
+				#{mainProcess,jdbcType=VARCHAR},
+			</if>
+			<if test="productionTime != null">
+				#{productionTime,jdbcType=VARCHAR},
+			</if>
+			<if test="pictureUrl != null">
+				#{pictureUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="calorie != null">
+				#{calorie,jdbcType=VARCHAR},
+			</if>
+			<if test="components != null">
+				#{components,jdbcType=VARCHAR},
+			</if>
+			<if test="classification != null">
+				#{classification,jdbcType=VARCHAR},
+			</if>
+			<if test="weeks != null">
+				#{weeks,jdbcType=VARCHAR},
+			</if>
+			<if test="practice != null">
+				#{practice,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample"
+		parameterType="com.muyou.pojo.TbRecipesExample"
+		resultType="java.lang.Integer">
+		select count(*) from tb_recipes
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update tb_recipes
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.dishName != null">
+				dish_name = #{record.dishName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.functional != null">
+				functional = #{record.functional,jdbcType=VARCHAR},
+			</if>
+			<if test="record.flavor != null">
+				flavor = #{record.flavor,jdbcType=VARCHAR},
+			</if>
+			<if test="record.ingredients != null">
+				ingredients = #{record.ingredients,jdbcType=VARCHAR},
+			</if>
+			<if test="record.mainProcess != null">
+				main_process = #{record.mainProcess,jdbcType=VARCHAR},
+			</if>
+			<if test="record.productionTime != null">
+				production_time = #{record.productionTime,jdbcType=VARCHAR},
+			</if>
+			<if test="record.pictureUrl != null">
+				picture_url = #{record.pictureUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="record.type != null">
+				type = #{record.type,jdbcType=VARCHAR},
+			</if>
+			<if test="record.calorie != null">
+				calorie = #{record.calorie,jdbcType=VARCHAR},
+			</if>
+			<if test="record.components != null">
+				components = #{record.components,jdbcType=VARCHAR},
+			</if>
+			<if test="record.classification != null">
+				classification = #{record.classification,jdbcType=VARCHAR},
+			</if>
+			<if test="record.weeks != null">
+				weeks = #{record.weeks,jdbcType=VARCHAR},
+			</if>
+			<if test="record.practice != null">
+				practice = #{record.practice,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExampleWithBLOBs" parameterType="map">
+		update tb_recipes
+		set id = #{record.id,jdbcType=INTEGER},
+		dish_name = #{record.dishName,jdbcType=VARCHAR},
+		functional = #{record.functional,jdbcType=VARCHAR},
+		flavor = #{record.flavor,jdbcType=VARCHAR},
+		ingredients = #{record.ingredients,jdbcType=VARCHAR},
+		main_process = #{record.mainProcess,jdbcType=VARCHAR},
+		production_time = #{record.productionTime,jdbcType=VARCHAR},
+		picture_url = #{record.pictureUrl,jdbcType=VARCHAR},
+		type = #{record.type,jdbcType=VARCHAR},
+		calorie = #{record.calorie,jdbcType=VARCHAR},
+		components = #{record.components,jdbcType=VARCHAR},
+		classification = #{record.classification,jdbcType=VARCHAR},
+		weeks = #{record.weeks,jdbcType=VARCHAR},
+		practice = #{record.practice,jdbcType=LONGVARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update tb_recipes
+		set id = #{record.id,jdbcType=INTEGER},
+		dish_name = #{record.dishName,jdbcType=VARCHAR},
+		functional = #{record.functional,jdbcType=VARCHAR},
+		flavor = #{record.flavor,jdbcType=VARCHAR},
+		ingredients = #{record.ingredients,jdbcType=VARCHAR},
+		main_process = #{record.mainProcess,jdbcType=VARCHAR},
+		production_time = #{record.productionTime,jdbcType=VARCHAR},
+		picture_url = #{record.pictureUrl,jdbcType=VARCHAR},
+		type = #{record.type,jdbcType=VARCHAR},
+		calorie = #{record.calorie,jdbcType=VARCHAR},
+		components = #{record.components,jdbcType=VARCHAR},
+		classification = #{record.classification,jdbcType=VARCHAR},
+		weeks = #{record.weeks,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.muyou.pojo.TbRecipes">
+		update tb_recipes
+		<set>
+			<if test="dishName != null">
+				dish_name = #{dishName,jdbcType=VARCHAR},
+			</if>
+			<if test="functional != null">
+				functional = #{functional,jdbcType=VARCHAR},
+			</if>
+			<if test="flavor != null">
+				flavor = #{flavor,jdbcType=VARCHAR},
+			</if>
+			<if test="ingredients != null">
+				ingredients = #{ingredients,jdbcType=VARCHAR},
+			</if>
+			<if test="mainProcess != null">
+				main_process = #{mainProcess,jdbcType=VARCHAR},
+			</if>
+			<if test="productionTime != null">
+				production_time = #{productionTime,jdbcType=VARCHAR},
+			</if>
+			<if test="pictureUrl != null">
+				picture_url = #{pictureUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="calorie != null">
+				calorie = #{calorie,jdbcType=VARCHAR},
+			</if>
+			<if test="components != null">
+				components = #{components,jdbcType=VARCHAR},
+			</if>
+			<if test="classification != null">
+				classification = #{classification,jdbcType=VARCHAR},
+			</if>
+			<if test="weeks != null">
+				weeks = #{weeks,jdbcType=VARCHAR},
+			</if>
+			<if test="practice != null">
+				practice = #{practice,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs"
+		parameterType="com.muyou.pojo.TbRecipes">
+		update tb_recipes
+		set dish_name = #{dishName,jdbcType=VARCHAR},
+		functional = #{functional,jdbcType=VARCHAR},
+		flavor = #{flavor,jdbcType=VARCHAR},
+		ingredients = #{ingredients,jdbcType=VARCHAR},
+		main_process = #{mainProcess,jdbcType=VARCHAR},
+		production_time = #{productionTime,jdbcType=VARCHAR},
+		picture_url = #{pictureUrl,jdbcType=VARCHAR},
+		type = #{type,jdbcType=VARCHAR},
+		calorie = #{calorie,jdbcType=VARCHAR},
+		components = #{components,jdbcType=VARCHAR},
+		classification = #{classification,jdbcType=VARCHAR},
+		weeks = #{weeks,jdbcType=VARCHAR},
+		practice = #{practice,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.muyou.pojo.TbRecipes">
+		update tb_recipes
+		set dish_name = #{dishName,jdbcType=VARCHAR},
+		functional = #{functional,jdbcType=VARCHAR},
+		flavor = #{flavor,jdbcType=VARCHAR},
+		ingredients = #{ingredients,jdbcType=VARCHAR},
+		main_process = #{mainProcess,jdbcType=VARCHAR},
+		production_time = #{productionTime,jdbcType=VARCHAR},
+		picture_url = #{pictureUrl,jdbcType=VARCHAR},
+		type = #{type,jdbcType=VARCHAR},
+		calorie = #{calorie,jdbcType=VARCHAR},
+		components = #{components,jdbcType=VARCHAR},
+		classification = #{classification,jdbcType=VARCHAR},
+		weeks = #{weeks,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

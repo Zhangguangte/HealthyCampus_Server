@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.muyou.mapper.TbMessageMapper">
+	<resultMap id="BaseResultMap" type="com.muyou.pojo.TbMessage">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="from_id" property="fromId" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime"
+			jdbcType="VARCHAR" />
+		<result column="content" property="content"
+			jdbcType="LONGVARCHAR" />
+		<result column="room_id" property="roomId" jdbcType="VARCHAR" />
+		<result column="file_path" property="filePath"
+			jdbcType="VARCHAR" />
+		<result column="sentStatus" property="sentstatus"
+			jdbcType="VARCHAR" />
+		<association property="friend" resultMap="com.muyou.mapper.TbUserMapper.BaseResultMap" 
+			columnPrefix="u_" />
+		<association property="list"
+			resultMap="com.muyou.mapper.TbMessageListMapper.BaseResultMap"
+			columnPrefix="l_" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs"
+		type="com.muyou.pojo.TbMessage" extends="BaseResultMap">
+		<result column="content" property="content"
+			jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, from_id, type, create_time, room_id, file_path,
+		sentStatus
+	</sql>
+	<sql id="Blob_Column_List">
+		content
+	</sql>
+	<select id="selectByExampleWithBLOBs"
+		resultMap="ResultMapWithBLOBs"
+		parameterType="com.muyou.pojo.TbMessageExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from tb_message
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.muyou.pojo.TbMessageExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from tb_message
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from tb_message
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+
+	<!-- ******************************************* -->
+
+	<!-- 新朋友 -->
+	<insert id="newfriend" parameterType="String">
+		insert into
+		tb_message(type,content, create_time,room_id)
+		values('FIRST','你们已经成功加为好友', #{time},#{roomid})
+	</insert>
+
+	<!-- 现存最后一条消息 -->
+	<select id="lastMessage" parameterType="String"
+		resultMap="BaseResultMap">
+		SELECT
+		T.id as id,
+		T.type as type,
+		T.content as content,
+		T.create_time as create_time,
+		T.room_id as room_id,
+		T.l_another_name as
+		l_another_name,
+		T.l_unread as l_unread
+		from
+		(SELECT
+		m.id as id,
+		m.type as
+		type,
+		m.content as content,
+		m.create_time as create_time,
+		m.room_id as
+		room_id,
+		l.another_name as l_another_name,
+		l.unread as l_unread
+		from
+		tb_message m
+		LEFT JOIN tb_message_list l ON m.room_id = l.room_id
+		where
+		l.user_id=#{user_id}
+		and
+		l.status='SHOW'
+		ORDER BY
+		create_time DESC,
+		m.id
+		DESC
+		) as T
+		GROUP BY room_id
+		ORDER BY create_time DESC
+	</select>
+
+	<!-- 所有消息根据房间号 -->
+	<select id="allChatByRoomId" resultMap="BaseResultMap">
+	select * from tb_message where room_id=#{room_id} ORDER BY create_time DESC limit #{start},15
+	</select>
+
+
+	<!-- 添加消息（文字、录音、图片） -->
+	<insert id="insertContent" parameterType="String">
+insert into tb_message(from_id, type, content, create_time,room_id,file_path,sentStatus) values(#{userId}, #{chatForm.type}, #{chatForm.content}, #{chatForm.create_time},#{chatForm.room_id},#{chatForm.file_path},'SENT')	</insert>
+
+
+
+	<!-- 添加消息（名片） -->
+	<insert id="insertCard" parameterType="String">
+insert into tb_message(from_id, type, content, create_time,room_id,file_path,sentStatus) values(#{userId}, #{chatForm.type}, #{content}, #{chatForm.create_time},#{chatForm.room_id},#{chatForm.file_path},'SENT')	</insert>
+
+
+
+	<!-- ******************************************* -->
+
+
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from tb_message
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample"
+		parameterType="com.muyou.pojo.TbMessageExample">
+		delete from tb_message
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.muyou.pojo.TbMessage">
+		insert into tb_message (id,
+		from_id, type,
+		create_time, room_id, file_path,
+		sentStatus, content)
+		values (#{id,jdbcType=INTEGER}, #{fromId,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		#{createTime,jdbcType=VARCHAR},
+		#{roomId,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR},
+		#{sentstatus,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.muyou.pojo.TbMessage">
+		insert into tb_message
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="fromId != null">
+				from_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="roomId != null">
+				room_id,
+			</if>
+			<if test="filePath != null">
+				file_path,
+			</if>
+			<if test="sentstatus != null">
+				sentStatus,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="fromId != null">
+				#{fromId,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="roomId != null">
+				#{roomId,jdbcType=VARCHAR},
+			</if>
+			<if test="filePath != null">
+				#{filePath,jdbcType=VARCHAR},
+			</if>
+			<if test="sentstatus != null">
+				#{sentstatus,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample"
+		parameterType="com.muyou.pojo.TbMessageExample"
+		resultType="java.lang.Integer">
+		select count(*) from tb_message
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update tb_message
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.fromId != null">
+				from_id = #{record.fromId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.type != null">
+				type = #{record.type,jdbcType=VARCHAR},
+			</if>
+			<if test="record.createTime != null">
+				create_time = #{record.createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="record.roomId != null">
+				room_id = #{record.roomId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.filePath != null">
+				file_path = #{record.filePath,jdbcType=VARCHAR},
+			</if>
+			<if test="record.sentstatus != null">
+				sentStatus = #{record.sentstatus,jdbcType=VARCHAR},
+			</if>
+			<if test="record.content != null">
+				content = #{record.content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExampleWithBLOBs" parameterType="map">
+		update tb_message
+		set id = #{record.id,jdbcType=INTEGER},
+		from_id =
+		#{record.fromId,jdbcType=VARCHAR},
+		type =
+		#{record.type,jdbcType=VARCHAR},
+		create_time =
+		#{record.createTime,jdbcType=VARCHAR},
+		room_id =
+		#{record.roomId,jdbcType=VARCHAR},
+		file_path =
+		#{record.filePath,jdbcType=VARCHAR},
+		sentStatus =
+		#{record.sentstatus,jdbcType=VARCHAR},
+		content =
+		#{record.content,jdbcType=LONGVARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update tb_message
+		set id = #{record.id,jdbcType=INTEGER},
+		from_id =
+		#{record.fromId,jdbcType=VARCHAR},
+		type =
+		#{record.type,jdbcType=VARCHAR},
+		create_time =
+		#{record.createTime,jdbcType=VARCHAR},
+		room_id =
+		#{record.roomId,jdbcType=VARCHAR},
+		file_path =
+		#{record.filePath,jdbcType=VARCHAR},
+		sentStatus =
+		#{record.sentstatus,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.muyou.pojo.TbMessage">
+		update tb_message
+		<set>
+			<if test="fromId != null">
+				from_id = #{fromId,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="roomId != null">
+				room_id = #{roomId,jdbcType=VARCHAR},
+			</if>
+			<if test="filePath != null">
+				file_path = #{filePath,jdbcType=VARCHAR},
+			</if>
+			<if test="sentstatus != null">
+				sentStatus = #{sentstatus,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs"
+		parameterType="com.muyou.pojo.TbMessage">
+		update tb_message
+		set from_id =
+		#{fromId,jdbcType=VARCHAR},
+		type = #{type,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=VARCHAR},
+		room_id =
+		#{roomId,jdbcType=VARCHAR},
+		file_path = #{filePath,jdbcType=VARCHAR},
+		sentStatus = #{sentstatus,jdbcType=VARCHAR},
+		content =
+		#{content,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.muyou.pojo.TbMessage">
+		update tb_message
+		set from_id =
+		#{fromId,jdbcType=VARCHAR},
+		type = #{type,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=VARCHAR},
+		room_id =
+		#{roomId,jdbcType=VARCHAR},
+		file_path = #{filePath,jdbcType=VARCHAR},
+		sentStatus = #{sentstatus,jdbcType=VARCHAR}
+		where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+</mapper>

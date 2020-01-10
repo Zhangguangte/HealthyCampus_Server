@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.muyou.mapper.TbIngredientsMapper" >
+  <resultMap id="BaseResultMap" type="com.muyou.pojo.TbIngredients" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="synopsis" property="synopsis" jdbcType="VARCHAR" />
+    <result column="nutritive" property="nutritive" jdbcType="VARCHAR" />
+    <result column="effect" property="effect" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="calorie" property="calorie" jdbcType="VARCHAR" />
+    <result column="components" property="components" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, synopsis, nutritive, effect, url, calorie, components
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.muyou.pojo.TbIngredientsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_ingredients
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+     <if test="row != null" >
+      limit  ${row}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_ingredients
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getIngredientsTips" resultMap="BaseResultMap">
+   select * from tb_ingredients ORDER BY RAND() LIMIT 5
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_ingredients
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.muyou.pojo.TbIngredientsExample" >
+    delete from tb_ingredients
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.muyou.pojo.TbIngredients" >
+    insert into tb_ingredients (id, name, synopsis, 
+      nutritive, effect, url, 
+      calorie, components)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{synopsis,jdbcType=VARCHAR}, 
+      #{nutritive,jdbcType=VARCHAR}, #{effect,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{calorie,jdbcType=VARCHAR}, #{components,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.muyou.pojo.TbIngredients" >
+    insert into tb_ingredients
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="synopsis != null" >
+        synopsis,
+      </if>
+      <if test="nutritive != null" >
+        nutritive,
+      </if>
+      <if test="effect != null" >
+        effect,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="calorie != null" >
+        calorie,
+      </if>
+      <if test="components != null" >
+        components,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="synopsis != null" >
+        #{synopsis,jdbcType=VARCHAR},
+      </if>
+      <if test="nutritive != null" >
+        #{nutritive,jdbcType=VARCHAR},
+      </if>
+      <if test="effect != null" >
+        #{effect,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="calorie != null" >
+        #{calorie,jdbcType=VARCHAR},
+      </if>
+      <if test="components != null" >
+        #{components,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.muyou.pojo.TbIngredientsExample" resultType="java.lang.Integer" >
+    select count(*) from tb_ingredients
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_ingredients
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.synopsis != null" >
+        synopsis = #{record.synopsis,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nutritive != null" >
+        nutritive = #{record.nutritive,jdbcType=VARCHAR},
+      </if>
+      <if test="record.effect != null" >
+        effect = #{record.effect,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.calorie != null" >
+        calorie = #{record.calorie,jdbcType=VARCHAR},
+      </if>
+      <if test="record.components != null" >
+        components = #{record.components,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_ingredients
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      synopsis = #{record.synopsis,jdbcType=VARCHAR},
+      nutritive = #{record.nutritive,jdbcType=VARCHAR},
+      effect = #{record.effect,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      calorie = #{record.calorie,jdbcType=VARCHAR},
+      components = #{record.components,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.muyou.pojo.TbIngredients" >
+    update tb_ingredients
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="synopsis != null" >
+        synopsis = #{synopsis,jdbcType=VARCHAR},
+      </if>
+      <if test="nutritive != null" >
+        nutritive = #{nutritive,jdbcType=VARCHAR},
+      </if>
+      <if test="effect != null" >
+        effect = #{effect,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="calorie != null" >
+        calorie = #{calorie,jdbcType=VARCHAR},
+      </if>
+      <if test="components != null" >
+        components = #{components,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.muyou.pojo.TbIngredients" >
+    update tb_ingredients
+    set name = #{name,jdbcType=VARCHAR},
+      synopsis = #{synopsis,jdbcType=VARCHAR},
+      nutritive = #{nutritive,jdbcType=VARCHAR},
+      effect = #{effect,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      calorie = #{calorie,jdbcType=VARCHAR},
+      components = #{components,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

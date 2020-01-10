@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.muyou.mapper.TbRequestMapper">
+	<resultMap id="BaseResultMap" type="com.muyou.pojo.TbRequest">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="request_user_id" property="requestUserId"
+			jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime"
+			jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="status1" property="status1" jdbcType="VARCHAR" />
+		<association property="friend"
+			resultMap="com.muyou.mapper.TbUserMapper.BaseResultMap" columnPrefix="u_" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, user_id, request_user_id, content, create_time, status,
+		status1
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.muyou.pojo.TbRequestExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from tb_request
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_request
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+
+	<!-- ******************************************* -->
+	<select id="requestFriends" resultMap="BaseResultMap"
+		parameterType="String">
+		SELECT
+		r.id as id,
+		u.nickname as u_nickname,
+		r.user_id as
+		user_id,
+		u.id as u_id,
+		r.content as content,
+		r.status as status,
+		r.create_time as create_time
+		from
+		tb_user u,tb_request r
+		where
+		u.id =
+		r.user_id
+		and
+		r.request_user_id= #{user_id}
+		and
+		r.status1 != 'CLEAR'
+		UNION
+		ALL
+		(SELECT
+		r.id as id,
+		u.nickname as u_nickname,
+		r.user_id as user_id,
+		u.id as u_id,
+		r.content as content,
+		r.status1 as status,
+		r.create_time as
+		create_time
+		from
+		tb_user u,tb_request r
+		where
+		u.id = r.request_user_id
+		and
+		r.user_id= #{user_id}
+		and
+		r.status != 'CLEAR' )
+		ORDER BY
+		create_time desc
+	</select>
+
+	<!-- 清空好友通知 -->
+	<update id="clearRequestFriends1" parameterType="String">
+		update
+		tb_request set status='CLEAR' where user_id = #{user_id}
+	</update>
+	<update id="clearRequestFriends2" parameterType="String">
+		update
+		tb_request set status1='CLEAR' where request_user_id =#{user_id}
+	</update>
+
+	<!-- 发送好友请求，添加好友消息 -->
+
+
+	<select id="isExistRequst" resultType="java.lang.Integer"
+		parameterType="String">
+		select count(*) from tb_request where user_id=#{user_id}
+		and request_user_id = #{quest_id} and status1='F_REQUEST' and
+		(status='REQUEST' or status='CLEAR')
+	</select>
+
+	<update id="updateRequestTime" parameterType="String">
+		update tb_request
+		set create_time = #{createTime},content =
+		#{content},status='REQUEST'
+		where user_id = #{user_id} and
+		request_user_id = #{quest_id}
+	</update>
+
+	<insert id="sendRequestFriend" parameterType="String">
+		insert into
+		tb_request(user_id,request_user_id,content,create_time,status,status1)
+		VALUES(#{user_id},#{quest_id},#{content},#{createTime},'REQUEST','F_REQUEST')
+	</insert>
+
+	<update id="saveRequestFriend" parameterType="String">
+		update tb_request
+		set status='AGREE',status1='F_AGREE' where user_id=#{quest_id} and
+		request_user_id = #{user_id} and status1='F_REQUEST'
+	</update>
+	<update id="refuseRequestFriend" parameterType="String">
+		update tb_request
+		set status='REFUSE',status1='F_REFUSE' where user_id=#{quest_id} and
+		request_user_id = #{user_id} and status1='F_REQUEST'
+	</update>
+
+
+	<!-- ******************************************* -->
+
+
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from tb_request
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample"
+		parameterType="com.muyou.pojo.TbRequestExample">
+		delete from tb_request
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.muyou.pojo.TbRequest">
+		insert into tb_request (id,
+		user_id, request_user_id,
+		content, create_time, status,
+		status1)
+		values
+		(#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR},
+		#{requestUserId,jdbcType=VARCHAR},
+		#{content,jdbcType=VARCHAR},
+		#{createTime,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+		#{status1,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.muyou.pojo.TbRequest">
+		insert into tb_request
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="requestUserId != null">
+				request_user_id,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="status1 != null">
+				status1,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="requestUserId != null">
+				#{requestUserId,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="status1 != null">
+				#{status1,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample"
+		parameterType="com.muyou.pojo.TbRequestExample"
+		resultType="java.lang.Integer">
+		select count(*) from tb_request
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update tb_request
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.userId != null">
+				user_id = #{record.userId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.requestUserId != null">
+				request_user_id =
+				#{record.requestUserId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.content != null">
+				content = #{record.content,jdbcType=VARCHAR},
+			</if>
+			<if test="record.createTime != null">
+				create_time = #{record.createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="record.status != null">
+				status = #{record.status,jdbcType=VARCHAR},
+			</if>
+			<if test="record.status1 != null">
+				status1 = #{record.status1,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update tb_request
+		set id = #{record.id,jdbcType=INTEGER},
+		user_id =
+		#{record.userId,jdbcType=VARCHAR},
+		request_user_id =
+		#{record.requestUserId,jdbcType=VARCHAR},
+		content =
+		#{record.content,jdbcType=VARCHAR},
+		create_time =
+		#{record.createTime,jdbcType=VARCHAR},
+		status =
+		#{record.status,jdbcType=VARCHAR},
+		status1 =
+		#{record.status1,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.muyou.pojo.TbRequest">
+		update tb_request
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="requestUserId != null">
+				request_user_id = #{requestUserId,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="status1 != null">
+				status1 = #{status1,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.muyou.pojo.TbRequest">
+		update tb_request
+		set user_id =
+		#{userId,jdbcType=VARCHAR},
+		request_user_id =
+		#{requestUserId,jdbcType=VARCHAR},
+		content =
+		#{content,jdbcType=VARCHAR},
+		create_time =
+		#{createTime,jdbcType=VARCHAR},
+		status = #{status,jdbcType=VARCHAR},
+		status1 = #{status1,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

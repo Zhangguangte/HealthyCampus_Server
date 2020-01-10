@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.muyou.mapper.TbNewsUserMapper">
+	<resultMap id="BaseResultMap"
+		type="com.muyou.pojo.TbNewsUser">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="news_id" property="newsId" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="read_time" property="readTime"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, news_id, user_id, status, read_time
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.muyou.pojo.TbNewsUserExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from tb_news_user
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_news_user
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from tb_news_user
+		where id =
+		#{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample"
+		parameterType="com.muyou.pojo.TbNewsUserExample">
+		delete from tb_news_user
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.muyou.pojo.TbNewsUser">
+		insert into tb_news_user (id,
+		news_id, user_id,
+		status, read_time)
+		values (#{id,jdbcType=INTEGER},
+		#{newsId,jdbcType=VARCHAR},
+		#{userId,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR}, #{readTime,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.muyou.pojo.TbNewsUser">
+		insert into tb_news_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="newsId != null">
+				news_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="readTime != null">
+				read_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="newsId != null">
+				#{newsId,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="readTime != null">
+				#{readTime,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- ********************************************** -->
+	<!-- 清空通知 -->
+	<delete id="clearNotice" parameterType="String">
+		delete from tb_news_user
+		where user_id = #{userId}
+	</delete>
+
+	<!-- 删除通知 -->
+	<delete id="deleteNotice" parameterType="String">
+		delete from tb_news_user
+		where user_id = #{userId} and news_id= #{newsId}
+	</delete>
+
+	<!-- 查看通知 -->
+	<update id="lookNotice" parameterType="String">
+		update tb_news_user set read_time = #{time},status='READ' where user_id =
+		#{userId} and news_id= #{id}
+	</update>
+
+	<!-- ********************************************** -->
+
+
+
+	<select id="countByExample"
+		parameterType="com.muyou.pojo.TbNewsUserExample"
+		resultType="java.lang.Integer">
+		select count(*) from tb_news_user
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update tb_news_user
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.newsId != null">
+				news_id = #{record.newsId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.userId != null">
+				user_id = #{record.userId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.status != null">
+				status = #{record.status,jdbcType=VARCHAR},
+			</if>
+			<if test="record.readTime != null">
+				read_time = #{record.readTime,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update tb_news_user
+		set id = #{record.id,jdbcType=INTEGER},
+		news_id =
+		#{record.newsId,jdbcType=VARCHAR},
+		user_id =
+		#{record.userId,jdbcType=VARCHAR},
+		status =
+		#{record.status,jdbcType=VARCHAR},
+		read_time =
+		#{record.readTime,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.muyou.pojo.TbNewsUser">
+		update tb_news_user
+		<set>
+			<if test="newsId != null">
+				news_id = #{newsId,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="readTime != null">
+				read_time = #{readTime,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.muyou.pojo.TbNewsUser">
+		update tb_news_user
+		set news_id =
+		#{newsId,jdbcType=VARCHAR},
+		user_id = #{userId,jdbcType=VARCHAR},
+		status = #{status,jdbcType=VARCHAR},
+		read_time =
+		#{readTime,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

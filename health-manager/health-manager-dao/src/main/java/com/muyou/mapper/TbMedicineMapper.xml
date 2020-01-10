@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.muyou.mapper.TbMedicineMapper">
+	<resultMap id="BaseResultMap"
+		type="com.muyou.pojo.TbMedicine">
+		<id column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="c1_id" property="c1Id" jdbcType="INTEGER" />
+		<result column="c2_id" property="c2Id" jdbcType="INTEGER" />
+		<result column="c1" property="c1" jdbcType="VARCHAR" />
+		<result column="c2" property="c2" jdbcType="VARCHAR" />
+		<result column="goods_name" property="goodsName"
+			jdbcType="VARCHAR" />
+		<result column="py_code" property="pyCode" jdbcType="VARCHAR" />
+		<result column="spec" property="spec" jdbcType="VARCHAR" />
+		<result column="unit" property="unit" jdbcType="VARCHAR" />
+		<result column="approval_number" property="approvalNumber"
+			jdbcType="VARCHAR" />
+		<result column="manufacturer" property="manufacturer"
+			jdbcType="VARCHAR" />
+		<result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+		<result column="zhuzhi" property="zhuzhi" jdbcType="VARCHAR" />
+		<result column="explain_book" property="explainBook"
+			jdbcType="VARCHAR" />
+		<result column="replenish" property="replenish"
+			jdbcType="VARCHAR" />
+		<result column="logo" property="logo" jdbcType="VARCHAR" />
+		<result column="is_otc" property="isOtc" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+		<result column="c_time" property="cTime" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="DECIMAL" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		goods_id, c1_id, c2_id, c1, c2, goods_name, py_code, spec,
+		unit,
+		approval_number,
+		manufacturer, bar_code, zhuzhi, explain_book,
+		replenish, logo, is_otc, is_del,
+		c_time,
+		price
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.muyou.pojo.TbMedicineExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from tb_medicine
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<!-- **************************************** -->
+	<select id="getAllMedicine" resultMap="BaseResultMap">
+		select * from tb_medicine where c2=#{classifyName} ORDER
+		BY goods_id LIMIT #{start},15
+	</select>
+
+	<select id="getAllMedicineByKey" resultMap="BaseResultMap"
+		parameterType="String">
+		select * from tb_medicine where ${scope} like #{content}
+		ORDER BY goods_id LIMIT #{start},15
+	</select>
+	<select id="getMedicineDetailByName" resultMap="BaseResultMap"
+		parameterType="String">
+		select * from tb_medicine where goods_name=#{content}
+		limit 1
+	</select>
+	<select id="getMedicineDetailByCode" resultMap="BaseResultMap"
+		parameterType="String">
+		select * from tb_medicine where bar_code=#{bar_code}
+		limit 1
+	</select>
+
+
+
+
+	<!-- **************************************** -->
+
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_medicine
+		where goods_id = #{goodsId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from tb_medicine
+		where goods_id =
+		#{goodsId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample"
+		parameterType="com.muyou.pojo.TbMedicineExample">
+		delete from tb_medicine
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.muyou.pojo.TbMedicine">
+		insert into tb_medicine
+		(goods_id, c1_id, c2_id,
+		c1, c2, goods_name,
+		py_code, spec, unit,
+		approval_number, manufacturer, bar_code,
+		zhuzhi, explain_book,
+		replenish,
+		logo, is_otc, is_del,
+		c_time, price)
+		values
+		(#{goodsId,jdbcType=INTEGER}, #{c1Id,jdbcType=INTEGER},
+		#{c2Id,jdbcType=INTEGER},
+		#{c1,jdbcType=VARCHAR},
+		#{c2,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR},
+		#{pyCode,jdbcType=VARCHAR}, #{spec,jdbcType=VARCHAR},
+		#{unit,jdbcType=VARCHAR},
+		#{approvalNumber,jdbcType=VARCHAR},
+		#{manufacturer,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR},
+		#{zhuzhi,jdbcType=VARCHAR}, #{explainBook,jdbcType=VARCHAR},
+		#{replenish,jdbcType=VARCHAR},
+		#{logo,jdbcType=VARCHAR},
+		#{isOtc,jdbcType=INTEGER}, #{isDel,jdbcType=INTEGER},
+		#{cTime,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.muyou.pojo.TbMedicine">
+		insert into tb_medicine
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="goodsId != null">
+				goods_id,
+			</if>
+			<if test="c1Id != null">
+				c1_id,
+			</if>
+			<if test="c2Id != null">
+				c2_id,
+			</if>
+			<if test="c1 != null">
+				c1,
+			</if>
+			<if test="c2 != null">
+				c2,
+			</if>
+			<if test="goodsName != null">
+				goods_name,
+			</if>
+			<if test="pyCode != null">
+				py_code,
+			</if>
+			<if test="spec != null">
+				spec,
+			</if>
+			<if test="unit != null">
+				unit,
+			</if>
+			<if test="approvalNumber != null">
+				approval_number,
+			</if>
+			<if test="manufacturer != null">
+				manufacturer,
+			</if>
+			<if test="barCode != null">
+				bar_code,
+			</if>
+			<if test="zhuzhi != null">
+				zhuzhi,
+			</if>
+			<if test="explainBook != null">
+				explain_book,
+			</if>
+			<if test="replenish != null">
+				replenish,
+			</if>
+			<if test="logo != null">
+				logo,
+			</if>
+			<if test="isOtc != null">
+				is_otc,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+			<if test="cTime != null">
+				c_time,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="goodsId != null">
+				#{goodsId,jdbcType=INTEGER},
+			</if>
+			<if test="c1Id != null">
+				#{c1Id,jdbcType=INTEGER},
+			</if>
+			<if test="c2Id != null">
+				#{c2Id,jdbcType=INTEGER},
+			</if>
+			<if test="c1 != null">
+				#{c1,jdbcType=VARCHAR},
+			</if>
+			<if test="c2 != null">
+				#{c2,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsName != null">
+				#{goodsName,jdbcType=VARCHAR},
+			</if>
+			<if test="pyCode != null">
+				#{pyCode,jdbcType=VARCHAR},
+			</if>
+			<if test="spec != null">
+				#{spec,jdbcType=VARCHAR},
+			</if>
+			<if test="unit != null">
+				#{unit,jdbcType=VARCHAR},
+			</if>
+			<if test="approvalNumber != null">
+				#{approvalNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="manufacturer != null">
+				#{manufacturer,jdbcType=VARCHAR},
+			</if>
+			<if test="barCode != null">
+				#{barCode,jdbcType=VARCHAR},
+			</if>
+			<if test="zhuzhi != null">
+				#{zhuzhi,jdbcType=VARCHAR},
+			</if>
+			<if test="explainBook != null">
+				#{explainBook,jdbcType=VARCHAR},
+			</if>
+			<if test="replenish != null">
+				#{replenish,jdbcType=VARCHAR},
+			</if>
+			<if test="logo != null">
+				#{logo,jdbcType=VARCHAR},
+			</if>
+			<if test="isOtc != null">
+				#{isOtc,jdbcType=INTEGER},
+			</if>
+			<if test="isDel != null">
+				#{isDel,jdbcType=INTEGER},
+			</if>
+			<if test="cTime != null">
+				#{cTime,jdbcType=VARCHAR},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample"
+		parameterType="com.muyou.pojo.TbMedicineExample"
+		resultType="java.lang.Integer">
+		select count(*) from tb_medicine
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update tb_medicine
+		<set>
+			<if test="record.goodsId != null">
+				goods_id = #{record.goodsId,jdbcType=INTEGER},
+			</if>
+			<if test="record.c1Id != null">
+				c1_id = #{record.c1Id,jdbcType=INTEGER},
+			</if>
+			<if test="record.c2Id != null">
+				c2_id = #{record.c2Id,jdbcType=INTEGER},
+			</if>
+			<if test="record.c1 != null">
+				c1 = #{record.c1,jdbcType=VARCHAR},
+			</if>
+			<if test="record.c2 != null">
+				c2 = #{record.c2,jdbcType=VARCHAR},
+			</if>
+			<if test="record.goodsName != null">
+				goods_name = #{record.goodsName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.pyCode != null">
+				py_code = #{record.pyCode,jdbcType=VARCHAR},
+			</if>
+			<if test="record.spec != null">
+				spec = #{record.spec,jdbcType=VARCHAR},
+			</if>
+			<if test="record.unit != null">
+				unit = #{record.unit,jdbcType=VARCHAR},
+			</if>
+			<if test="record.approvalNumber != null">
+				approval_number =
+				#{record.approvalNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="record.manufacturer != null">
+				manufacturer = #{record.manufacturer,jdbcType=VARCHAR},
+			</if>
+			<if test="record.barCode != null">
+				bar_code = #{record.barCode,jdbcType=VARCHAR},
+			</if>
+			<if test="record.zhuzhi != null">
+				zhuzhi = #{record.zhuzhi,jdbcType=VARCHAR},
+			</if>
+			<if test="record.explainBook != null">
+				explain_book = #{record.explainBook,jdbcType=VARCHAR},
+			</if>
+			<if test="record.replenish != null">
+				replenish = #{record.replenish,jdbcType=VARCHAR},
+			</if>
+			<if test="record.logo != null">
+				logo = #{record.logo,jdbcType=VARCHAR},
+			</if>
+			<if test="record.isOtc != null">
+				is_otc = #{record.isOtc,jdbcType=INTEGER},
+			</if>
+			<if test="record.isDel != null">
+				is_del = #{record.isDel,jdbcType=INTEGER},
+			</if>
+			<if test="record.cTime != null">
+				c_time = #{record.cTime,jdbcType=VARCHAR},
+			</if>
+			<if test="record.price != null">
+				price = #{record.price,jdbcType=DECIMAL},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update tb_medicine
+		set goods_id = #{record.goodsId,jdbcType=INTEGER},
+		c1_id = #{record.c1Id,jdbcType=INTEGER},
+		c2_id =
+		#{record.c2Id,jdbcType=INTEGER},
+		c1 = #{record.c1,jdbcType=VARCHAR},
+		c2
+		= #{record.c2,jdbcType=VARCHAR},
+		goods_name =
+		#{record.goodsName,jdbcType=VARCHAR},
+		py_code =
+		#{record.pyCode,jdbcType=VARCHAR},
+		spec =
+		#{record.spec,jdbcType=VARCHAR},
+		unit =
+		#{record.unit,jdbcType=VARCHAR},
+		approval_number =
+		#{record.approvalNumber,jdbcType=VARCHAR},
+		manufacturer =
+		#{record.manufacturer,jdbcType=VARCHAR},
+		bar_code =
+		#{record.barCode,jdbcType=VARCHAR},
+		zhuzhi =
+		#{record.zhuzhi,jdbcType=VARCHAR},
+		explain_book =
+		#{record.explainBook,jdbcType=VARCHAR},
+		replenish =
+		#{record.replenish,jdbcType=VARCHAR},
+		logo =
+		#{record.logo,jdbcType=VARCHAR},
+		is_otc =
+		#{record.isOtc,jdbcType=INTEGER},
+		is_del =
+		#{record.isDel,jdbcType=INTEGER},
+		c_time =
+		#{record.cTime,jdbcType=VARCHAR},
+		price =
+		#{record.price,jdbcType=DECIMAL}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.muyou.pojo.TbMedicine">
+		update tb_medicine
+		<set>
+			<if test="c1Id != null">
+				c1_id = #{c1Id,jdbcType=INTEGER},
+			</if>
+			<if test="c2Id != null">
+				c2_id = #{c2Id,jdbcType=INTEGER},
+			</if>
+			<if test="c1 != null">
+				c1 = #{c1,jdbcType=VARCHAR},
+			</if>
+			<if test="c2 != null">
+				c2 = #{c2,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsName != null">
+				goods_name = #{goodsName,jdbcType=VARCHAR},
+			</if>
+			<if test="pyCode != null">
+				py_code = #{pyCode,jdbcType=VARCHAR},
+			</if>
+			<if test="spec != null">
+				spec = #{spec,jdbcType=VARCHAR},
+			</if>
+			<if test="unit != null">
+				unit = #{unit,jdbcType=VARCHAR},
+			</if>
+			<if test="approvalNumber != null">
+				approval_number = #{approvalNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="manufacturer != null">
+				manufacturer = #{manufacturer,jdbcType=VARCHAR},
+			</if>
+			<if test="barCode != null">
+				bar_code = #{barCode,jdbcType=VARCHAR},
+			</if>
+			<if test="zhuzhi != null">
+				zhuzhi = #{zhuzhi,jdbcType=VARCHAR},
+			</if>
+			<if test="explainBook != null">
+				explain_book = #{explainBook,jdbcType=VARCHAR},
+			</if>
+			<if test="replenish != null">
+				replenish = #{replenish,jdbcType=VARCHAR},
+			</if>
+			<if test="logo != null">
+				logo = #{logo,jdbcType=VARCHAR},
+			</if>
+			<if test="isOtc != null">
+				is_otc = #{isOtc,jdbcType=INTEGER},
+			</if>
+			<if test="isDel != null">
+				is_del = #{isDel,jdbcType=INTEGER},
+			</if>
+			<if test="cTime != null">
+				c_time = #{cTime,jdbcType=VARCHAR},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where goods_id = #{goodsId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.muyou.pojo.TbMedicine">
+		update tb_medicine
+		set c1_id = #{c1Id,jdbcType=INTEGER},
+		c2_id = #{c2Id,jdbcType=INTEGER},
+		c1 = #{c1,jdbcType=VARCHAR},
+		c2 =
+		#{c2,jdbcType=VARCHAR},
+		goods_name = #{goodsName,jdbcType=VARCHAR},
+		py_code = #{pyCode,jdbcType=VARCHAR},
+		spec = #{spec,jdbcType=VARCHAR},
+		unit = #{unit,jdbcType=VARCHAR},
+		approval_number =
+		#{approvalNumber,jdbcType=VARCHAR},
+		manufacturer =
+		#{manufacturer,jdbcType=VARCHAR},
+		bar_code =
+		#{barCode,jdbcType=VARCHAR},
+		zhuzhi = #{zhuzhi,jdbcType=VARCHAR},
+		explain_book = #{explainBook,jdbcType=VARCHAR},
+		replenish =
+		#{replenish,jdbcType=VARCHAR},
+		logo = #{logo,jdbcType=VARCHAR},
+		is_otc =
+		#{isOtc,jdbcType=INTEGER},
+		is_del = #{isDel,jdbcType=INTEGER},
+		c_time =
+		#{cTime,jdbcType=VARCHAR},
+		price = #{price,jdbcType=DECIMAL}
+		where
+		goods_id = #{goodsId,jdbcType=INTEGER}
+	</update>
+</mapper>
