@@ -20,7 +20,7 @@ public interface TbRecipesMapper {
 
 	List<TbRecipes> selectByExample(TbRecipesExample example);
 
-	List<TbRecipes> getRecommendRecipes();
+	List<TbRecipes> getRecommendRecipes(@Param("physique") String physique);
 
 	List<TbRecipes> getRecipesByThreeMeals(@Param("type") String type, @Param("week") String week);
 

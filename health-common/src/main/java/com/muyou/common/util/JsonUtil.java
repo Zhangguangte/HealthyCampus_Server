@@ -94,8 +94,5 @@ public final class JsonUtil {
 
     private JsonUtil() {}
 
-    public static void main(String[] args) {
-        String str = "{\"location\":\"珠海\",\"date\":\"1\",\"action\":\"深圳明天下雨\",\"mark\":\"weather\"}";
-    }
 
 }

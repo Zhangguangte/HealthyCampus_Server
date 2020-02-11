@@ -224,6 +224,9 @@ insert into tb_message(from_id, type, content, create_time,room_id,file_path,sen
 		</if>
 	</delete>
 	<insert id="insert" parameterType="com.muyou.pojo.TbMessage">
+	<selectKey keyProperty="id" order="AFTER" resultType="Integer">
+		select LAST_INSERT_ID()
+	</selectKey>
 		insert into tb_message (id,
 		from_id, type,
 		create_time, room_id, file_path,

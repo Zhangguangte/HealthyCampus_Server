@@ -1,6 +1,6 @@
 package com.muyou.common.exception;
 
-import com.muyou.common.vo.ResponseBuilder;
+import com.muyou.common.pojo.ResponseBuilder;
 
 public class ServiceException extends Exception {
     private boolean logException;

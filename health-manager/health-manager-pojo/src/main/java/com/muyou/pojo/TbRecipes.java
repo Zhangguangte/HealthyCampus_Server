@@ -15,6 +15,8 @@ public class TbRecipes {
 
     private String productionTime;
 
+    private String practice;
+
     private String pictureUrl;
 
     private String type;
@@ -27,7 +29,7 @@ public class TbRecipes {
 
     private String weeks;
 
-    private String practice;
+    private String physique;
 
     public Integer getId() {
         return id;
@@ -85,6 +87,14 @@ public class TbRecipes {
         this.productionTime = productionTime == null ? null : productionTime.trim();
     }
 
+    public String getPractice() {
+        return practice;
+    }
+
+    public void setPractice(String practice) {
+        this.practice = practice == null ? null : practice.trim();
+    }
+
     public String getPictureUrl() {
         return pictureUrl;
     }
@@ -133,11 +143,11 @@ public class TbRecipes {
         this.weeks = weeks == null ? null : weeks.trim();
     }
 
-    public String getPractice() {
-        return practice;
+    public String getPhysique() {
+        return physique;
     }
 
-    public void setPractice(String practice) {
-        this.practice = practice == null ? null : practice.trim();
+    public void setPhysique(String physique) {
+        this.physique = physique == null ? null : physique.trim();
     }
 }

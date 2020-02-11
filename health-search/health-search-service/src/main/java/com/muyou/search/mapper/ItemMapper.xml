@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.muyou.search.mapper.ItemMapper">
+	<select id="getMedicineItemList" resultType="com.muyou.pojo.TbMedicine">
+		SELECT
+			*
+		FROM
+			tb_medicine m	
+		where 
+			m.is_del = 0
+	</select>
+	
+	<select id="getMedicineItemById" resultType="com.muyou.pojo.TbMedicine">
+		SELECT
+			*
+		FROM
+			tb_medicine m	
+		where 
+			m.goods_id = #{id}
+		and
+			m.is_del = 0
+	</select>
+	
+	<select id="getDiseaseItemList" resultType="com.muyou.pojo.TbDisease">
+		SELECT
+			*
+		FROM
+			tb_disease d	
+		where 
+			d.is_del = 0
+	</select>
+	
+	<select id="getDiseaseItemById" resultType="com.muyou.pojo.TbDisease">
+		SELECT
+			*
+		FROM
+			tb_disease d
+		where 
+			d.id = #{id}
+		and
+			d.is_del = 0
+	</select>
+	
+	
+</mapper>

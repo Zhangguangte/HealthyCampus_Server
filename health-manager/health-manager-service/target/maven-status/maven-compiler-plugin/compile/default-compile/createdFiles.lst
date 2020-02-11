@@ -1,8 +1,0 @@
-com\muyou\service\impl\UserServiceImpl.class
-com\muyou\service\impl\RecipesServiceImpl.class
-com\muyou\service\impl\FriendshipServiceImpl.class
-com\muyou\service\impl\DiseaseServiceImpl.class
-com\muyou\service\impl\ConsultServiceImpl.class
-com\muyou\service\impl\MedicineServiceImpl.class
-com\muyou\service\impl\ServiceServiceImpl.class
-com\muyou\service\impl\MessageServiceImpl.class

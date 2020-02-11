@@ -1,2 +1,0 @@
-192.168.2.101 - - [10/Jan/2020:18:15:43 +0800] "POST /users/login HTTP/1.1" 200 313 http-bio-8087-exec-1 886
-192.168.2.101 - - [10/Jan/2020:18:15:47 +0800] "POST /messages/getDoctorRoom/ HTTP/1.1" 200 341 http-bio-8087-exec-2 68

@@ -8,7 +8,15 @@ public class RequestForm implements Serializable{
 	private String content;
 	private Integer row;
 	private int type;
+	 public int id;
 	private Map<String, String> map;
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getQuest_id() {
 		return quest_id;
 	}

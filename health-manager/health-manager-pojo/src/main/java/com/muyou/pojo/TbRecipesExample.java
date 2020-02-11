@@ -7,9 +7,21 @@ public class TbRecipesExample {
     protected String orderByClause;
 
     protected boolean distinct;
-    protected int row;
+
+    protected int  row;
+    
     protected int size;
-    public int getSize() {
+    
+    
+    public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getSize() {
 		return size;
 	}
 
@@ -19,15 +31,7 @@ public class TbRecipesExample {
 
 	protected List<Criteria> oredCriteria;
 
-	public int getRow() {
-		return row;
-	}
-
-	public void setRow(int row) {
-		this.row = row;
-	}
-
-	public TbRecipesExample() {
+    public TbRecipesExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -603,6 +607,76 @@ public class TbRecipesExample {
             return (Criteria) this;
         }
 
+        public Criteria andPracticeIsNull() {
+            addCriterion("practice is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeIsNotNull() {
+            addCriterion("practice is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeEqualTo(String value) {
+            addCriterion("practice =", value, "practice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeNotEqualTo(String value) {
+            addCriterion("practice <>", value, "practice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeGreaterThan(String value) {
+            addCriterion("practice >", value, "practice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeGreaterThanOrEqualTo(String value) {
+            addCriterion("practice >=", value, "practice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeLessThan(String value) {
+            addCriterion("practice <", value, "practice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeLessThanOrEqualTo(String value) {
+            addCriterion("practice <=", value, "practice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeLike(String value) {
+            addCriterion("practice like", value, "practice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeNotLike(String value) {
+            addCriterion("practice not like", value, "practice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeIn(List<String> values) {
+            addCriterion("practice in", values, "practice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeNotIn(List<String> values) {
+            addCriterion("practice not in", values, "practice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeBetween(String value1, String value2) {
+            addCriterion("practice between", value1, value2, "practice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticeNotBetween(String value1, String value2) {
+            addCriterion("practice not between", value1, value2, "practice");
+            return (Criteria) this;
+        }
+
         public Criteria andPictureUrlIsNull() {
             addCriterion("picture_url is null");
             return (Criteria) this;
@@ -1020,6 +1094,76 @@ public class TbRecipesExample {
 
         public Criteria andWeeksNotBetween(String value1, String value2) {
             addCriterion("weeks not between", value1, value2, "weeks");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueIsNull() {
+            addCriterion("physique is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueIsNotNull() {
+            addCriterion("physique is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueEqualTo(String value) {
+            addCriterion("physique =", value, "physique");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueNotEqualTo(String value) {
+            addCriterion("physique <>", value, "physique");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueGreaterThan(String value) {
+            addCriterion("physique >", value, "physique");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueGreaterThanOrEqualTo(String value) {
+            addCriterion("physique >=", value, "physique");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueLessThan(String value) {
+            addCriterion("physique <", value, "physique");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueLessThanOrEqualTo(String value) {
+            addCriterion("physique <=", value, "physique");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueLike(String value) {
+            addCriterion("physique like", value, "physique");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueNotLike(String value) {
+            addCriterion("physique not like", value, "physique");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueIn(List<String> values) {
+            addCriterion("physique in", values, "physique");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueNotIn(List<String> values) {
+            addCriterion("physique not in", values, "physique");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueBetween(String value1, String value2) {
+            addCriterion("physique between", value1, value2, "physique");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhysiqueNotBetween(String value1, String value2) {
+            addCriterion("physique not between", value1, value2, "physique");
             return (Criteria) this;
         }
     }

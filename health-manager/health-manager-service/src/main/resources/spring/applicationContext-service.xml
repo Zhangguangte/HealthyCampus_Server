@@ -25,25 +25,10 @@
 	<dubbo:service
 		interface="com.muyou.service.ConsultService" ref="consultServiceImpl"
 		timeout="600000" />
-	<dubbo:service
-		interface="com.muyou.service.ServiceService" ref="serviceServiceImpl"
-		timeout="600000" />
-	<dubbo:service
-		interface="com.muyou.service.DiseaseService" ref="diseaseServiceImpl"
-		timeout="600000" />
-	<dubbo:service
-		interface="com.muyou.service.RecipesService" ref="recipesServiceImpl"
-		timeout="600000" />
-	<dubbo:service
-		interface="com.muyou.service.UserService" ref="userServiceImpl"
-		timeout="600000" />
-	<dubbo:service
-		interface="com.muyou.service.MedicineService" ref="medicineServiceImpl"
-		timeout="600000" />
-	<dubbo:service
-		interface="com.muyou.service.FriendshipService" ref="friendshipServiceImpl"
-		timeout="600000" />
-	<dubbo:service
-		interface="com.muyou.service.MessageService" ref="messageServiceImpl"
-		timeout="600000" />
+		
+		
+		
+		
+		
+		
 </beans>

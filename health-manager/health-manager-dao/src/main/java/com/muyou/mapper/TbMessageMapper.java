@@ -2,10 +2,7 @@ package com.muyou.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
 
 import com.muyou.common.form.ChatForm;
 import com.muyou.pojo.TbMessage;
@@ -35,8 +32,6 @@ public interface TbMessageMapper {
 
 	// 现存最后一条消息
 	List<TbMessage> lastMessage(@Param("user_id") String user_id);
-
-
 
 	// 所有消息根据房间号
 	List<TbMessage> allChatByRoomId(@Param("room_id") String room_id, @Param("start") int start);

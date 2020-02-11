@@ -23,6 +23,7 @@
 		<result column="classification" property="classification"
 			jdbcType="VARCHAR" />
 		<result column="weeks" property="weeks" jdbcType="VARCHAR" />
+		<result column="physique" property="physique" jdbcType="VARCHAR" />
 	</resultMap>
 	<resultMap id="ResultMapWithBLOBs"
 		type="com.muyou.pojo.TbRecipes" extends="BaseResultMap">
@@ -44,7 +45,8 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
+									and ${criterion.condition} #{criterion.value}
+									and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -76,7 +78,8 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
+									and ${criterion.condition} #{criterion.value}
+									and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -94,9 +97,11 @@
 		</where>
 	</sql>
 	<sql id="Base_Column_List">
-		id, dish_name, functional, flavor, ingredients, main_process,
+		id, dish_name, functional, flavor, ingredients,
+		main_process,
 		production_time, picture_url,
-		type, calorie, components, classification, weeks
+		type, calorie, components,
+		classification, weeks
 	</sql>
 	<sql id="Blob_Column_List">
 		practice
@@ -143,16 +148,22 @@
 
 	<select id="getRecipesByThreeMeals" resultMap="BaseResultMap"
 		parameterType="String">
-		SELECT * from tb_recipes where type=#{type} and weeks like #{week}
+		SELECT * from tb_recipes where type=#{type} and weeks
+		like #{week}
 	</select>
 
 	<select id="getRecipeDetailByName" resultMap="BaseResultMap"
 		parameterType="String">
-		select * from tb_recipes where dish_name like #{name} limit 1
+		select * from tb_recipes where dish_name like #{name}
+		limit 1
 	</select>
 
 	<select id="getRecommendRecipes" resultMap="ResultMapWithBLOBs">
-		select id,picture_url,dish_name from tb_recipes ORDER BY RAND() LIMIT
+		select id,picture_url,dish_name from tb_recipes
+		<if test="physique != null">
+			where physique = #{physique}
+		</if>
+		ORDER BY RAND() LIMIT
 		10
 	</select>
 	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
@@ -177,18 +188,25 @@
 		</if>
 	</delete>
 	<insert id="insert" parameterType="com.muyou.pojo.TbRecipes">
-		insert into tb_recipes (id, dish_name, functional,
+		insert into tb_recipes (id,
+		dish_name, functional,
 		flavor, ingredients, main_process,
 		production_time, picture_url, type,
-		calorie, components, classification,
+		calorie, components,
+		classification,
 		weeks, practice)
-		values (#{id,jdbcType=INTEGER}, #{dishName,jdbcType=VARCHAR},
+		values (#{id,jdbcType=INTEGER},
+		#{dishName,jdbcType=VARCHAR},
 		#{functional,jdbcType=VARCHAR},
-		#{flavor,jdbcType=VARCHAR}, #{ingredients,jdbcType=VARCHAR}, #{mainProcess,jdbcType=VARCHAR},
-		#{productionTime,jdbcType=VARCHAR}, #{pictureUrl,jdbcType=VARCHAR},
+		#{flavor,jdbcType=VARCHAR}, #{ingredients,jdbcType=VARCHAR},
+		#{mainProcess,jdbcType=VARCHAR},
+		#{productionTime,jdbcType=VARCHAR},
+		#{pictureUrl,jdbcType=VARCHAR},
 		#{type,jdbcType=VARCHAR},
-		#{calorie,jdbcType=VARCHAR}, #{components,jdbcType=VARCHAR}, #{classification,jdbcType=VARCHAR},
-		#{weeks,jdbcType=VARCHAR}, #{practice,jdbcType=LONGVARCHAR})
+		#{calorie,jdbcType=VARCHAR}, #{components,jdbcType=VARCHAR},
+		#{classification,jdbcType=VARCHAR},
+		#{weeks,jdbcType=VARCHAR},
+		#{practice,jdbcType=LONGVARCHAR})
 	</insert>
 	<insert id="insertSelective"
 		parameterType="com.muyou.pojo.TbRecipes">
@@ -312,7 +330,8 @@
 				main_process = #{record.mainProcess,jdbcType=VARCHAR},
 			</if>
 			<if test="record.productionTime != null">
-				production_time = #{record.productionTime,jdbcType=VARCHAR},
+				production_time =
+				#{record.productionTime,jdbcType=VARCHAR},
 			</if>
 			<if test="record.pictureUrl != null">
 				picture_url = #{record.pictureUrl,jdbcType=VARCHAR},
@@ -327,7 +346,8 @@
 				components = #{record.components,jdbcType=VARCHAR},
 			</if>
 			<if test="record.classification != null">
-				classification = #{record.classification,jdbcType=VARCHAR},
+				classification =
+				#{record.classification,jdbcType=VARCHAR},
 			</if>
 			<if test="record.weeks != null">
 				weeks = #{record.weeks,jdbcType=VARCHAR},
@@ -343,19 +363,32 @@
 	<update id="updateByExampleWithBLOBs" parameterType="map">
 		update tb_recipes
 		set id = #{record.id,jdbcType=INTEGER},
-		dish_name = #{record.dishName,jdbcType=VARCHAR},
-		functional = #{record.functional,jdbcType=VARCHAR},
-		flavor = #{record.flavor,jdbcType=VARCHAR},
-		ingredients = #{record.ingredients,jdbcType=VARCHAR},
-		main_process = #{record.mainProcess,jdbcType=VARCHAR},
-		production_time = #{record.productionTime,jdbcType=VARCHAR},
-		picture_url = #{record.pictureUrl,jdbcType=VARCHAR},
-		type = #{record.type,jdbcType=VARCHAR},
-		calorie = #{record.calorie,jdbcType=VARCHAR},
-		components = #{record.components,jdbcType=VARCHAR},
-		classification = #{record.classification,jdbcType=VARCHAR},
-		weeks = #{record.weeks,jdbcType=VARCHAR},
-		practice = #{record.practice,jdbcType=LONGVARCHAR}
+		dish_name =
+		#{record.dishName,jdbcType=VARCHAR},
+		functional =
+		#{record.functional,jdbcType=VARCHAR},
+		flavor =
+		#{record.flavor,jdbcType=VARCHAR},
+		ingredients =
+		#{record.ingredients,jdbcType=VARCHAR},
+		main_process =
+		#{record.mainProcess,jdbcType=VARCHAR},
+		production_time =
+		#{record.productionTime,jdbcType=VARCHAR},
+		picture_url =
+		#{record.pictureUrl,jdbcType=VARCHAR},
+		type =
+		#{record.type,jdbcType=VARCHAR},
+		calorie =
+		#{record.calorie,jdbcType=VARCHAR},
+		components =
+		#{record.components,jdbcType=VARCHAR},
+		classification =
+		#{record.classification,jdbcType=VARCHAR},
+		weeks =
+		#{record.weeks,jdbcType=VARCHAR},
+		practice =
+		#{record.practice,jdbcType=LONGVARCHAR}
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
 		</if>
@@ -363,18 +396,30 @@
 	<update id="updateByExample" parameterType="map">
 		update tb_recipes
 		set id = #{record.id,jdbcType=INTEGER},
-		dish_name = #{record.dishName,jdbcType=VARCHAR},
-		functional = #{record.functional,jdbcType=VARCHAR},
-		flavor = #{record.flavor,jdbcType=VARCHAR},
-		ingredients = #{record.ingredients,jdbcType=VARCHAR},
-		main_process = #{record.mainProcess,jdbcType=VARCHAR},
-		production_time = #{record.productionTime,jdbcType=VARCHAR},
-		picture_url = #{record.pictureUrl,jdbcType=VARCHAR},
-		type = #{record.type,jdbcType=VARCHAR},
-		calorie = #{record.calorie,jdbcType=VARCHAR},
-		components = #{record.components,jdbcType=VARCHAR},
-		classification = #{record.classification,jdbcType=VARCHAR},
-		weeks = #{record.weeks,jdbcType=VARCHAR}
+		dish_name =
+		#{record.dishName,jdbcType=VARCHAR},
+		functional =
+		#{record.functional,jdbcType=VARCHAR},
+		flavor =
+		#{record.flavor,jdbcType=VARCHAR},
+		ingredients =
+		#{record.ingredients,jdbcType=VARCHAR},
+		main_process =
+		#{record.mainProcess,jdbcType=VARCHAR},
+		production_time =
+		#{record.productionTime,jdbcType=VARCHAR},
+		picture_url =
+		#{record.pictureUrl,jdbcType=VARCHAR},
+		type =
+		#{record.type,jdbcType=VARCHAR},
+		calorie =
+		#{record.calorie,jdbcType=VARCHAR},
+		components =
+		#{record.components,jdbcType=VARCHAR},
+		classification =
+		#{record.classification,jdbcType=VARCHAR},
+		weeks =
+		#{record.weeks,jdbcType=VARCHAR}
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
 		</if>
@@ -428,35 +473,50 @@
 	<update id="updateByPrimaryKeyWithBLOBs"
 		parameterType="com.muyou.pojo.TbRecipes">
 		update tb_recipes
-		set dish_name = #{dishName,jdbcType=VARCHAR},
-		functional = #{functional,jdbcType=VARCHAR},
+		set dish_name =
+		#{dishName,jdbcType=VARCHAR},
+		functional =
+		#{functional,jdbcType=VARCHAR},
 		flavor = #{flavor,jdbcType=VARCHAR},
 		ingredients = #{ingredients,jdbcType=VARCHAR},
-		main_process = #{mainProcess,jdbcType=VARCHAR},
-		production_time = #{productionTime,jdbcType=VARCHAR},
-		picture_url = #{pictureUrl,jdbcType=VARCHAR},
+		main_process =
+		#{mainProcess,jdbcType=VARCHAR},
+		production_time =
+		#{productionTime,jdbcType=VARCHAR},
+		picture_url =
+		#{pictureUrl,jdbcType=VARCHAR},
 		type = #{type,jdbcType=VARCHAR},
 		calorie = #{calorie,jdbcType=VARCHAR},
-		components = #{components,jdbcType=VARCHAR},
-		classification = #{classification,jdbcType=VARCHAR},
+		components =
+		#{components,jdbcType=VARCHAR},
+		classification =
+		#{classification,jdbcType=VARCHAR},
 		weeks = #{weeks,jdbcType=VARCHAR},
 		practice = #{practice,jdbcType=LONGVARCHAR}
-		where id = #{id,jdbcType=INTEGER}
+		where id =
+		#{id,jdbcType=INTEGER}
 	</update>
 	<update id="updateByPrimaryKey"
 		parameterType="com.muyou.pojo.TbRecipes">
 		update tb_recipes
-		set dish_name = #{dishName,jdbcType=VARCHAR},
-		functional = #{functional,jdbcType=VARCHAR},
+		set dish_name =
+		#{dishName,jdbcType=VARCHAR},
+		functional =
+		#{functional,jdbcType=VARCHAR},
 		flavor = #{flavor,jdbcType=VARCHAR},
 		ingredients = #{ingredients,jdbcType=VARCHAR},
-		main_process = #{mainProcess,jdbcType=VARCHAR},
-		production_time = #{productionTime,jdbcType=VARCHAR},
-		picture_url = #{pictureUrl,jdbcType=VARCHAR},
+		main_process =
+		#{mainProcess,jdbcType=VARCHAR},
+		production_time =
+		#{productionTime,jdbcType=VARCHAR},
+		picture_url =
+		#{pictureUrl,jdbcType=VARCHAR},
 		type = #{type,jdbcType=VARCHAR},
 		calorie = #{calorie,jdbcType=VARCHAR},
-		components = #{components,jdbcType=VARCHAR},
-		classification = #{classification,jdbcType=VARCHAR},
+		components =
+		#{components,jdbcType=VARCHAR},
+		classification =
+		#{classification,jdbcType=VARCHAR},
 		weeks = #{weeks,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
