@@ -23,8 +23,20 @@
 	<dubbo:protocol name="dubbo" port="20881" />
 	<!-- 声明需要暴露的服务接口 -->
 	<dubbo:service
-		interface="com.muyou.service.ConsultService" ref="consultServiceImpl"
-		timeout="600000" />
+		interface="com.muyou.service.AdminService" ref="adminServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.UserService" ref="userServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.SystemService" ref="systemServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.RedisService" ref="redisServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.DictService" ref="dictServiceImpl"
+		timeout="600000" /> 
 		
 		
 		

@@ -4,6 +4,12 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * Android
+ * 前后端交互数据标准
+ * @author 木友茶
+ *
+ */
 public class ResponseBuilder implements Serializable{
     public static final int STATUS_OK = 200;
     public static final int STATUS_BAD_REQUEST = 400;

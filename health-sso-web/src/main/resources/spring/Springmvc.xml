@@ -23,9 +23,8 @@
 	<mvc:annotation-driven />
 
 	<!-- 资源映射 -->
-	<mvc:resources location="/css/" mapping="/css/**" />
-	<mvc:resources location="/js/" mapping="/js/**" />
-	<mvc:resources location="/images/" mapping="/images/**" />
+	<mvc:resources mapping="/lib/**" location="/lib/"/>
+
 
 	<!-- 拦截器 -->
 	<mvc:interceptors>
@@ -51,10 +50,6 @@
 	<dubbo:reference
 		interface="com.muyou.sso.service.CollectService" id="collectService" />
 	<dubbo:reference
-		interface="com.muyou.sso.service.LoginService" id="loginService" />
-	<dubbo:reference
-		interface="com.muyou.sso.service.RegisterService" id="registerService" />
-	<dubbo:reference
 		interface="com.muyou.sso.service.TokenService" id="tokenService" />
 	<dubbo:reference
 		interface="com.muyou.sso.service.UserService" id="userService" />
@@ -67,6 +62,7 @@
 		interface="com.muyou.sso.service.NoticeService" id="noticeService" />
 	<dubbo:reference
 		interface="com.muyou.sso.service.ConsultService" id="consultService" />
-
+<dubbo:reference
+		interface="com.muyou.sso.service.AdminService" id="adminService" />
 
 </beans>

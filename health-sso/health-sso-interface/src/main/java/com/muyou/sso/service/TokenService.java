@@ -1,5 +1,6 @@
 package com.muyou.sso.service;
 
+import com.muyou.common.pojo.Result;
 import com.muyou.sso.pojo.UserVo;
 
 /**
@@ -9,6 +10,7 @@ import com.muyou.sso.pojo.UserVo;
  */
 public interface TokenService {
 
-	UserVo getUserByToken(String token,String id);
+	Result<Object> getAdminByToken(String token);
 	
+	UserVo getUserByToken(String token,String id);
 }

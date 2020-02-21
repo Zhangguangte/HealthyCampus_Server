@@ -1,0 +1,5 @@
+com\muyou\service\impl\SystemServiceImpl.class
+com\muyou\service\impl\UserServiceImpl.class
+com\muyou\service\impl\AdminServiceImpl.class
+com\muyou\service\impl\DictServiceImpl.class
+com\muyou\service\impl\RedisServiceImpl.class

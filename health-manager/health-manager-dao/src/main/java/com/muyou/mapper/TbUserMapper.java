@@ -31,8 +31,6 @@ public interface TbUserMapper {
 
 	// 获得所有好友，通讯录
 	List<TbUser> allFriend(@Param("user_id") String userId);
-	// 查询用户:账号、电话
-	TbUser searchUser(@Param("id") String id);
 
 	// 用户是否存在:账号
 	public TbUser findByAccount(String account);

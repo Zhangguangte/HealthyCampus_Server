@@ -45,6 +45,8 @@ public class TbDisease implements Serializable{
 
     private String diseaseUrl;
 
+    private Integer isDel;
+
     public Integer getId() {
         return id;
     }
@@ -211,5 +213,13 @@ public class TbDisease implements Serializable{
 
     public void setDiseaseUrl(String diseaseUrl) {
         this.diseaseUrl = diseaseUrl == null ? null : diseaseUrl.trim();
+    }
+
+    public Integer getIsDel() {
+        return isDel;
+    }
+
+    public void setIsDel(Integer isDel) {
+        this.isDel = isDel;
     }
 }

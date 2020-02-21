@@ -18,11 +18,11 @@
 			<artifactId>health-sso-interface</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.muyou</groupId>
 			<artifactId>health-search-interface</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
 		<!-- spring的依赖 -->
 		<!-- Spring -->
 		<dependency>

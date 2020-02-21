@@ -1,5 +1,7 @@
 package com.muyou.sso.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +21,22 @@ import com.muyou.sso.service.ConsultService;
 @RequestMapping("/consult")
 public class ConsultController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ConsultController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ConsultController.class);
 
-	
 	@Autowired
 	private ConsultService consultService;
 
 	// 图片咨询
 	@RequestMapping("/saveConsultPicture")
 	@ResponseBody
-	public ResponseBuilder saveConsultPicture(@RequestBody ConsultPictureForm form,@RequestHeader("User") String user) throws ServiceException {
-		if(StringUtil.isEmpty(form.getDescribe()))
+	public ResponseBuilder saveConsultPicture(@RequestBody ConsultPictureForm form, HttpServletRequest request)
+			throws ServiceException {
+
+		String user = (String) request.getAttribute("USER");
+
+		if (StringUtil.isEmpty(form.getDescribe()) || StringUtil.isEmpty(user))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
-		consultService.saveConsultPicture(form,user);
+		consultService.saveConsultPicture(form, user);
 		return ResponseBuilder.SUCCESS;
 	}
 

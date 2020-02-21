@@ -45,7 +45,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 		if (null == user)
 			return false;
 		
-		request.setAttribute("User", user.getId());
+		request.setAttribute("USER", user.getId());
+		request.setAttribute("TOKEN", tempArray[2]);
+		
 		return true;
 
 	}

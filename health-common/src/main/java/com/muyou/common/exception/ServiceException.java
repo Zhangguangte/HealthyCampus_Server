@@ -2,8 +2,14 @@ package com.muyou.common.exception;
 
 import com.muyou.common.pojo.ResponseBuilder;
 
+/**
+ * 用于Android前台
+ * @author 木友茶
+ *
+ */
 public class ServiceException extends Exception {
     private boolean logException;
+    
     private ResponseBuilder responseBuilder;
 
     public ServiceException() {}

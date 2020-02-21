@@ -18,9 +18,6 @@ public class ConsultServiceImpl implements ConsultService {
 	@Autowired
 	private TbConsultUserMapper consultUserMapper;
 
-//	@Autowired
-//	private JedisClient jedisClient;
-	
 	@Override
 	public void saveConsultPicture(ConsultPictureForm form, String userid) {
 
@@ -32,7 +29,7 @@ public class ConsultServiceImpl implements ConsultService {
 		consult.setImages(form.getImages());
 		consult.setUserId(userid);
 		consultMapper.insertSelective(consult);
-		//自增之後，返回id为插入后的调用id，consult.getId()
+		// 自增之後，返回id为插入后的调用id，consult.getId()
 		if (null != form.getPatienInforBeans() && form.getPatienInforBeans().size() != 0) {// 患者基本信息
 			for (PatienInforBean bean : form.getPatienInforBeans()) {
 				consultUserMapper.insertConsultUser(consult.getId(), bean);

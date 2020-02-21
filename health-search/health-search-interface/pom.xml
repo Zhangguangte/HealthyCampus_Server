@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>health-search-interface</artifactId>
-  <dependencies>
+   <dependencies>
 		<dependency>
 			<groupId>com.muyou</groupId>
 			<artifactId>health-manager-pojo</artifactId>

@@ -23,11 +23,11 @@ public class CollectServiceImpl implements CollectService {
 	@Autowired
 	private TbCollectMapper collectMapper;
 
+	@Value("${COLLECT}")
+	private String COLLECT;
+
 	@Value("${COLLECT_LIST}")
 	private String COLLECT_LIST;
-
-	@Value("${COLLECT_LIST_EXPIRE}")
-	private int COLLECT_LIST_EXPIRE;
 
 	@Autowired
 	private JedisClient jedisClient;
@@ -53,6 +53,7 @@ public class CollectServiceImpl implements CollectService {
 		}
 		try {
 			jedisClient.hdel(COLLECT_LIST, userid);
+			jedisClient.del(COLLECT + ":" + userid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,12 +62,29 @@ public class CollectServiceImpl implements CollectService {
 
 	@Override
 	public boolean isCollect(String type, String tid, String userid) {
+
+		try {
+			String json = jedisClient.hget(COLLECT + ":" + userid, type + ":" + tid);
+			if (StringUtils.isNotBlank(json)) {
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		TbCollectExample example = new TbCollectExample();
 		TbCollectExample.Criteria criteria = example.createCriteria();
 		criteria.andTypeEqualTo(type);
 		criteria.andUIdEqualTo(userid);
 		criteria.andTypeIdEqualTo(tid);
 		int count = collectMapper.countByExample(example);
+
+		try {
+			jedisClient.hset(COLLECT + ":" + userid, type + ":" + tid, String.valueOf(0 != count));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return 0 != count;
 	}
 
@@ -89,7 +107,6 @@ public class CollectServiceImpl implements CollectService {
 		if (null == list || 0 == list.size())
 			return null;
 		List<CollectVo> result = new LinkedList<CollectVo>();
-		CollectVo collectVo;
 		for (TbCollect collect : list) {
 			result.add(new CollectVo(collect));
 		}
@@ -108,6 +125,7 @@ public class CollectServiceImpl implements CollectService {
 		collectMapper.deleteByPrimaryKey(form.getId());
 		try {
 			jedisClient.hdel(COLLECT_LIST, userid);
+			jedisClient.del(COLLECT + ":" + userid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

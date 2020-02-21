@@ -28,14 +28,14 @@ public class TimeTableServiceImpl implements TimeTableService {
 	private JedisClient jedisClient;
 
 	
-	@Value("${TimeTable_LIST}")
-	private String TimeTable_LIST;
+	@Value("${TIMETABLE_LIST}")
+	private String TIMETABLE_LIST;
 
 	@Override
 	public List<CourseVo> getTimeTable(RequestForm requestForm) {
 
 		try {
-			String json = jedisClient.hget(TimeTable_LIST, requestForm.getContent());
+			String json = jedisClient.hget(TIMETABLE_LIST, requestForm.getContent());
 			if (StringUtils.isNotBlank(json)) {
 				return JsonUtils.jsonToList(json, CourseVo.class);
 			}
@@ -55,7 +55,7 @@ public class TimeTableServiceImpl implements TimeTableService {
 		}
 
 		try {
-			jedisClient.hset(TimeTable_LIST, requestForm.getContent(), JsonUtils.objectToJson(result));
+			jedisClient.hset(TIMETABLE_LIST, requestForm.getContent(), JsonUtils.objectToJson(result));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

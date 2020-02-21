@@ -30,6 +30,6 @@
 	</bean>
 	<!-- Mapper对象管理 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.muyou.mapper" />
+		<property name="basePackage" value="com.muyou.mapper,com.muyou.search.mapper" />
 	</bean>
 </beans>

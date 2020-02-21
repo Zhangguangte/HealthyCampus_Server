@@ -137,21 +137,10 @@
 		(SELECT user_id from tb_friendship where user_id2=#{user_id})
 	</select>
 
-	<!--查询申请好友 -->
-	<select id="searchUser" resultMap="BaseResultMap"
-		parameterType="String">
-		select * from tb_user where id=#{id} limit 1
-	</select>
-	
 	<!--用户是否存在:账号 -->
 	<select id="findByAccount" resultMap="BaseResultMap" parameterType="String">
 		select * from tb_user where account=#{account}
 	</select>
-	
-	
-	
-	
-	
 	
 	
 	<!-- *********************************************** -->

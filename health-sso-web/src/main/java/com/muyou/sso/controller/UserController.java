@@ -1,5 +1,9 @@
 package com.muyou.sso.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.muyou.common.exception.ServiceException;
+import com.muyou.common.form.LoginForm;
 import com.muyou.common.form.RequestForm;
 import com.muyou.common.pojo.ResponseBuilder;
 import com.muyou.common.util.StringUtil;
@@ -24,14 +29,51 @@ import com.muyou.sso.service.UserService;
 @RequestMapping("/users")
 public class UserController {
 
+    private Logger log= LoggerFactory.getLogger(UserController.class);
+    
 	@Autowired
 	private UserService userService;
 
+	// 登录
+	@RequestMapping("/login")
+	@ResponseBody
+	public UserVo userLogin(@RequestBody(required = false) LoginForm form) throws ServiceException {
+		if (form.validate())
+			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
+		UserVo userVo = userService.userLogin(form);
+		if (null == userVo)
+			throw new ServiceException(ResponseBuilder.ERROR_USER_NOT_FOUND);
+		return userVo;
+	}
+	
+	// 注册
+	@RequestMapping("/register")
+	@ResponseBody
+	public UserVo createUser(@RequestBody(required = false) RegisterFrom form) throws ServiceException {
+		if (form.validate())
+			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
+		UserVo userVo = userService.createUser(form);
+		if (null == userVo)
+			throw new ServiceException(ResponseBuilder.ERROR_DATA_LOSE);
+		return userVo;
+	}
+	
+	// 注销
+	@RequestMapping("/logout")
+	@ResponseBody
+	public ResponseBuilder userLogout(HttpServletRequest request) throws ServiceException {
+		String user = (String) request.getAttribute("USER");
+		if (StringUtil.isEmpty(user))
+			log.error("用户注销失败");
+		userService.userLogout(user);
+		return ResponseBuilder.SUCCESS;
+	}
+		
+		
 	// 获得用户信息:账号
 	@RequestMapping("/information/{account}")
 	@ResponseBody
 	public UserVo getUserInformation(@PathVariable("account") String account) throws ServiceException {
-		// System.out.println("account" + account);
 		if (StringUtil.isEmpty(account))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		UserVo userVo = userService.getUserInformation(account);
@@ -44,12 +86,11 @@ public class UserController {
 	@RequestMapping("/searchUser/{searchWords}")
 	@ResponseBody
 	public UserVo searchUser(@PathVariable("searchWords") String searchWords,
-			@RequestHeader(value = "User", required = false) String user) throws ServiceException {
-		System.out.println("searchWords:" + searchWords);
-		System.out.println("user:" + user);
+			HttpServletRequest request) throws ServiceException {
+		
+		String user = (String) request.getAttribute("USER");
 		if (StringUtil.isEmpty(searchWords))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
-
 		UserVo userVo = userService.searchUser(searchWords, user);
 		if (null == userVo)
 			throw new ServiceException(ResponseBuilder.ERROR_USER_NOT_FOUND);
@@ -72,10 +113,11 @@ public class UserController {
 	@RequestMapping("/register/searchPhone")
 	@ResponseBody
 	public ResponseBuilder searchPhone(@RequestBody(required = false) RegisterFrom form) throws ServiceException {
-		System.out.println("form" + form);
 		if (StringUtil.isEmpty(form.getPhone()))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
-		userService.searchPhone(form);
+		int result = userService.searchPhone(form);
+		if (0 != result)
+			throw new ServiceException(ResponseBuilder.ERROR_USER_EXIST);
 		return ResponseBuilder.SUCCESS;
 	}
 

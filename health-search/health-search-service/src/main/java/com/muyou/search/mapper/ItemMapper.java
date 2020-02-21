@@ -10,11 +10,12 @@ import com.muyou.pojo.TbMedicine;
 public interface ItemMapper {
 
 	List<TbMedicine> getMedicineItemList();
-	
+
 	TbMedicine getMedicineItemById(@Param("id") long itemId);
-	
+
 	List<TbDisease> getDiseaseItemList();
-	
+
 	TbDisease getDiseaseItemById(@Param("id") long itemId);
-	
+
+	Integer getDocumentsNum(@Param("type") String type);
 }

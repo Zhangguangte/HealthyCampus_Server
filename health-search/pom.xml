@@ -28,7 +28,7 @@
 		</plugins>
 	</build>
   <modules>
-  	<module>health-search-interface</module>
   	<module>health-search-service</module>
+  	<module>health-search-interface</module>
   </modules>
 </project>

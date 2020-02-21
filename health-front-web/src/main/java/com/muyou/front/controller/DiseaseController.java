@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.muyou.common.exception.ServiceException;
 import com.muyou.common.form.RequestForm;
-import com.muyou.common.pojo.DiseaseSortVo;
 import com.muyou.common.pojo.ResponseBuilder;
 import com.muyou.common.util.StringUtil;
 import com.muyou.front.pojo.DiseaseDetailVo;
 import com.muyou.front.pojo.DiseaseSortListVo;
 import com.muyou.front.service.DiseaseService;
-import com.muyou.search.service.SearchResultService;
 import com.muyou.sso.service.CollectService;
 
 @Controller
@@ -32,8 +30,8 @@ public class DiseaseController {
 	@Autowired
 	private CollectService collectService;
 
-	@Autowired
-	private SearchResultService searchResultService;
+//	@Autowired
+//	private SearchResultService searchResultService;
 
 	@Value("${DISEASE_SEARCH_COUNT}")
 	private Integer DISEASE_SEARCH_COUNT;
@@ -50,19 +48,19 @@ public class DiseaseController {
 		return result;
 	}
 
-	// 分类疾病
-	@RequestMapping("/getDiseaseSort")
-	@ResponseBody
-	public List<DiseaseSortVo> getDiseaseSort(@RequestBody RequestForm form) throws ServiceException, Exception {
-
-		if (StringUtil.isEmpty(form.getQuest_id()) || StringUtil.isEmpty(form.getContent()))
-			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
-		List<DiseaseSortVo> result = searchResultService.searchDisease(form.getContent(), form.getQuest_id(),
-				form.getRow(), DISEASE_SEARCH_COUNT);
-		if (null == result)
-			throw new ServiceException(ResponseBuilder.ERROR_DISEASE_NOT_FOUND);
-		return result;
-	}
+//	// 分类疾病
+//	@RequestMapping("/getDiseaseSort")
+//	@ResponseBody
+//	public List<DiseaseSortVo> getDiseaseSort(@RequestBody RequestForm form) throws ServiceException, Exception {
+//
+//		if (StringUtil.isEmpty(form.getQuest_id()) || StringUtil.isEmpty(form.getContent()))
+//			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
+//		List<DiseaseSortVo> result = searchResultService.searchDisease(form.getContent(), form.getQuest_id(),
+//				form.getRow(), DISEASE_SEARCH_COUNT);
+//		if (null == result)
+//			throw new ServiceException(ResponseBuilder.ERROR_DISEASE_NOT_FOUND);
+//		return result;
+//	}
 
 	// 疾病详细
 	@RequestMapping("/getDiseaseDetail")

@@ -86,4 +86,13 @@ public class JedisClientCluster implements JedisClient {
 		return jedisCluster.del(key);
 	}
 
+	@Override
+	public String flushAll() {
+		return jedisCluster.flushAll();
+	}
+
+	@Override
+	public List<String> hvals(String key) {
+		return jedisCluster.hvals(key);
+	}
 }

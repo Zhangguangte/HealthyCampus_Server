@@ -61,6 +61,12 @@ public class RecipesServiceImpl implements RecipesService {
 	@Value("${RECIPES_LIST}")
 	private String RECIPES_LIST;
 
+	@Value("${RECIPES_EXPIRE}")
+	private Integer RECIPES_EXPIRE;
+
+	@Value("${INGREDIENT_EXPIRE}")
+	private Integer INGREDIENT_EXPIRE;
+
 	// 三餐
 	@Override
 	public List<FoodMenuVo> getRecipesByThreeMeals(RequestForm requestForm) {
@@ -111,7 +117,8 @@ public class RecipesServiceImpl implements RecipesService {
 	public FoodVo getRecipeDetail(RequestForm requestForm) {
 
 		try {
-			String json = jedisClient.hget(RECIPES_DETAIL + ":" + requestForm.getType(), requestForm.getQuest_id());
+			String json = jedisClient
+					.get(RECIPES_DETAIL + ":" + requestForm.getType() + ":" + requestForm.getQuest_id());
 			if (StringUtils.isNotBlank(json)) {
 				return JsonUtils.jsonToPojo(json, FoodVo.class);
 			}
@@ -133,10 +140,10 @@ public class RecipesServiceImpl implements RecipesService {
 		FoodVo foodVo = new FoodVo(recipes);
 
 		try {
-			jedisClient.hset(RECIPES_DETAIL + ":" + requestForm.getType(), requestForm.getQuest_id(),
+			jedisClient.set(RECIPES_DETAIL + ":" + requestForm.getType() + ":" + requestForm.getQuest_id(),
 					JsonUtils.objectToJson(foodVo));
-			if (0 != requestForm.getType())
-				jedisClient.expire(RECIPES_DETAIL + ":" + requestForm.getType(), 60 * 60 * 24 * 10);
+			jedisClient.expire(RECIPES_DETAIL + ":" + requestForm.getType() + ":" + requestForm.getQuest_id(),
+					RECIPES_EXPIRE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -172,7 +179,7 @@ public class RecipesServiceImpl implements RecipesService {
 	public IngredientResultVo getIngredientResult(RequestForm requestForm) {
 
 		try {
-			String json = jedisClient.hget(INGREDIENT_DETAIL, requestForm.getContent());
+			String json = jedisClient.get(INGREDIENT_DETAIL + ":" + requestForm.getContent());
 			if (StringUtils.isNotBlank(json)) {
 				return JsonUtils.jsonToPojo(json, IngredientResultVo.class);
 			}
@@ -185,12 +192,14 @@ public class RecipesServiceImpl implements RecipesService {
 		TbIngredientsExample.Criteria criteria = ingredientsExample.createCriteria();
 		criteria.andNameLike(requestForm.getContent());
 		List<TbIngredients> ingredients = ingredientsMapper.selectByExample(ingredientsExample);
-		if (null == ingredients)
+		if (null == ingredients || 0 == ingredients.size())
 			return null;
 		IngredientResultVo ingredientResultVo = new IngredientResultVo(ingredients.get(0));
 
 		try {
-			jedisClient.hset(INGREDIENT_DETAIL, requestForm.getContent(), JsonUtils.objectToJson(ingredientResultVo));
+			jedisClient.set(INGREDIENT_DETAIL + ":" + requestForm.getContent(),
+					JsonUtils.objectToJson(ingredientResultVo));
+			jedisClient.expire(INGREDIENT_DETAIL + ":" + requestForm.getContent(), INGREDIENT_EXPIRE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -238,13 +247,9 @@ public class RecipesServiceImpl implements RecipesService {
 	public List<FoodMenuVo> getFoodList(String name, int row) {
 
 		try {
-			List<String> json = jedisClient.lrange(RECIPES_LIST + ":" + name + ":" + row, row * 15, (row + 1) * 15);
-			if (null != json && json.size() > 0) {
-				List<FoodMenuVo> list = new LinkedList<>();
-				for (String string : json) {
-					list.add(JsonUtils.jsonToPojo(string, FoodMenuVo.class));
-				}
-				return list;
+			String json = jedisClient.hget(RECIPES_LIST, name + ":" + row);
+			if (StringUtils.isNotBlank(json)) {
+				return JsonUtils.jsonToList(json, FoodMenuVo.class);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -264,9 +269,7 @@ public class RecipesServiceImpl implements RecipesService {
 		}
 
 		try {
-			for (FoodMenuVo item : result) {
-				jedisClient.rpush(RECIPES_LIST + ":" + name + ":" + row, JsonUtils.objectToJson(item));
-			}
+			jedisClient.hset(RECIPES_LIST, name + ":" + row, JsonUtils.objectToJson(result));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.muyou.mapper.TbBaseMapper" >
+  <resultMap id="BaseResultMap" type="com.muyou.pojo.TbBase" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="webName" property="webName" jdbcType="VARCHAR" />
+    <result column="keyWord" property="keyWord" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="sourcePath" property="sourcePath" jdbcType="VARCHAR" />
+    <result column="uploadPath" property="uploadPath" jdbcType="VARCHAR" />
+    <result column="copyright" property="copyright" jdbcType="VARCHAR" />
+    <result column="countCode" property="countCode" jdbcType="VARCHAR" />
+    <result column="hasLogNotice" property="hasLogNotice" jdbcType="INTEGER" />
+    <result column="logNotice" property="logNotice" jdbcType="VARCHAR" />
+    <result column="hasAllNotice" property="hasAllNotice" jdbcType="INTEGER" />
+    <result column="allNotice" property="allNotice" jdbcType="VARCHAR" />
+    <result column="notice" property="notice" jdbcType="VARCHAR" />
+    <result column="updateLog" property="updateLog" jdbcType="VARCHAR" />
+    <result column="frontUrl" property="frontUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, webName, keyWord, description, sourcePath, uploadPath, copyright, countCode, 
+    hasLogNotice, logNotice, hasAllNotice, allNotice, notice, updateLog, frontUrl
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.muyou.pojo.TbBaseExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_base
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_base
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_base
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.muyou.pojo.TbBaseExample" >
+    delete from tb_base
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.muyou.pojo.TbBase" >
+    insert into tb_base (id, webName, keyWord, 
+      description, sourcePath, uploadPath, 
+      copyright, countCode, hasLogNotice, 
+      logNotice, hasAllNotice, allNotice, 
+      notice, updateLog, frontUrl
+      )
+    values (#{id,jdbcType=INTEGER}, #{webName,jdbcType=VARCHAR}, #{keyWord,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{sourcePath,jdbcType=VARCHAR}, #{uploadPath,jdbcType=VARCHAR}, 
+      #{copyright,jdbcType=VARCHAR}, #{countCode,jdbcType=VARCHAR}, #{hasLogNotice,jdbcType=INTEGER}, 
+      #{logNotice,jdbcType=VARCHAR}, #{hasAllNotice,jdbcType=INTEGER}, #{allNotice,jdbcType=VARCHAR}, 
+      #{notice,jdbcType=VARCHAR}, #{updateLog,jdbcType=VARCHAR}, #{frontUrl,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.muyou.pojo.TbBase" >
+    insert into tb_base
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="webName != null" >
+        webName,
+      </if>
+      <if test="keyWord != null" >
+        keyWord,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="sourcePath != null" >
+        sourcePath,
+      </if>
+      <if test="uploadPath != null" >
+        uploadPath,
+      </if>
+      <if test="copyright != null" >
+        copyright,
+      </if>
+      <if test="countCode != null" >
+        countCode,
+      </if>
+      <if test="hasLogNotice != null" >
+        hasLogNotice,
+      </if>
+      <if test="logNotice != null" >
+        logNotice,
+      </if>
+      <if test="hasAllNotice != null" >
+        hasAllNotice,
+      </if>
+      <if test="allNotice != null" >
+        allNotice,
+      </if>
+      <if test="notice != null" >
+        notice,
+      </if>
+      <if test="updateLog != null" >
+        updateLog,
+      </if>
+      <if test="frontUrl != null" >
+        frontUrl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="webName != null" >
+        #{webName,jdbcType=VARCHAR},
+      </if>
+      <if test="keyWord != null" >
+        #{keyWord,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="sourcePath != null" >
+        #{sourcePath,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadPath != null" >
+        #{uploadPath,jdbcType=VARCHAR},
+      </if>
+      <if test="copyright != null" >
+        #{copyright,jdbcType=VARCHAR},
+      </if>
+      <if test="countCode != null" >
+        #{countCode,jdbcType=VARCHAR},
+      </if>
+      <if test="hasLogNotice != null" >
+        #{hasLogNotice,jdbcType=INTEGER},
+      </if>
+      <if test="logNotice != null" >
+        #{logNotice,jdbcType=VARCHAR},
+      </if>
+      <if test="hasAllNotice != null" >
+        #{hasAllNotice,jdbcType=INTEGER},
+      </if>
+      <if test="allNotice != null" >
+        #{allNotice,jdbcType=VARCHAR},
+      </if>
+      <if test="notice != null" >
+        #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="updateLog != null" >
+        #{updateLog,jdbcType=VARCHAR},
+      </if>
+      <if test="frontUrl != null" >
+        #{frontUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.muyou.pojo.TbBaseExample" resultType="java.lang.Integer" >
+    select count(*) from tb_base
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_base
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.webName != null" >
+        webName = #{record.webName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keyWord != null" >
+        keyWord = #{record.keyWord,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sourcePath != null" >
+        sourcePath = #{record.sourcePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uploadPath != null" >
+        uploadPath = #{record.uploadPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.copyright != null" >
+        copyright = #{record.copyright,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countCode != null" >
+        countCode = #{record.countCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hasLogNotice != null" >
+        hasLogNotice = #{record.hasLogNotice,jdbcType=INTEGER},
+      </if>
+      <if test="record.logNotice != null" >
+        logNotice = #{record.logNotice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hasAllNotice != null" >
+        hasAllNotice = #{record.hasAllNotice,jdbcType=INTEGER},
+      </if>
+      <if test="record.allNotice != null" >
+        allNotice = #{record.allNotice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.notice != null" >
+        notice = #{record.notice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateLog != null" >
+        updateLog = #{record.updateLog,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frontUrl != null" >
+        frontUrl = #{record.frontUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_base
+    set id = #{record.id,jdbcType=INTEGER},
+      webName = #{record.webName,jdbcType=VARCHAR},
+      keyWord = #{record.keyWord,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      sourcePath = #{record.sourcePath,jdbcType=VARCHAR},
+      uploadPath = #{record.uploadPath,jdbcType=VARCHAR},
+      copyright = #{record.copyright,jdbcType=VARCHAR},
+      countCode = #{record.countCode,jdbcType=VARCHAR},
+      hasLogNotice = #{record.hasLogNotice,jdbcType=INTEGER},
+      logNotice = #{record.logNotice,jdbcType=VARCHAR},
+      hasAllNotice = #{record.hasAllNotice,jdbcType=INTEGER},
+      allNotice = #{record.allNotice,jdbcType=VARCHAR},
+      notice = #{record.notice,jdbcType=VARCHAR},
+      updateLog = #{record.updateLog,jdbcType=VARCHAR},
+      frontUrl = #{record.frontUrl,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.muyou.pojo.TbBase" >
+    update tb_base
+    <set >
+      <if test="webName != null" >
+        webName = #{webName,jdbcType=VARCHAR},
+      </if>
+      <if test="keyWord != null" >
+        keyWord = #{keyWord,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="sourcePath != null" >
+        sourcePath = #{sourcePath,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadPath != null" >
+        uploadPath = #{uploadPath,jdbcType=VARCHAR},
+      </if>
+      <if test="copyright != null" >
+        copyright = #{copyright,jdbcType=VARCHAR},
+      </if>
+      <if test="countCode != null" >
+        countCode = #{countCode,jdbcType=VARCHAR},
+      </if>
+      <if test="hasLogNotice != null" >
+        hasLogNotice = #{hasLogNotice,jdbcType=INTEGER},
+      </if>
+      <if test="logNotice != null" >
+        logNotice = #{logNotice,jdbcType=VARCHAR},
+      </if>
+      <if test="hasAllNotice != null" >
+        hasAllNotice = #{hasAllNotice,jdbcType=INTEGER},
+      </if>
+      <if test="allNotice != null" >
+        allNotice = #{allNotice,jdbcType=VARCHAR},
+      </if>
+      <if test="notice != null" >
+        notice = #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="updateLog != null" >
+        updateLog = #{updateLog,jdbcType=VARCHAR},
+      </if>
+      <if test="frontUrl != null" >
+        frontUrl = #{frontUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.muyou.pojo.TbBase" >
+    update tb_base
+    set webName = #{webName,jdbcType=VARCHAR},
+      keyWord = #{keyWord,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      sourcePath = #{sourcePath,jdbcType=VARCHAR},
+      uploadPath = #{uploadPath,jdbcType=VARCHAR},
+      copyright = #{copyright,jdbcType=VARCHAR},
+      countCode = #{countCode,jdbcType=VARCHAR},
+      hasLogNotice = #{hasLogNotice,jdbcType=INTEGER},
+      logNotice = #{logNotice,jdbcType=VARCHAR},
+      hasAllNotice = #{hasAllNotice,jdbcType=INTEGER},
+      allNotice = #{allNotice,jdbcType=VARCHAR},
+      notice = #{notice,jdbcType=VARCHAR},
+      updateLog = #{updateLog,jdbcType=VARCHAR},
+      frontUrl = #{frontUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

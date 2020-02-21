@@ -4,19 +4,21 @@ import java.util.List;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.muyou.common.pojo.DiseaseSortVo;
 import com.muyou.common.pojo.MedicineListVo;
 import com.muyou.search.dao.SearchDao;
 import com.muyou.search.service.SearchResultService;
 
+@Service
 public class SearchResultServiceImpl implements SearchResultService {
 
 	@Autowired
 	private SearchDao searchDao;
 
 	@Override
-	public List<MedicineListVo> searchMedicine(String keyword, String field, int page, int rows) throws Exception  {
+	public List<MedicineListVo> searchMedicine(String keyword, String field, int page, int rows) throws Exception {
 
 		SolrQuery query = new SolrQuery();
 
@@ -35,11 +37,10 @@ public class SearchResultServiceImpl implements SearchResultService {
 			query.setHighlightSimplePre("<em style=\"color:red\">");
 			query.setHighlightSimplePost("</em>");
 		}
-		
+
 		return searchDao.searchMedicine(query);
 	}
-	
-	
+
 	@Override
 	public List<DiseaseSortVo> searchDisease(String keyword, String field, int page, int rows) throws Exception {
 
@@ -61,9 +62,8 @@ public class SearchResultServiceImpl implements SearchResultService {
 			query.setHighlightSimplePre("<em style=\"color:red\">");
 			query.setHighlightSimplePost("</em>");
 		}
-		
+
 		return searchDao.searchDisease(query);
 	}
-	
 
 }

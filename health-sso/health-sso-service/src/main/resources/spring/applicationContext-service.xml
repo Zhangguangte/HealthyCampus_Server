@@ -29,12 +29,6 @@
 		interface="com.muyou.sso.service.ConsultService"
 		ref="consultServiceImpl" timeout="600000" />
 	<dubbo:service
-		interface="com.muyou.sso.service.LoginService"
-		ref="loginServiceImpl" timeout="600000" />
-	<dubbo:service
-		interface="com.muyou.sso.service.RegisterService"
-		ref="registerServiceImpl" timeout="600000" />
-	<dubbo:service
 		interface="com.muyou.sso.service.TokenService"
 		ref="tokenServiceImpl" timeout="600000" />
 	<dubbo:service
@@ -49,6 +43,9 @@
 	<dubbo:service
 		interface="com.muyou.sso.service.MessageService"
 		ref="messageServiceImpl" timeout="600000" />
+	<dubbo:service
+		interface="com.muyou.sso.service.AdminService"
+		ref="adminServiceImpl" timeout="600000" />
 	
 
 

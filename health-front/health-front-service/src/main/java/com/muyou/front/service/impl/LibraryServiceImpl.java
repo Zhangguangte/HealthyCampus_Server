@@ -29,6 +29,9 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Value("${LIBRARY_SEARCH}")
 	private String LIBRARY_SEARCH;
+	
+	@Value("${LIBRARY_EXPIRE}")
+	private Integer LIBRARY_EXPIRE;
 
 	@Autowired
 	private TbLibraryMapper libraryMapper;
@@ -37,7 +40,7 @@ public class LibraryServiceImpl implements LibraryService {
 	public BookDetailVo searchBookDetail(RequestForm requestForm) {
 
 		try {
-			String json = jedisClient.hget(LIBRARY_DETAIL, requestForm.getQuest_id());
+			String json = jedisClient.get(LIBRARY_DETAIL+":"+requestForm.getQuest_id());
 			if (StringUtils.isNotBlank(json)) {
 				return JsonUtils.jsonToPojo(json, BookDetailVo.class);
 			}
@@ -51,7 +54,8 @@ public class LibraryServiceImpl implements LibraryService {
 		BookDetailVo book = new BookDetailVo(library);
 
 		try {
-			jedisClient.hset(LIBRARY_DETAIL, requestForm.getQuest_id(), JsonUtils.objectToJson(book));
+			jedisClient.set(LIBRARY_DETAIL+":"+requestForm.getQuest_id(), JsonUtils.objectToJson(book));
+			jedisClient.expire(LIBRARY_DETAIL+":"+requestForm.getQuest_id(), LIBRARY_EXPIRE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -60,7 +64,6 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Override
 	public List<BookVo> searchBook(RequestForm requestForm) {
-
 		try {
 			String json = jedisClient.get(LIBRARY_SEARCH + ":" + requestForm.getContent());
 			if (StringUtils.isNotBlank(json)) {
@@ -83,7 +86,7 @@ public class LibraryServiceImpl implements LibraryService {
 
 		try {
 			jedisClient.set(LIBRARY_SEARCH + ":" + requestForm.getContent(), JsonUtils.objectToJson(bookVos));
-			jedisClient.expire(LIBRARY_SEARCH + ":" + requestForm.getContent(), 60 * 60 * 24 * 3);
+			jedisClient.expire(LIBRARY_SEARCH + ":" + requestForm.getContent(), LIBRARY_EXPIRE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

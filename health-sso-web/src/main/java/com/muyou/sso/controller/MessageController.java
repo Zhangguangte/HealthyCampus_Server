@@ -2,6 +2,8 @@ package com.muyou.sso.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +29,8 @@ public class MessageController {
 	// 现存最后一条消息
 	@RequestMapping("/lastMessage")
 	@ResponseBody
-	public List<MessageListVo> lastMessage(@RequestHeader("User") String user) throws ServiceException {
+	public List<MessageListVo> lastMessage(HttpServletRequest request) throws ServiceException {
+		String user = (String) request.getAttribute("USER");
 		if (StringUtil.isEmpty(user))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		List<MessageListVo> result = messageService.lastMessage(user);
@@ -39,7 +42,8 @@ public class MessageController {
 	// 查询房间号
 	@RequestMapping("/getDoctorRoom")
 	@ResponseBody
-	public List<MessageListVo> getDoctorRoom(@RequestHeader("User") String user) throws ServiceException {
+	public List<MessageListVo> getDoctorRoom(HttpServletRequest request) throws ServiceException {
+		String user = (String) request.getAttribute("USER");
 		if (StringUtil.isEmpty(user))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		List<MessageListVo> result = messageService.getDoctorRoom(user);
@@ -51,8 +55,9 @@ public class MessageController {
 	// 查询房间号
 	@RequestMapping("/createRoom")
 	@ResponseBody
-	public MessageListVo createRoom(@RequestBody RequestForm form, @RequestHeader("User") String user)
+	public MessageListVo createRoom(@RequestBody RequestForm form, HttpServletRequest request)
 			throws ServiceException {
+		String user = (String) request.getAttribute("USER");
 		if (StringUtil.isEmpty(user) || StringUtil.isEmpty(form.getContent()))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		MessageListVo result = messageService.createRoom(form, user);
@@ -74,8 +79,9 @@ public class MessageController {
 	// 所有消息根据房间号
 	@RequestMapping("/allChatByRoomId")
 	@ResponseBody
-	public List<MessageListVo> allChatByRoomId(@RequestBody RequestForm form, @RequestHeader("User") String user)
+	public List<MessageListVo> allChatByRoomId(@RequestBody RequestForm form, HttpServletRequest request)
 			throws ServiceException {
+		String user = (String) request.getAttribute("USER");
 		if (StringUtil.isEmpty(user) || StringUtil.isEmpty(form.getQuest_id()))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		List<MessageListVo> result = messageService.allChatByRoomId(form, user);
@@ -87,8 +93,9 @@ public class MessageController {
 	// 所有消息根据两个用户ID
 	@RequestMapping("/allChatByUid")
 	@ResponseBody
-	public List<MessageListVo> allChatByUid(@RequestBody RequestForm form, @RequestHeader("User") String user)
+	public List<MessageListVo> allChatByUid(@RequestBody RequestForm form, HttpServletRequest request)
 			throws ServiceException {
+		String user = (String) request.getAttribute("USER");
 		if (StringUtil.isEmpty(user) || StringUtil.isEmpty(form.getQuest_id()))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		List<MessageListVo> result = messageService.allChatByUid(form, user);
@@ -100,8 +107,9 @@ public class MessageController {
 	// 添加消息（文字、录音、图片）
 	@RequestMapping("/insertContent")
 	@ResponseBody
-	public ResponseBuilder insertContent(@RequestBody ChatForm form, @RequestHeader("User") String user)
+	public ResponseBuilder insertContent(@RequestBody ChatForm form, HttpServletRequest request)
 			throws ServiceException {
+		String user = (String) request.getAttribute("USER");
 		if (!form.validate())
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		messageService.insertContent(form, user);
@@ -111,8 +119,9 @@ public class MessageController {
 	// 添加消息（名片）
 	@RequestMapping("/insertCard")
 	@ResponseBody
-	public ResponseBuilder insertCard(@RequestBody ChatForm form, @RequestHeader("User") String user)
+	public ResponseBuilder insertCard(@RequestBody ChatForm form,  HttpServletRequest request)
 			throws ServiceException {
+		String user = (String) request.getAttribute("USER");
 		if (!form.validate())
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		messageService.insertCard(form, user);
@@ -122,8 +131,9 @@ public class MessageController {
 	// 房间号
 	@RequestMapping("/searchRoomid")
 	@ResponseBody
-	public MessageListVo searchRoomid(@RequestBody RequestForm form, @RequestHeader("User") String user)
+	public MessageListVo searchRoomid(@RequestBody RequestForm form,  HttpServletRequest request)
 			throws ServiceException {
+		String user = (String) request.getAttribute("USER");
 		if (StringUtil.isEmpty(form.getQuest_id()))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		MessageListVo result = messageService.searchRoomid(form, user);

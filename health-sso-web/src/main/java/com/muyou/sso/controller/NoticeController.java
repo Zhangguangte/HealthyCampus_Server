@@ -2,6 +2,8 @@ package com.muyou.sso.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,8 +28,9 @@ public class NoticeController {
 	// 获得所有通知
 	@RequestMapping("/getAllNotice")
 	@ResponseBody
-	public List<NoticeVo> getAllNotice(@RequestBody RequestForm form, @RequestHeader("User") String user)
+	public List<NoticeVo> getAllNotice(@RequestBody RequestForm form, HttpServletRequest request)
 			throws ServiceException {
+		String user = (String) request.getAttribute("USER");
 		if (StringUtil.isEmpty(user))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		List<NoticeVo> result = noticeService.getAllNotice(form, user);
@@ -39,7 +42,8 @@ public class NoticeController {
 	// 清空通知
 	@RequestMapping("/clearNotice")
 	@ResponseBody
-	public ResponseBuilder clearNotice(@RequestHeader("User") String user) throws ServiceException {
+	public ResponseBuilder clearNotice(HttpServletRequest request) throws ServiceException {
+		String user = (String) request.getAttribute("USER");
 		if (StringUtil.isEmpty(user))
 			return ResponseBuilder.ERROR_INVALID_PARAMETER;
 		noticeService.clearNotice(user);
@@ -49,8 +53,9 @@ public class NoticeController {
 	// 删除通知
 	@RequestMapping("/deleteNotice")
 	@ResponseBody
-	public ResponseBuilder deleteNotice(@RequestBody RequestForm form, @RequestHeader("User") String user)
+	public ResponseBuilder deleteNotice(@RequestBody RequestForm form, HttpServletRequest request)
 			throws ServiceException {
+		String user = (String) request.getAttribute("USER");
 		if (StringUtil.isEmpty(user) || StringUtil.isEmpty(form.getQuest_id()))
 			return ResponseBuilder.ERROR_INVALID_PARAMETER;
 		noticeService.deleteNotice(form, user);
@@ -60,8 +65,9 @@ public class NoticeController {
 	// 查看通知
 	@RequestMapping("/lookNotice")
 	@ResponseBody
-	public ResponseBuilder lookNotice(@RequestBody RequestForm form, @RequestHeader("User") String user)
+	public ResponseBuilder lookNotice(@RequestBody RequestForm form, HttpServletRequest request)
 			throws ServiceException {
+		String user = (String) request.getAttribute("USER");
 		if (StringUtil.isEmpty(user) || StringUtil.isEmpty(form.getQuest_id()) || StringUtil.isEmpty(form.getContent()))
 			return ResponseBuilder.ERROR_INVALID_PARAMETER;
 		noticeService.lookNotice(form, user);

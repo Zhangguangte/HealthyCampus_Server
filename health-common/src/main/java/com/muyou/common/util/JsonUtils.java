@@ -1,10 +1,10 @@
 package com.muyou.common.util;
 
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonUtils {
@@ -59,6 +59,26 @@ public class JsonUtils {
     	try {
     		List<T> list = MAPPER.readValue(jsonData, javaType);
     		return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    	return null;
+    }
+    
+    /**
+     * 将json数据转换成pojo对象Set
+     * <p>Title: jsonToList</p>
+     * <p>Description: </p>
+     * @param jsonData
+     * @param beanType
+     * @return
+     */
+    public static <T>Set<T> jsonToSet(String jsonData, Class<T> beanType) {
+    	JavaType javaType = MAPPER.getTypeFactory().constructParametricType(Set.class, beanType);
+    	try {
+    		Set<T> set = MAPPER.readValue(jsonData, javaType);
+    		return set;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,5 +1,6 @@
 package com.muyou.common.redis;
 import java.util.List;
+import java.util.Set;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -126,6 +127,22 @@ public class JedisClientPool implements JedisClient {
 	public Long del(String key) {
 		Jedis jedis = jedisPool.getResource();
 		Long result = jedis.del(key);
+		jedis.close();
+		return result;
+	}
+
+	@Override
+	public String flushAll() {
+		Jedis jedis = jedisPool.getResource();
+		String result = jedis.flushAll();
+		jedis.close();
+		return result;
+	}
+
+	@Override
+	public List<String> hvals(String key) {
+		Jedis jedis = jedisPool.getResource();
+		List<String> result = jedis.hvals(key);
 		jedis.close();
 		return result;
 	}

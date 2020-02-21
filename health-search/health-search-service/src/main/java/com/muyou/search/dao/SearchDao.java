@@ -1,5 +1,6 @@
 package com.muyou.search.dao;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ import com.muyou.common.pojo.DiseaseSortVo;
 import com.muyou.common.pojo.MedicineListVo;
 
 @Repository
-public class SearchDao {
+public class SearchDao implements Serializable{
 
 	@Autowired
 	private SolrServer solrServer;

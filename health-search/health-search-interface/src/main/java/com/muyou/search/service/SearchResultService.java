@@ -7,8 +7,8 @@ import com.muyou.common.pojo.MedicineListVo;
 
 public interface SearchResultService {
 
-	 List<MedicineListVo> searchMedicine(String keyword,String field,int page,int rows) throws Exception;
-	 
-	 List<DiseaseSortVo> searchDisease(String keyword,String field,int page,int rows) throws Exception;
-	
+	List<MedicineListVo> searchMedicine(String keyword, String field, int page, int rows) throws Exception;
+
+	List<DiseaseSortVo> searchDisease(String keyword, String field, int page, int rows) throws Exception;
+
 }
