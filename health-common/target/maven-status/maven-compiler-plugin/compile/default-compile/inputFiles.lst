@@ -3,7 +3,9 @@ G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\pojo\DiseaseSortVo.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\form\RequestForm.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\form\ChatForm.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\pojo\ZTreeNode.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\redis\JedisClientCluster.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\util\FastDFSClient.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\util\WeatherUtils.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\util\ResultUtil.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\form\UserUpdateForm.java
@@ -13,7 +15,6 @@ G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\util\JsonUtils.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\form\PatienInforBean.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\pojo\ResponseBuilder.java
-G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\util\GeetestLib.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\util\DateUtil.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\util\FileUtil.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-common\src\main\java\com\muyou\common\pojo\MedicineListVo.java

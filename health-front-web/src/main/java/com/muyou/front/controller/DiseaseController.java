@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,9 +14,10 @@ import com.muyou.common.exception.ServiceException;
 import com.muyou.common.form.RequestForm;
 import com.muyou.common.pojo.ResponseBuilder;
 import com.muyou.common.util.StringUtil;
-import com.muyou.front.pojo.DiseaseDetailVo;
-import com.muyou.front.pojo.DiseaseSortListVo;
 import com.muyou.front.service.DiseaseService;
+import com.muyou.front.vo.DiseaseDetailVo;
+import com.muyou.front.vo.DiseaseSortListVo;
+import com.muyou.search.service.SearchResultService;
 import com.muyou.sso.service.CollectService;
 
 @Controller
@@ -30,11 +30,8 @@ public class DiseaseController {
 	@Autowired
 	private CollectService collectService;
 
-//	@Autowired
-//	private SearchResultService searchResultService;
-
-	@Value("${DISEASE_SEARCH_COUNT}")
-	private Integer DISEASE_SEARCH_COUNT;
+	@Autowired
+	private SearchResultService searchResultService;
 
 	// 疾病分类
 	@RequestMapping("/getDiseaseSortList")
@@ -42,7 +39,10 @@ public class DiseaseController {
 	public List<DiseaseSortListVo> getDiseaseSortList(@RequestBody RequestForm requestForm) throws ServiceException {
 		if (StringUtil.isEmpty(requestForm.getQuest_id()))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
+		
+		//封装数据
 		List<DiseaseSortListVo> result = diseaseService.getDiseaseSortList(requestForm);
+		
 		if (null == result)
 			throw new ServiceException(ResponseBuilder.ERROR_DATA_LOSE);
 		return result;

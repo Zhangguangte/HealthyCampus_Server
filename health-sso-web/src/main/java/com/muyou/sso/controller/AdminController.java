@@ -35,22 +35,16 @@ public class AdminController {
 	public Result<Object> adminLogin(String username, String password, HttpServletRequest request,
 			HttpServletResponse response) {
 
-		int gtResult = 1;
-
-		// 验证成功
-		if (gtResult == 1) {
-			// 用户登录
-			Result<Object> result = adminService.adminLogin(new LoginForm(username, password));
-			
-			if (200 == result.getCode()) {	//登录成功
-				CookieUtils.setCookie(request, response, TOKEN_KEY, (String)result.getResult());
-				return new ResultUtil<Object>().setData(null);
-			} else {		//失败
-				return new ResultUtil<Object>().setErrorMsg("用户名或密码错误");
-			}
-		} else {
-			// 验证失败
-			return new ResultUtil<Object>().setErrorMsg("验证失败");
+		// 用户登录
+		Result<Object> result = adminService.adminLogin(new LoginForm(username, password));
+		
+		System.out.println(result);
+		
+		if (null != result) {	//登录成功
+			CookieUtils.setCookie(request, response, TOKEN_KEY, (String)result.getResult());
+			return new ResultUtil<Object>().setData(null);
+		} else {		//失败
+			return new ResultUtil<Object>().setErrorMsg("用户名或密码错误");
 		}
 	}
 

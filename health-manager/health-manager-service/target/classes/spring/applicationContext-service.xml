@@ -37,6 +37,15 @@
 	<dubbo:service
 		interface="com.muyou.service.DictService" ref="dictServiceImpl"
 		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.ItemCateService" ref="itemCateServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.ItemDisService" ref="itemDisServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.ItemMedService" ref="itemMedServiceImpl"
+		timeout="600000" /> 
 		
 		
 		

@@ -3,11 +3,11 @@ package com.muyou.front.service;
 import java.util.List;
 
 import com.muyou.common.form.RequestForm;
-import com.muyou.front.pojo.FoodMenuVo;
-import com.muyou.front.pojo.FoodRecommendVo;
-import com.muyou.front.pojo.FoodVo;
-import com.muyou.front.pojo.IngredientResultVo;
-import com.muyou.front.pojo.RecipesListVo;
+import com.muyou.front.vo.FoodMenuVo;
+import com.muyou.front.vo.FoodRecommendVo;
+import com.muyou.front.vo.FoodVo;
+import com.muyou.front.vo.IngredientResultVo;
+import com.muyou.front.vo.RecipesListVo;
 
 /**
  * 食谱服务

@@ -3,56 +3,66 @@
 <mapper namespace="com.muyou.search.mapper.ItemMapper">
 	<select id="getMedicineItemList" resultType="com.muyou.pojo.TbMedicine">
 		SELECT
-			m.goods_id goodsId,
+			c.name cName,
+			m.id id,
 			m.price price,
 			m.goods_name goodsName,
-			m.explain_book explainBook,
-			m.is_otc isOtc,
+			m.instruction instruction,
+			m.otc otc,
 			m.logo logo,
 			m.approval_number approvalNumber,
 			m.manufacturer manufacturer,
-			m.zhuzhi zhuzhi,
-			m.c2 c2
+			m.indications indications
 		FROM
-			tb_medicine m	
+			tb_medicine m	RIGHT JOIN tb_item_rela_cate r on m.id = r.item_id RIGHT JOIN tb_cate c on r.cate_id = c.id
 		where 
-			m.is_del = 0
+			m.id = #{id} 
+		and 
+			m.status = 1
 	</select> 
 	
 	<select id="getMedicineItemById" parameterType="String" resultType="com.muyou.pojo.TbMedicine">
 		SELECT
-			*
+			c.name cName,
+			m.id id,
+			m.price price,
+			m.goods_name goodsName,
+			m.instruction instruction,
+			m.otc otc,
+			m.logo logo,
+			m.approval_number approvalNumber,
+			m.manufacturer manufacturer,
+			m.indications indications
 		FROM
-			tb_medicine m	
+			tb_medicine m	RIGHT JOIN tb_item_rela_cate r on m.id = r.item_id RIGHT JOIN tb_cate c on r.cate_id = c.id
 		where 
-			m.goods_id = #{id}
-		and
-			m.is_del = 0
+			m.id = #{id} 
 	</select>
 	
 	<select id="getDiseaseItemList" resultType="com.muyou.pojo.TbDisease">
 		SELECT
 			d.id id,
-			d.disease_name diseaseName,
-			d.disease_introduce diseaseIntroduce,
-			d.disease_url diseaseUrl,
-			d.disease_part diseasePart,
-			d.cure_depart cureDepart
+			d.name name,
+			d.introduce ntroduce,
+			d.url url,
+			d.part part,
+			d.depart depart
 		FROM
 			tb_disease d	
 		where 
-			d.is_del = 0
+			d.status = 1
 	</select>
 	
 	<select id="getDiseaseItemById" parameterType="String" resultType="com.muyou.pojo.TbDisease">
 		SELECT
-			*
+			d.id id,
+			d.name name,
+			d.introduce ntroduce,
+			d.url url,
+			d.part part,
+			d.depart depart
 		FROM
-			tb_disease d
-		where 
-			d.id = #{id}
-		and
-			d.is_del = 0
+			tb_disease d	
 	</select> 
 	
 	<select id="getDocumentsNum" parameterType="String" resultType="Integer">

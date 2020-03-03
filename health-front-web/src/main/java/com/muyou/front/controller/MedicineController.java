@@ -15,9 +15,9 @@ import com.muyou.common.exception.ServiceException;
 import com.muyou.common.form.RequestForm;
 import com.muyou.common.pojo.ResponseBuilder;
 import com.muyou.common.util.StringUtil;
-import com.muyou.front.pojo.MedicineDetailVo;
-import com.muyou.front.pojo.MedicineVo;
 import com.muyou.front.service.MedicineService;
+import com.muyou.front.vo.MedicineDetailVo;
+import com.muyou.front.vo.MedicineVo;
 import com.muyou.sso.service.CollectService;
 
 @Controller

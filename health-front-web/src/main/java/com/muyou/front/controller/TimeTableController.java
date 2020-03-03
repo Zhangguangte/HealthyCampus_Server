@@ -12,8 +12,8 @@ import com.muyou.common.exception.ServiceException;
 import com.muyou.common.form.RequestForm;
 import com.muyou.common.pojo.ResponseBuilder;
 import com.muyou.common.util.StringUtil;
-import com.muyou.front.pojo.CourseVo;
 import com.muyou.front.service.TimeTableService;
+import com.muyou.front.vo.CourseVo;
 
 @Controller
 @RequestMapping("/service")

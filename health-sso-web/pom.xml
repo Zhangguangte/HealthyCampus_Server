@@ -102,6 +102,7 @@
 				<configuration>
 					<path>/</path>
 					<port>8086</port>
+					<uriEncoding>UTF-8</uriEncoding>
 				</configuration>
 			</plugin>
 		</plugins>

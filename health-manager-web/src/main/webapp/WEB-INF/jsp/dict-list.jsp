@@ -102,8 +102,7 @@
                 {
                     "data": null,
                     render: function (data, type, row, meta) {
-                        return "<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"edit('编辑','dict-edit',500,250)\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> " +
-                            "<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"del("+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
+                        return "<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"edit('编辑','dict-edit',500,250)\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"del("+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
                     }
                 }
             ],

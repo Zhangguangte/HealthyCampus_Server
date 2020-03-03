@@ -1,225 +1,246 @@
 package com.muyou.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
-public class TbDisease implements Serializable{
-    private Integer id;
+public class TbDisease implements Serializable {
+	private Integer id;
 
-    private String diseaseName;
+	private String name;
 
-    private String diseaseSymbol;
+	private String symbol;
 
-    private String diseaseAlias;
+	private String alias;
 
-    private String diseaseIntroduce;
+	private String introduce;
 
-    private String diseaseContagious;
+	private String contagious;
 
-    private String cureRate;
+	private String rate;
 
-    private String cureDepart;
+	private String depart;
 
-    private String cureCost;
+	private String cost;
 
-    private String cureWay;
+	private String way;
 
-    private String cureRecommendDrug;
+	private String drug;
 
-    private String diseasePart;
+	private String part;
 
-    private String medicalInsurance;
+	private String insurance;
 
-    private String cureTime;
+	private String time;
 
-    private String diseaseComplication;
+	private String complication;
 
-    private String diseasePopulation;
+	private String population;
 
-    private String diseaseTypicalSymptoms;
+	private String symptoms;
 
-    private String diseasePrevention;
+	private String prevention;
 
-    private String diseaseCase;
+	private String dcase;
 
-    private String diseaseCheck;
+	private String dcheck;
 
-    private String diseaseUrl;
+	private String url;
 
-    private Integer isDel;
+	private Boolean status;
 
-    public Integer getId() {
-        return id;
-    }
+	private Date created;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	private Date updated;
 
-    public String getDiseaseName() {
-        return diseaseName;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setDiseaseName(String diseaseName) {
-        this.diseaseName = diseaseName == null ? null : diseaseName.trim();
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getDiseaseSymbol() {
-        return diseaseSymbol;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setDiseaseSymbol(String diseaseSymbol) {
-        this.diseaseSymbol = diseaseSymbol == null ? null : diseaseSymbol.trim();
-    }
+	public void setName(String name) {
+		this.name = name == null ? null : name.trim();
+	}
 
-    public String getDiseaseAlias() {
-        return diseaseAlias;
-    }
+	public String getSymbol() {
+		return symbol;
+	}
 
-    public void setDiseaseAlias(String diseaseAlias) {
-        this.diseaseAlias = diseaseAlias == null ? null : diseaseAlias.trim();
-    }
+	public void setSymbol(String symbol) {
+		this.symbol = symbol == null ? null : symbol.trim();
+	}
 
-    public String getDiseaseIntroduce() {
-        return diseaseIntroduce;
-    }
+	public String getAlias() {
+		return alias;
+	}
 
-    public void setDiseaseIntroduce(String diseaseIntroduce) {
-        this.diseaseIntroduce = diseaseIntroduce == null ? null : diseaseIntroduce.trim();
-    }
+	public void setAlias(String alias) {
+		this.alias = alias == null ? null : alias.trim();
+	}
 
-    public String getDiseaseContagious() {
-        return diseaseContagious;
-    }
+	public String getIntroduce() {
+		return introduce;
+	}
 
-    public void setDiseaseContagious(String diseaseContagious) {
-        this.diseaseContagious = diseaseContagious == null ? null : diseaseContagious.trim();
-    }
+	public void setIntroduce(String introduce) {
+		this.introduce = introduce == null ? null : introduce.trim();
+	}
 
-    public String getCureRate() {
-        return cureRate;
-    }
+	public String getContagious() {
+		return contagious;
+	}
 
-    public void setCureRate(String cureRate) {
-        this.cureRate = cureRate == null ? null : cureRate.trim();
-    }
-
-    public String getCureDepart() {
-        return cureDepart;
-    }
-
-    public void setCureDepart(String cureDepart) {
-        this.cureDepart = cureDepart == null ? null : cureDepart.trim();
-    }
-
-    public String getCureCost() {
-        return cureCost;
-    }
-
-    public void setCureCost(String cureCost) {
-        this.cureCost = cureCost == null ? null : cureCost.trim();
-    }
-
-    public String getCureWay() {
-        return cureWay;
-    }
-
-    public void setCureWay(String cureWay) {
-        this.cureWay = cureWay == null ? null : cureWay.trim();
-    }
-
-    public String getCureRecommendDrug() {
-        return cureRecommendDrug;
-    }
-
-    public void setCureRecommendDrug(String cureRecommendDrug) {
-        this.cureRecommendDrug = cureRecommendDrug == null ? null : cureRecommendDrug.trim();
-    }
-
-    public String getDiseasePart() {
-        return diseasePart;
-    }
-
-    public void setDiseasePart(String diseasePart) {
-        this.diseasePart = diseasePart == null ? null : diseasePart.trim();
-    }
-
-    public String getMedicalInsurance() {
-        return medicalInsurance;
-    }
-
-    public void setMedicalInsurance(String medicalInsurance) {
-        this.medicalInsurance = medicalInsurance == null ? null : medicalInsurance.trim();
-    }
-
-    public String getCureTime() {
-        return cureTime;
-    }
-
-    public void setCureTime(String cureTime) {
-        this.cureTime = cureTime == null ? null : cureTime.trim();
-    }
-
-    public String getDiseaseComplication() {
-        return diseaseComplication;
-    }
-
-    public void setDiseaseComplication(String diseaseComplication) {
-        this.diseaseComplication = diseaseComplication == null ? null : diseaseComplication.trim();
-    }
-
-    public String getDiseasePopulation() {
-        return diseasePopulation;
-    }
-
-    public void setDiseasePopulation(String diseasePopulation) {
-        this.diseasePopulation = diseasePopulation == null ? null : diseasePopulation.trim();
-    }
-
-    public String getDiseaseTypicalSymptoms() {
-        return diseaseTypicalSymptoms;
-    }
-
-    public void setDiseaseTypicalSymptoms(String diseaseTypicalSymptoms) {
-        this.diseaseTypicalSymptoms = diseaseTypicalSymptoms == null ? null : diseaseTypicalSymptoms.trim();
-    }
-
-    public String getDiseasePrevention() {
-        return diseasePrevention;
-    }
-
-    public void setDiseasePrevention(String diseasePrevention) {
-        this.diseasePrevention = diseasePrevention == null ? null : diseasePrevention.trim();
-    }
-
-    public String getDiseaseCase() {
-        return diseaseCase;
-    }
-
-    public void setDiseaseCase(String diseaseCase) {
-        this.diseaseCase = diseaseCase == null ? null : diseaseCase.trim();
-    }
-
-    public String getDiseaseCheck() {
-        return diseaseCheck;
-    }
-
-    public void setDiseaseCheck(String diseaseCheck) {
-        this.diseaseCheck = diseaseCheck == null ? null : diseaseCheck.trim();
-    }
-
-    public String getDiseaseUrl() {
-        return diseaseUrl;
-    }
-
-    public void setDiseaseUrl(String diseaseUrl) {
-        this.diseaseUrl = diseaseUrl == null ? null : diseaseUrl.trim();
-    }
-
-    public Integer getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(Integer isDel) {
-        this.isDel = isDel;
-    }
+	public void setContagious(String contagious) {
+		this.contagious = contagious == null ? null : contagious.trim();
+	}
+
+	public String getRate() {
+		return rate;
+	}
+
+	public void setRate(String rate) {
+		this.rate = rate == null ? null : rate.trim();
+	}
+
+	public String getCost() {
+		return cost;
+	}
+
+	public void setCost(String cost) {
+		this.cost = cost == null ? null : cost.trim();
+	}
+
+	public String getWay() {
+		return way;
+	}
+
+	public void setWay(String way) {
+		this.way = way == null ? null : way.trim();
+	}
+
+	public String getDrug() {
+		return drug;
+	}
+
+	public void setDrug(String drug) {
+		this.drug = drug == null ? null : drug.trim();
+	}
+
+	public String getDepart() {
+		return depart;
+	}
+
+	public void setDepart(String depart) {
+		this.depart = depart;
+	}
+
+	public String getPart() {
+		return part;
+	}
+
+	public void setPart(String part) {
+		this.part = part;
+	}
+
+	public String getInsurance() {
+		return insurance;
+	}
+
+	public void setInsurance(String insurance) {
+		this.insurance = insurance == null ? null : insurance.trim();
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time == null ? null : time.trim();
+	}
+
+	public String getComplication() {
+		return complication;
+	}
+
+	public void setComplication(String complication) {
+		this.complication = complication == null ? null : complication.trim();
+	}
+
+	public String getPopulation() {
+		return population;
+	}
+
+	public void setPopulation(String population) {
+		this.population = population == null ? null : population.trim();
+	}
+
+	public String getSymptoms() {
+		return symptoms;
+	}
+
+	public void setSymptoms(String symptoms) {
+		this.symptoms = symptoms == null ? null : symptoms.trim();
+	}
+
+	public String getPrevention() {
+		return prevention;
+	}
+
+	public void setPrevention(String prevention) {
+		this.prevention = prevention == null ? null : prevention.trim();
+	}
+
+	public String getDcase() {
+		return dcase;
+	}
+
+	public void setDcase(String dcase) {
+		this.dcase = dcase == null ? null : dcase.trim();
+	}
+
+	public String getDcheck() {
+		return dcheck;
+	}
+
+	public void setDcheck(String dcheck) {
+		this.dcheck = dcheck == null ? null : dcheck.trim();
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url == null ? null : url.trim();
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
 }

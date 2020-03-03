@@ -66,7 +66,7 @@ public class SearchServiceImpl implements SearchService {
 
 	@Value("${SOLR_INDEX}")
 	private String SOLR_INDEX;
-	
+
 	@Value("${SOLR_INDEX_EXPIRE}")
 	private Integer SOLR_INDEX_EXPIRE;
 
@@ -155,11 +155,11 @@ public class SearchServiceImpl implements SearchService {
 			for (TbDisease searchItem : itemList) {
 				SolrInputDocument document = new SolrInputDocument();
 				document.addField("id", searchItem.getId());
-				document.addField("di_title", searchItem.getDiseaseName());
-				document.addField("di_intro", searchItem.getDiseaseIntroduce());
-				document.addField("di_url", searchItem.getDiseaseUrl());
-				document.addField("di_part", searchItem.getDiseasePart());
-				document.addField("di_depart", searchItem.getCureDepart());
+				document.addField("di_title", searchItem.getName());
+				document.addField("di_intro", searchItem.getIntroduce());
+				document.addField("di_url", searchItem.getUrl());
+				document.addField("di_part", searchItem.getPart());
+				document.addField("di_depart", searchItem.getDepart());
 				solrServer.add(document);
 			}
 			solrServer.commit();
@@ -197,16 +197,16 @@ public class SearchServiceImpl implements SearchService {
 			List<TbMedicine> itemList = itemMapper.getMedicineItemList();
 			for (TbMedicine searchItem : itemList) {
 				SolrInputDocument document = new SolrInputDocument();
-				document.addField("id", searchItem.getGoodsId());
+				document.addField("id", searchItem.getId());
 				document.addField("md_price", searchItem.getPrice() + "");
 				document.addField("md_goodName", searchItem.getGoodsName());
-				document.addField("md_desc", searchItem.getExplainBook());
-				document.addField("md_isOct", searchItem.getIsOtc() + "");
+				document.addField("md_desc", searchItem.getIndications());
+				document.addField("md_isOct", searchItem.getOtc() + "");
 				document.addField("md_image", searchItem.getLogo());
 				document.addField("md_approval", searchItem.getApprovalNumber());
 				document.addField("md_manufacturer", searchItem.getManufacturer());
-				document.addField("md_zhuzhi", searchItem.getZhuzhi());
-				document.addField("md_type", searchItem.getC2());
+				document.addField("md_zhuzhi", searchItem.getIndications());
+				document.addField("md_type", searchItem.getcName());
 				solrServer.add(document);
 			}
 			solrServer.commit();

@@ -30,7 +30,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Value("${ASESSION_EXPIRE}")
 	private Integer ASESSION_EXPIRE;
-	
+
 	@Value("${ASESSION}")
 	private String ASESSION;
 
@@ -43,16 +43,17 @@ public class AdminServiceImpl implements AdminService {
 		// 账号查询用户
 		List<TbAdmin> list = adminMapper.selectByExample(example);
 
+		System.out.println(dataForm.getAccount());
+
 		// 用户是否存在
 		if (null == list || list.size() == 0)
-			new ResultUtil<Object>().setErrorMsg("账号或者密码错误");
+			return null;
 
 		TbAdmin user = list.get(0);
-
 		// 校验密码
 		if (null == user || !DigestUtils.md5DigestAsHex(dataForm.getPassword().getBytes())
 				.equals(user.getPassword().toLowerCase())) {
-			new ResultUtil<Object>().setErrorMsg("账号或者密码错误");
+			return null;
 		}
 
 		// 密码设置为null
@@ -61,20 +62,28 @@ public class AdminServiceImpl implements AdminService {
 		// 用户登录成功，设置令牌
 		String token = UUID.randomUUID().toString();
 
+		try {
+			jedisClient.set(ASESSION + token, JsonUtils.objectToJson(user));
+			jedisClient.expire(ASESSION + token, ASESSION_EXPIRE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// redis存储用户数据
-		jedisClient.set(ASESSION + token, JsonUtils.objectToJson(user));
-		jedisClient.expire(ASESSION + token, ASESSION_EXPIRE);
 		return new ResultUtil<Object>().setData(token);
 	}
 
 	@Override
 	public int adminLogout(String token) {
-		jedisClient.del(ASESSION + token);
+		try {
+			jedisClient.del(ASESSION + token);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return 1;
 	}
 
 	@Override
-	public Result<Object> unLock(String username, String password,String token) {
+	public Result<Object> unLock(String username, String password, String token) {
 		// 用户名、密码查询
 		TbAdminExample example = new TbAdminExample();
 		Criteria criteria = example.createCriteria();
@@ -84,13 +93,16 @@ public class AdminServiceImpl implements AdminService {
 		// 账号查询用户
 		List<TbAdmin> list = adminMapper.selectByExample(example);
 		if (null != list && list.size() == 1) {
-			
-			//重置过期时间
+
+			// 重置过期时间
 			TbAdmin user = list.get(0);
 			user.setPassword(null);
-			jedisClient.set(ASESSION + token, JsonUtils.objectToJson(user));
-			jedisClient.expire(ASESSION + token, ASESSION_EXPIRE);
-			
+			try {
+				jedisClient.set(ASESSION + token, JsonUtils.objectToJson(user));
+				jedisClient.expire(ASESSION + token, ASESSION_EXPIRE);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return new ResultUtil<>().setData(null);
 		} else {
 			return new ResultUtil<>().setErrorMsg("密码错误");

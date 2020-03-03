@@ -3,27 +3,29 @@
 <mapper namespace="com.muyou.mapper.TbDiseaseMapper" >
   <resultMap id="BaseResultMap" type="com.muyou.pojo.TbDisease" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="disease_name" property="diseaseName" jdbcType="VARCHAR" />
-    <result column="disease_symbol" property="diseaseSymbol" jdbcType="VARCHAR" />
-    <result column="disease_alias" property="diseaseAlias" jdbcType="VARCHAR" />
-    <result column="disease_introduce" property="diseaseIntroduce" jdbcType="VARCHAR" />
-    <result column="disease_contagious" property="diseaseContagious" jdbcType="VARCHAR" />
-    <result column="cure_rate" property="cureRate" jdbcType="VARCHAR" />
-    <result column="cure_depart" property="cureDepart" jdbcType="VARCHAR" />
-    <result column="cure_cost" property="cureCost" jdbcType="VARCHAR" />
-    <result column="cure_way" property="cureWay" jdbcType="VARCHAR" />
-    <result column="cure_recommend_drug" property="cureRecommendDrug" jdbcType="VARCHAR" />
-    <result column="disease_part" property="diseasePart" jdbcType="VARCHAR" />
-    <result column="medical_insurance" property="medicalInsurance" jdbcType="VARCHAR" />
-    <result column="cure_time" property="cureTime" jdbcType="VARCHAR" />
-    <result column="disease_complication" property="diseaseComplication" jdbcType="VARCHAR" />
-    <result column="disease_population" property="diseasePopulation" jdbcType="VARCHAR" />
-    <result column="disease_typical_symptoms" property="diseaseTypicalSymptoms" jdbcType="VARCHAR" />
-    <result column="disease_prevention" property="diseasePrevention" jdbcType="VARCHAR" />
-    <result column="disease_case" property="diseaseCase" jdbcType="VARCHAR" />
-    <result column="disease_check" property="diseaseCheck" jdbcType="VARCHAR" />
-    <result column="disease_url" property="diseaseUrl" jdbcType="VARCHAR" />
-    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="symbol" property="symbol" jdbcType="VARCHAR" />
+    <result column="alias" property="alias" jdbcType="VARCHAR" />
+    <result column="introduce" property="introduce" jdbcType="VARCHAR" />
+    <result column="contagious" property="contagious" jdbcType="VARCHAR" />
+    <result column="rate" property="rate" jdbcType="VARCHAR" />
+    <result column="depart" property="depart" jdbcType="VARCHAR" />
+    <result column="cost" property="cost" jdbcType="VARCHAR" />
+    <result column="way" property="way" jdbcType="VARCHAR" />
+    <result column="drug" property="drug" jdbcType="VARCHAR" />
+    <result column="part" property="part" jdbcType="VARCHAR" />
+    <result column="insurance" property="insurance" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="VARCHAR" />
+    <result column="complication" property="complication" jdbcType="VARCHAR" />
+    <result column="population" property="population" jdbcType="VARCHAR" />
+    <result column="symptoms" property="symptoms" jdbcType="VARCHAR" />
+    <result column="prevention" property="prevention" jdbcType="VARCHAR" />
+    <result column="dcase" property="dcase" jdbcType="VARCHAR" />
+    <result column="dcheck" property="dcheck" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -84,10 +86,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, disease_name, disease_symbol, disease_alias, disease_introduce, disease_contagious, 
-    cure_rate, cure_depart, cure_cost, cure_way, cure_recommend_drug, disease_part, medical_insurance, 
-    cure_time, disease_complication, disease_population, disease_typical_symptoms, disease_prevention, 
-    disease_case, disease_check, disease_url, is_del
+    id, name, symbol, alias, introduce, contagious, rate, depart, cost, way, drug, part, 
+    insurance, time, complication, population, symptoms, prevention, dcase, dcheck, url, 
+    status, created, updated
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.muyou.pojo.TbDiseaseExample" >
     select
@@ -119,23 +120,23 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.muyou.pojo.TbDisease" >
-    insert into tb_disease (id, disease_name, disease_symbol, 
-      disease_alias, disease_introduce, disease_contagious, 
-      cure_rate, cure_depart, cure_cost, 
-      cure_way, cure_recommend_drug, disease_part, 
-      medical_insurance, cure_time, disease_complication, 
-      disease_population, disease_typical_symptoms, 
-      disease_prevention, disease_case, disease_check, 
-      disease_url, is_del)
-    values (#{id,jdbcType=INTEGER}, #{diseaseName,jdbcType=VARCHAR}, #{diseaseSymbol,jdbcType=VARCHAR}, 
-      #{diseaseAlias,jdbcType=VARCHAR}, #{diseaseIntroduce,jdbcType=VARCHAR}, #{diseaseContagious,jdbcType=VARCHAR}, 
-      #{cureRate,jdbcType=VARCHAR}, #{cureDepart,jdbcType=VARCHAR}, #{cureCost,jdbcType=VARCHAR}, 
-      #{cureWay,jdbcType=VARCHAR}, #{cureRecommendDrug,jdbcType=VARCHAR}, #{diseasePart,jdbcType=VARCHAR}, 
-      #{medicalInsurance,jdbcType=VARCHAR}, #{cureTime,jdbcType=VARCHAR}, #{diseaseComplication,jdbcType=VARCHAR}, 
-      #{diseasePopulation,jdbcType=VARCHAR}, #{diseaseTypicalSymptoms,jdbcType=VARCHAR}, 
-      #{diseasePrevention,jdbcType=VARCHAR}, #{diseaseCase,jdbcType=VARCHAR}, #{diseaseCheck,jdbcType=VARCHAR}, 
-      #{diseaseUrl,jdbcType=VARCHAR}, #{isDel,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.muyou.pojo.TbDisease" useGeneratedKeys="true" keyProperty="id">
+    insert into tb_disease (id, name, symbol, 
+      alias, introduce, contagious, 
+      rate, depart, cost, 
+      way, drug, part, insurance, 
+      time, complication, population, 
+      symptoms, prevention, dcase, 
+      dcheck, url, status, created, 
+      updated)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{symbol,jdbcType=VARCHAR}, 
+      #{alias,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, #{contagious,jdbcType=VARCHAR}, 
+      #{rate,jdbcType=VARCHAR}, #{depart,jdbcType=VARCHAR}, #{cost,jdbcType=VARCHAR}, 
+      #{way,jdbcType=VARCHAR}, #{drug,jdbcType=VARCHAR}, #{part,jdbcType=VARCHAR}, #{insurance,jdbcType=VARCHAR}, 
+      #{time,jdbcType=VARCHAR}, #{complication,jdbcType=VARCHAR}, #{population,jdbcType=VARCHAR}, 
+      #{symptoms,jdbcType=VARCHAR}, #{prevention,jdbcType=VARCHAR}, #{dcase,jdbcType=VARCHAR}, 
+      #{dcheck,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{status,jdbcType=BIT}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.muyou.pojo.TbDisease" >
     insert into tb_disease
@@ -143,136 +144,148 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="diseaseName != null" >
-        disease_name,
+      <if test="name != null" >
+        name,
       </if>
-      <if test="diseaseSymbol != null" >
-        disease_symbol,
+      <if test="symbol != null" >
+        symbol,
       </if>
-      <if test="diseaseAlias != null" >
-        disease_alias,
+      <if test="alias != null" >
+        alias,
       </if>
-      <if test="diseaseIntroduce != null" >
-        disease_introduce,
+      <if test="introduce != null" >
+        introduce,
       </if>
-      <if test="diseaseContagious != null" >
-        disease_contagious,
+      <if test="contagious != null" >
+        contagious,
       </if>
-      <if test="cureRate != null" >
-        cure_rate,
+      <if test="rate != null" >
+        rate,
       </if>
-      <if test="cureDepart != null" >
-        cure_depart,
+      <if test="depart != null" >
+        depart,
       </if>
-      <if test="cureCost != null" >
-        cure_cost,
+      <if test="cost != null" >
+        cost,
       </if>
-      <if test="cureWay != null" >
-        cure_way,
+      <if test="way != null" >
+        way,
       </if>
-      <if test="cureRecommendDrug != null" >
-        cure_recommend_drug,
+      <if test="drug != null" >
+        drug,
       </if>
-      <if test="diseasePart != null" >
-        disease_part,
+      <if test="part != null" >
+        part,
       </if>
-      <if test="medicalInsurance != null" >
-        medical_insurance,
+      <if test="insurance != null" >
+        insurance,
       </if>
-      <if test="cureTime != null" >
-        cure_time,
+      <if test="time != null" >
+        time,
       </if>
-      <if test="diseaseComplication != null" >
-        disease_complication,
+      <if test="complication != null" >
+        complication,
       </if>
-      <if test="diseasePopulation != null" >
-        disease_population,
+      <if test="population != null" >
+        population,
       </if>
-      <if test="diseaseTypicalSymptoms != null" >
-        disease_typical_symptoms,
+      <if test="symptoms != null" >
+        symptoms,
       </if>
-      <if test="diseasePrevention != null" >
-        disease_prevention,
+      <if test="prevention != null" >
+        prevention,
       </if>
-      <if test="diseaseCase != null" >
-        disease_case,
+      <if test="dcase != null" >
+        dcase,
       </if>
-      <if test="diseaseCheck != null" >
-        disease_check,
+      <if test="dcheck != null" >
+        dcheck,
       </if>
-      <if test="diseaseUrl != null" >
-        disease_url,
+      <if test="url != null" >
+        url,
       </if>
-      <if test="isDel != null" >
-        is_del,
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="updated != null" >
+        updated,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="diseaseName != null" >
-        #{diseaseName,jdbcType=VARCHAR},
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseSymbol != null" >
-        #{diseaseSymbol,jdbcType=VARCHAR},
+      <if test="symbol != null" >
+        #{symbol,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseAlias != null" >
-        #{diseaseAlias,jdbcType=VARCHAR},
+      <if test="alias != null" >
+        #{alias,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseIntroduce != null" >
-        #{diseaseIntroduce,jdbcType=VARCHAR},
+      <if test="introduce != null" >
+        #{introduce,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseContagious != null" >
-        #{diseaseContagious,jdbcType=VARCHAR},
+      <if test="contagious != null" >
+        #{contagious,jdbcType=VARCHAR},
       </if>
-      <if test="cureRate != null" >
-        #{cureRate,jdbcType=VARCHAR},
+      <if test="rate != null" >
+        #{rate,jdbcType=VARCHAR},
       </if>
-      <if test="cureDepart != null" >
-        #{cureDepart,jdbcType=VARCHAR},
+      <if test="depart != null" >
+        #{depart,jdbcType=VARCHAR},
       </if>
-      <if test="cureCost != null" >
-        #{cureCost,jdbcType=VARCHAR},
+      <if test="cost != null" >
+        #{cost,jdbcType=VARCHAR},
       </if>
-      <if test="cureWay != null" >
-        #{cureWay,jdbcType=VARCHAR},
+      <if test="way != null" >
+        #{way,jdbcType=VARCHAR},
       </if>
-      <if test="cureRecommendDrug != null" >
-        #{cureRecommendDrug,jdbcType=VARCHAR},
+      <if test="drug != null" >
+        #{drug,jdbcType=VARCHAR},
       </if>
-      <if test="diseasePart != null" >
-        #{diseasePart,jdbcType=VARCHAR},
+      <if test="part != null" >
+        #{part,jdbcType=VARCHAR},
       </if>
-      <if test="medicalInsurance != null" >
-        #{medicalInsurance,jdbcType=VARCHAR},
+      <if test="insurance != null" >
+        #{insurance,jdbcType=VARCHAR},
       </if>
-      <if test="cureTime != null" >
-        #{cureTime,jdbcType=VARCHAR},
+      <if test="time != null" >
+        #{time,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseComplication != null" >
-        #{diseaseComplication,jdbcType=VARCHAR},
+      <if test="complication != null" >
+        #{complication,jdbcType=VARCHAR},
       </if>
-      <if test="diseasePopulation != null" >
-        #{diseasePopulation,jdbcType=VARCHAR},
+      <if test="population != null" >
+        #{population,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseTypicalSymptoms != null" >
-        #{diseaseTypicalSymptoms,jdbcType=VARCHAR},
+      <if test="symptoms != null" >
+        #{symptoms,jdbcType=VARCHAR},
       </if>
-      <if test="diseasePrevention != null" >
-        #{diseasePrevention,jdbcType=VARCHAR},
+      <if test="prevention != null" >
+        #{prevention,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseCase != null" >
-        #{diseaseCase,jdbcType=VARCHAR},
+      <if test="dcase != null" >
+        #{dcase,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseCheck != null" >
-        #{diseaseCheck,jdbcType=VARCHAR},
+      <if test="dcheck != null" >
+        #{dcheck,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseUrl != null" >
-        #{diseaseUrl,jdbcType=VARCHAR},
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
       </if>
-      <if test="isDel != null" >
-        #{isDel,jdbcType=INTEGER},
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        #{updated,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -288,68 +301,74 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.diseaseName != null" >
-        disease_name = #{record.diseaseName,jdbcType=VARCHAR},
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.diseaseSymbol != null" >
-        disease_symbol = #{record.diseaseSymbol,jdbcType=VARCHAR},
+      <if test="record.symbol != null" >
+        symbol = #{record.symbol,jdbcType=VARCHAR},
       </if>
-      <if test="record.diseaseAlias != null" >
-        disease_alias = #{record.diseaseAlias,jdbcType=VARCHAR},
+      <if test="record.alias != null" >
+        alias = #{record.alias,jdbcType=VARCHAR},
       </if>
-      <if test="record.diseaseIntroduce != null" >
-        disease_introduce = #{record.diseaseIntroduce,jdbcType=VARCHAR},
+      <if test="record.introduce != null" >
+        introduce = #{record.introduce,jdbcType=VARCHAR},
       </if>
-      <if test="record.diseaseContagious != null" >
-        disease_contagious = #{record.diseaseContagious,jdbcType=VARCHAR},
+      <if test="record.contagious != null" >
+        contagious = #{record.contagious,jdbcType=VARCHAR},
       </if>
-      <if test="record.cureRate != null" >
-        cure_rate = #{record.cureRate,jdbcType=VARCHAR},
+      <if test="record.rate != null" >
+        rate = #{record.rate,jdbcType=VARCHAR},
       </if>
-      <if test="record.cureDepart != null" >
-        cure_depart = #{record.cureDepart,jdbcType=VARCHAR},
+      <if test="record.depart != null" >
+        depart = #{record.depart,jdbcType=VARCHAR},
       </if>
-      <if test="record.cureCost != null" >
-        cure_cost = #{record.cureCost,jdbcType=VARCHAR},
+      <if test="record.cost != null" >
+        cost = #{record.cost,jdbcType=VARCHAR},
       </if>
-      <if test="record.cureWay != null" >
-        cure_way = #{record.cureWay,jdbcType=VARCHAR},
+      <if test="record.way != null" >
+        way = #{record.way,jdbcType=VARCHAR},
       </if>
-      <if test="record.cureRecommendDrug != null" >
-        cure_recommend_drug = #{record.cureRecommendDrug,jdbcType=VARCHAR},
+      <if test="record.drug != null" >
+        drug = #{record.drug,jdbcType=VARCHAR},
       </if>
-      <if test="record.diseasePart != null" >
-        disease_part = #{record.diseasePart,jdbcType=VARCHAR},
+      <if test="record.part != null" >
+        part = #{record.part,jdbcType=VARCHAR},
       </if>
-      <if test="record.medicalInsurance != null" >
-        medical_insurance = #{record.medicalInsurance,jdbcType=VARCHAR},
+      <if test="record.insurance != null" >
+        insurance = #{record.insurance,jdbcType=VARCHAR},
       </if>
-      <if test="record.cureTime != null" >
-        cure_time = #{record.cureTime,jdbcType=VARCHAR},
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=VARCHAR},
       </if>
-      <if test="record.diseaseComplication != null" >
-        disease_complication = #{record.diseaseComplication,jdbcType=VARCHAR},
+      <if test="record.complication != null" >
+        complication = #{record.complication,jdbcType=VARCHAR},
       </if>
-      <if test="record.diseasePopulation != null" >
-        disease_population = #{record.diseasePopulation,jdbcType=VARCHAR},
+      <if test="record.population != null" >
+        population = #{record.population,jdbcType=VARCHAR},
       </if>
-      <if test="record.diseaseTypicalSymptoms != null" >
-        disease_typical_symptoms = #{record.diseaseTypicalSymptoms,jdbcType=VARCHAR},
+      <if test="record.symptoms != null" >
+        symptoms = #{record.symptoms,jdbcType=VARCHAR},
       </if>
-      <if test="record.diseasePrevention != null" >
-        disease_prevention = #{record.diseasePrevention,jdbcType=VARCHAR},
+      <if test="record.prevention != null" >
+        prevention = #{record.prevention,jdbcType=VARCHAR},
       </if>
-      <if test="record.diseaseCase != null" >
-        disease_case = #{record.diseaseCase,jdbcType=VARCHAR},
+      <if test="record.dcase != null" >
+        dcase = #{record.dcase,jdbcType=VARCHAR},
       </if>
-      <if test="record.diseaseCheck != null" >
-        disease_check = #{record.diseaseCheck,jdbcType=VARCHAR},
+      <if test="record.dcheck != null" >
+        dcheck = #{record.dcheck,jdbcType=VARCHAR},
       </if>
-      <if test="record.diseaseUrl != null" >
-        disease_url = #{record.diseaseUrl,jdbcType=VARCHAR},
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
       </if>
-      <if test="record.isDel != null" >
-        is_del = #{record.isDel,jdbcType=INTEGER},
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=BIT},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null" >
+        updated = #{record.updated,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -359,27 +378,29 @@
   <update id="updateByExample" parameterType="map" >
     update tb_disease
     set id = #{record.id,jdbcType=INTEGER},
-      disease_name = #{record.diseaseName,jdbcType=VARCHAR},
-      disease_symbol = #{record.diseaseSymbol,jdbcType=VARCHAR},
-      disease_alias = #{record.diseaseAlias,jdbcType=VARCHAR},
-      disease_introduce = #{record.diseaseIntroduce,jdbcType=VARCHAR},
-      disease_contagious = #{record.diseaseContagious,jdbcType=VARCHAR},
-      cure_rate = #{record.cureRate,jdbcType=VARCHAR},
-      cure_depart = #{record.cureDepart,jdbcType=VARCHAR},
-      cure_cost = #{record.cureCost,jdbcType=VARCHAR},
-      cure_way = #{record.cureWay,jdbcType=VARCHAR},
-      cure_recommend_drug = #{record.cureRecommendDrug,jdbcType=VARCHAR},
-      disease_part = #{record.diseasePart,jdbcType=VARCHAR},
-      medical_insurance = #{record.medicalInsurance,jdbcType=VARCHAR},
-      cure_time = #{record.cureTime,jdbcType=VARCHAR},
-      disease_complication = #{record.diseaseComplication,jdbcType=VARCHAR},
-      disease_population = #{record.diseasePopulation,jdbcType=VARCHAR},
-      disease_typical_symptoms = #{record.diseaseTypicalSymptoms,jdbcType=VARCHAR},
-      disease_prevention = #{record.diseasePrevention,jdbcType=VARCHAR},
-      disease_case = #{record.diseaseCase,jdbcType=VARCHAR},
-      disease_check = #{record.diseaseCheck,jdbcType=VARCHAR},
-      disease_url = #{record.diseaseUrl,jdbcType=VARCHAR},
-      is_del = #{record.isDel,jdbcType=INTEGER}
+      name = #{record.name,jdbcType=VARCHAR},
+      symbol = #{record.symbol,jdbcType=VARCHAR},
+      alias = #{record.alias,jdbcType=VARCHAR},
+      introduce = #{record.introduce,jdbcType=VARCHAR},
+      contagious = #{record.contagious,jdbcType=VARCHAR},
+      rate = #{record.rate,jdbcType=VARCHAR},
+      depart = #{record.depart,jdbcType=VARCHAR},
+      cost = #{record.cost,jdbcType=VARCHAR},
+      way = #{record.way,jdbcType=VARCHAR},
+      drug = #{record.drug,jdbcType=VARCHAR},
+      part = #{record.part,jdbcType=VARCHAR},
+      insurance = #{record.insurance,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=VARCHAR},
+      complication = #{record.complication,jdbcType=VARCHAR},
+      population = #{record.population,jdbcType=VARCHAR},
+      symptoms = #{record.symptoms,jdbcType=VARCHAR},
+      prevention = #{record.prevention,jdbcType=VARCHAR},
+      dcase = #{record.dcase,jdbcType=VARCHAR},
+      dcheck = #{record.dcheck,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=BIT},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -387,95 +408,164 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.muyou.pojo.TbDisease" >
     update tb_disease
     <set >
-      <if test="diseaseName != null" >
-        disease_name = #{diseaseName,jdbcType=VARCHAR},
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseSymbol != null" >
-        disease_symbol = #{diseaseSymbol,jdbcType=VARCHAR},
+      <if test="symbol != null" >
+        symbol = #{symbol,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseAlias != null" >
-        disease_alias = #{diseaseAlias,jdbcType=VARCHAR},
+      <if test="alias != null" >
+        alias = #{alias,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseIntroduce != null" >
-        disease_introduce = #{diseaseIntroduce,jdbcType=VARCHAR},
+      <if test="introduce != null" >
+        introduce = #{introduce,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseContagious != null" >
-        disease_contagious = #{diseaseContagious,jdbcType=VARCHAR},
+      <if test="contagious != null" >
+        contagious = #{contagious,jdbcType=VARCHAR},
       </if>
-      <if test="cureRate != null" >
-        cure_rate = #{cureRate,jdbcType=VARCHAR},
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=VARCHAR},
       </if>
-      <if test="cureDepart != null" >
-        cure_depart = #{cureDepart,jdbcType=VARCHAR},
+      <if test="depart != null" >
+        depart = #{depart,jdbcType=VARCHAR},
       </if>
-      <if test="cureCost != null" >
-        cure_cost = #{cureCost,jdbcType=VARCHAR},
+      <if test="cost != null" >
+        cost = #{cost,jdbcType=VARCHAR},
       </if>
-      <if test="cureWay != null" >
-        cure_way = #{cureWay,jdbcType=VARCHAR},
+      <if test="way != null" >
+        way = #{way,jdbcType=VARCHAR},
       </if>
-      <if test="cureRecommendDrug != null" >
-        cure_recommend_drug = #{cureRecommendDrug,jdbcType=VARCHAR},
+      <if test="drug != null" >
+        drug = #{drug,jdbcType=VARCHAR},
       </if>
-      <if test="diseasePart != null" >
-        disease_part = #{diseasePart,jdbcType=VARCHAR},
+      <if test="part != null" >
+        part = #{part,jdbcType=VARCHAR},
       </if>
-      <if test="medicalInsurance != null" >
-        medical_insurance = #{medicalInsurance,jdbcType=VARCHAR},
+      <if test="insurance != null" >
+        insurance = #{insurance,jdbcType=VARCHAR},
       </if>
-      <if test="cureTime != null" >
-        cure_time = #{cureTime,jdbcType=VARCHAR},
+      <if test="time != null" >
+        time = #{time,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseComplication != null" >
-        disease_complication = #{diseaseComplication,jdbcType=VARCHAR},
+      <if test="complication != null" >
+        complication = #{complication,jdbcType=VARCHAR},
       </if>
-      <if test="diseasePopulation != null" >
-        disease_population = #{diseasePopulation,jdbcType=VARCHAR},
+      <if test="population != null" >
+        population = #{population,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseTypicalSymptoms != null" >
-        disease_typical_symptoms = #{diseaseTypicalSymptoms,jdbcType=VARCHAR},
+      <if test="symptoms != null" >
+        symptoms = #{symptoms,jdbcType=VARCHAR},
       </if>
-      <if test="diseasePrevention != null" >
-        disease_prevention = #{diseasePrevention,jdbcType=VARCHAR},
+      <if test="prevention != null" >
+        prevention = #{prevention,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseCase != null" >
-        disease_case = #{diseaseCase,jdbcType=VARCHAR},
+      <if test="dcase != null" >
+        dcase = #{dcase,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseCheck != null" >
-        disease_check = #{diseaseCheck,jdbcType=VARCHAR},
+      <if test="dcheck != null" >
+        dcheck = #{dcheck,jdbcType=VARCHAR},
       </if>
-      <if test="diseaseUrl != null" >
-        disease_url = #{diseaseUrl,jdbcType=VARCHAR},
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
       </if>
-      <if test="isDel != null" >
-        is_del = #{isDel,jdbcType=INTEGER},
+      <if test="status != null" >
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        updated = #{updated,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.muyou.pojo.TbDisease" >
     update tb_disease
-    set disease_name = #{diseaseName,jdbcType=VARCHAR},
-      disease_symbol = #{diseaseSymbol,jdbcType=VARCHAR},
-      disease_alias = #{diseaseAlias,jdbcType=VARCHAR},
-      disease_introduce = #{diseaseIntroduce,jdbcType=VARCHAR},
-      disease_contagious = #{diseaseContagious,jdbcType=VARCHAR},
-      cure_rate = #{cureRate,jdbcType=VARCHAR},
-      cure_depart = #{cureDepart,jdbcType=VARCHAR},
-      cure_cost = #{cureCost,jdbcType=VARCHAR},
-      cure_way = #{cureWay,jdbcType=VARCHAR},
-      cure_recommend_drug = #{cureRecommendDrug,jdbcType=VARCHAR},
-      disease_part = #{diseasePart,jdbcType=VARCHAR},
-      medical_insurance = #{medicalInsurance,jdbcType=VARCHAR},
-      cure_time = #{cureTime,jdbcType=VARCHAR},
-      disease_complication = #{diseaseComplication,jdbcType=VARCHAR},
-      disease_population = #{diseasePopulation,jdbcType=VARCHAR},
-      disease_typical_symptoms = #{diseaseTypicalSymptoms,jdbcType=VARCHAR},
-      disease_prevention = #{diseasePrevention,jdbcType=VARCHAR},
-      disease_case = #{diseaseCase,jdbcType=VARCHAR},
-      disease_check = #{diseaseCheck,jdbcType=VARCHAR},
-      disease_url = #{diseaseUrl,jdbcType=VARCHAR},
-      is_del = #{isDel,jdbcType=INTEGER}
+    set name = #{name,jdbcType=VARCHAR},
+      symbol = #{symbol,jdbcType=VARCHAR},
+      alias = #{alias,jdbcType=VARCHAR},
+      introduce = #{introduce,jdbcType=VARCHAR},
+      contagious = #{contagious,jdbcType=VARCHAR},
+      rate = #{rate,jdbcType=VARCHAR},
+      depart = #{depart,jdbcType=VARCHAR},
+      cost = #{cost,jdbcType=VARCHAR},
+      way = #{way,jdbcType=VARCHAR},
+      drug = #{drug,jdbcType=VARCHAR},
+      part = #{part,jdbcType=VARCHAR},
+      insurance = #{insurance,jdbcType=VARCHAR},
+      time = #{time,jdbcType=VARCHAR},
+      complication = #{complication,jdbcType=VARCHAR},
+      population = #{population,jdbcType=VARCHAR},
+      symptoms = #{symptoms,jdbcType=VARCHAR},
+      prevention = #{prevention,jdbcType=VARCHAR},
+      dcase = #{dcase,jdbcType=VARCHAR},
+      dcheck = #{dcheck,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      status = #{status,jdbcType=BIT},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectItemByCondition" resultMap="BaseResultMap">
+    SELECT 
+    	DISTINCT(d.id),url,d.name,complication,symptoms,rate,time,d.status,d.created
+    FROM 
+    <if test="cid == -1">
+    	tb_disease d 
+  	</if>
+    <if test="cid != -1">
+    	(tb_disease d RIGHT JOIN tb_item_rela_cate r on d.id = r.item_id ) RIGHT JOIN tb_cate c on r.cate_id = c.id
+  	</if>
+    WHERE (
+	   	d.id LIKE #{search}
+	   	OR	d.name LIKE #{search} 		 
+	   	OR	d.symbol LIKE #{search} 		 
+	    OR  part LIKE #{search}
+	    OR  depart LIKE #{search}
+	    OR  complication LIKE #{search}
+	    OR  symptoms LIKE #{search}
+	    OR  rate LIKE #{search}
+	    OR  time LIKE #{search})
+    <if test="cid != -1">
+      AND c.id = #{cid}
+    </if>
+    ORDER BY
+    ${orderCol}
+    ${orderDir}
+  </select>
+  
+  <select id="selectItemByMultiCondition" resultMap="BaseResultMap">
+    SELECT 
+    	DISTINCT(d.id),url,d.name,complication,symptoms,rate,time,d.status,d.created
+    FROM
+	<if test="cid == -1">
+    	tb_disease d 
+  	</if>
+    <if test="cid != -1">
+    	(tb_disease d RIGHT JOIN tb_item_rela_cate r on d.id = r.item_id ) RIGHT JOIN tb_cate c on r.cate_id = c.id
+  	</if>
+   	WHERE (
+	   	d.id LIKE #{search}
+	   	OR	d.name LIKE #{search} 		 
+	   	OR	d.symbol LIKE #{search} 		 
+	    OR  part LIKE #{search}
+	    OR  depart LIKE #{search}
+	    OR  complication LIKE #{search}
+	    OR  symptoms LIKE #{search}
+	    OR  rate LIKE #{search}
+	    OR  time LIKE #{search})
+    <if test="cid != -1">
+      AND c.id = #{cid}
+    </if>
+    <if test="minDate != null and minDate != '' and maxDate != null and maxDate != ''">
+      AND d.created BETWEEN #{minDate} AND #{maxDate}
+    </if>
+    ORDER BY
+    ${orderCol}
+    ${orderDir}
+  </select>
+  
+  
 </mapper>

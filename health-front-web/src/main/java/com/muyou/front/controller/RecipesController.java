@@ -14,12 +14,12 @@ import com.muyou.common.exception.ServiceException;
 import com.muyou.common.form.RequestForm;
 import com.muyou.common.pojo.ResponseBuilder;
 import com.muyou.common.util.StringUtil;
-import com.muyou.front.pojo.FoodMenuVo;
-import com.muyou.front.pojo.FoodRecommendVo;
-import com.muyou.front.pojo.FoodVo;
-import com.muyou.front.pojo.IngredientResultVo;
-import com.muyou.front.pojo.RecipesListVo;
 import com.muyou.front.service.RecipesService;
+import com.muyou.front.vo.FoodMenuVo;
+import com.muyou.front.vo.FoodRecommendVo;
+import com.muyou.front.vo.FoodVo;
+import com.muyou.front.vo.IngredientResultVo;
+import com.muyou.front.vo.RecipesListVo;
 import com.muyou.sso.service.CollectService;
 
 @Controller

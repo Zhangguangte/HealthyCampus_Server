@@ -3,8 +3,8 @@ package com.muyou.front.service;
 import java.util.List;
 
 import com.muyou.common.form.RequestForm;
-import com.muyou.front.pojo.MedicineDetailVo;
-import com.muyou.front.pojo.MedicineVo;
+import com.muyou.front.vo.MedicineDetailVo;
+import com.muyou.front.vo.MedicineVo;
 
 /**
  * 药品服务

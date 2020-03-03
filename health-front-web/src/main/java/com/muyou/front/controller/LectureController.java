@@ -12,8 +12,8 @@ import com.muyou.common.exception.ServiceException;
 import com.muyou.common.form.RequestForm;
 import com.muyou.common.pojo.ResponseBuilder;
 import com.muyou.common.util.StringUtil;
-import com.muyou.front.pojo.LectureVo;
 import com.muyou.front.service.LectureService;
+import com.muyou.front.vo.LectureVo;
 
 @Controller
 @RequestMapping("/service")

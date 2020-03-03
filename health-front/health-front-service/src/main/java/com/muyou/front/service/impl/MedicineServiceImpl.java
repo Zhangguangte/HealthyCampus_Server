@@ -11,19 +11,21 @@ import org.springframework.stereotype.Service;
 import com.muyou.common.form.RequestForm;
 import com.muyou.common.redis.JedisClient;
 import com.muyou.common.util.JsonUtils;
-import com.muyou.front.pojo.MedicineDetailVo;
-import com.muyou.front.pojo.MedicineVo;
 import com.muyou.front.service.MedicineService;
-import com.muyou.mapper.TbMedicineClassifyMapper;
+import com.muyou.front.vo.MedicineDetailVo;
+import com.muyou.front.vo.MedicineVo;
+import com.muyou.mapper.TbClassifyMapper;
 import com.muyou.mapper.TbMedicineMapper;
+import com.muyou.pojo.TbClassify;
+import com.muyou.pojo.TbClassifyExample;
+import com.muyou.pojo.TbClassifyExample.Criteria;
 import com.muyou.pojo.TbMedicine;
-import com.muyou.pojo.TbMedicineClassify;
 
 @Service
 public class MedicineServiceImpl implements MedicineService {
 
 	@Autowired
-	private TbMedicineClassifyMapper classifyMapper;
+	private TbClassifyMapper classifyMapper;
 
 	@Autowired
 	private TbMedicineMapper medicineMapper;
@@ -42,6 +44,9 @@ public class MedicineServiceImpl implements MedicineService {
 
 	@Value("${MEDICINE_DETAIL}")
 	private String MEDICINE_DETAIL;
+	
+	@Value("${CLASS_MED}")
+	private Integer CLASS_MED;
 
 	// 获得所有的分类
 	@Override
@@ -56,15 +61,22 @@ public class MedicineServiceImpl implements MedicineService {
 			e.printStackTrace();
 		}
 
-		List<TbMedicineClassify> list = classifyMapper.getClassify();
+		TbClassifyExample example = new TbClassifyExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andTypeEqualTo(CLASS_MED);
+		
+		List<TbClassify> list = classifyMapper.selectByExample(example);
+
 		if (null == list || list.size() == 0) {
 			return null;
 		}
+		
+		
 		List<MedicineVo> result = new LinkedList<MedicineVo>();
-		for (TbMedicineClassify mClassify : list) {
+		for (TbClassify mClassify : list) {
 			result.add(new MedicineVo(mClassify));
 		}
-		
+
 		try {
 			jedisClient.set(MEDICINE_CLASSIFY, JsonUtils.objectToJson(result));
 		} catch (Exception e) {
@@ -73,82 +85,91 @@ public class MedicineServiceImpl implements MedicineService {
 		return result;
 	}
 
-//	// 获得所有的药品根据分类
-//	@Override
-//	public List<MedicineListVo> getAllMedicine(RequestForm requestForm) {
-//
-//		try { // 根据分类名称
-//			List<String> json = jedisClient.lrange(MEDICINE_LIST + ":" + requestForm.getContent(),
-//					requestForm.getRow() * 15, (requestForm.getRow() + 1) * 15);
-//			if (null != json && json.size() > 0) {
-//				List<MedicineListVo> list = new LinkedList<>();
-//				for (String string : json) {
-//					list.add(JsonUtils.jsonToPojo(string, MedicineListVo.class));
-//				}
-//				return list;
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		List<TbMedicine> list = medicineMapper.getAllMedicine(requestForm.getContent(), requestForm.getRow() * 15);
-//		if (null == list || list.size() == 0) {
-//			return null;
-//		}
-//		List<MedicineListVo> result = new LinkedList<MedicineListVo>();
-//		for (TbMedicine medicine : list) {
-//			result.add(new MedicineListVo(medicine));
-//		}
-//
-//		try {
-//			for (MedicineListVo item : result) {
-//				jedisClient.rpush(MEDICINE_LIST + ":" + requestForm.getContent(), JsonUtils.objectToJson(item));
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return result;
-//	}
-//
-//	// 获得所有的药品根据关键字和范围
-//	@Override
-//	public List<MedicineListVo> getAllMedicineByKey(RequestForm requestForm) {
-//
-//		try {
-//			List<String> json = jedisClient.lrange(
-//					MEDICINE_SEARCH + ":" + requestForm.getQuest_id() + ":" + requestForm.getContent(),
-//					requestForm.getRow() * 15, (requestForm.getRow() + 1) * 15);
-//			if (null != json && json.size() > 0) {
-//				List<MedicineListVo> list = new LinkedList<>();
-//				for (String string : json) {
-//					list.add(JsonUtils.jsonToPojo(string, MedicineListVo.class));
-//				}
-//				return list;
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		List<TbMedicine> list = medicineMapper.getAllMedicineByKey(requestForm.getQuest_id(), requestForm.getContent(),
-//				requestForm.getRow() * 15);
-//		if (null == list || list.size() == 0)
-//			return null;
-//		List<MedicineListVo> result = new LinkedList<MedicineListVo>();
-//		for (TbMedicine medicine : list) {
-//			result.add(new MedicineListVo(medicine));
-//		}
-//
-//		try {
-//			for (MedicineListVo item : result) {
-//				jedisClient.rpush(MEDICINE_SEARCH + ":" + requestForm.getQuest_id() + ":" + requestForm.getContent(), JsonUtils.objectToJson(item));
-//				jedisClient.expire(MEDICINE_SEARCH + ":" + requestForm.getQuest_id() + ":" + requestForm.getContent(), 60*60*24*10);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//		return result;
-//	}
+	// // 获得所有的药品根据分类
+	// @Override
+	// public List<MedicineListVo> getAllMedicine(RequestForm requestForm) {
+	//
+	// try { // 根据分类名称
+	// List<String> json = jedisClient.lrange(MEDICINE_LIST + ":" +
+	// requestForm.getContent(),
+	// requestForm.getRow() * 15, (requestForm.getRow() + 1) * 15);
+	// if (null != json && json.size() > 0) {
+	// List<MedicineListVo> list = new LinkedList<>();
+	// for (String string : json) {
+	// list.add(JsonUtils.jsonToPojo(string, MedicineListVo.class));
+	// }
+	// return list;
+	// }
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	//
+	// List<TbMedicine> list =
+	// medicineMapper.getAllMedicine(requestForm.getContent(), requestForm.getRow()
+	// * 15);
+	// if (null == list || list.size() == 0) {
+	// return null;
+	// }
+	// List<MedicineListVo> result = new LinkedList<MedicineListVo>();
+	// for (TbMedicine medicine : list) {
+	// result.add(new MedicineListVo(medicine));
+	// }
+	//
+	// try {
+	// for (MedicineListVo item : result) {
+	// jedisClient.rpush(MEDICINE_LIST + ":" + requestForm.getContent(),
+	// JsonUtils.objectToJson(item));
+	// }
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// return result;
+	// }
+	//
+	// // 获得所有的药品根据关键字和范围
+	// @Override
+	// public List<MedicineListVo> getAllMedicineByKey(RequestForm requestForm) {
+	//
+	// try {
+	// List<String> json = jedisClient.lrange(
+	// MEDICINE_SEARCH + ":" + requestForm.getQuest_id() + ":" +
+	// requestForm.getContent(),
+	// requestForm.getRow() * 15, (requestForm.getRow() + 1) * 15);
+	// if (null != json && json.size() > 0) {
+	// List<MedicineListVo> list = new LinkedList<>();
+	// for (String string : json) {
+	// list.add(JsonUtils.jsonToPojo(string, MedicineListVo.class));
+	// }
+	// return list;
+	// }
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	//
+	// List<TbMedicine> list =
+	// medicineMapper.getAllMedicineByKey(requestForm.getQuest_id(),
+	// requestForm.getContent(),
+	// requestForm.getRow() * 15);
+	// if (null == list || list.size() == 0)
+	// return null;
+	// List<MedicineListVo> result = new LinkedList<MedicineListVo>();
+	// for (TbMedicine medicine : list) {
+	// result.add(new MedicineListVo(medicine));
+	// }
+	//
+	// try {
+	// for (MedicineListVo item : result) {
+	// jedisClient.rpush(MEDICINE_SEARCH + ":" + requestForm.getQuest_id() + ":" +
+	// requestForm.getContent(), JsonUtils.objectToJson(item));
+	// jedisClient.expire(MEDICINE_SEARCH + ":" + requestForm.getQuest_id() + ":" +
+	// requestForm.getContent(), 60*60*24*10);
+	// }
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	//
+	// return result;
+	// }
 
 	// 药品详细
 	@Override

@@ -1,5 +1,8 @@
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\DictServiceImpl.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\AdminServiceImpl.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\ItemMedServiceImpl.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\RedisServiceImpl.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\UserServiceImpl.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\ItemCateServiceImpl.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\ItemDisServiceImpl.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\SystemServiceImpl.java

@@ -34,33 +34,9 @@
 <script type="text/javascript"
 	src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/gt.js"></script>
-
-<script>
-	(function(h, o, t, j, a, r) {
-		h.hj = h.hj || function() {
-			(h.hj.q = h.hj.q || []).push(arguments)
-		};
-		h._hjSettings = {
-			hjid : 695920,
-			hjsv : 6
-		};
-		a = o.getElementsByTagName('head')[0];
-		r = o.createElement('script');
-		r.async = 1;
-		r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-		a.appendChild(r);
-	})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-</script>
-<script>
-	var _hmt = _hmt || [];
-	(function() {
-		var hm = document.createElement("script");
-		hm.src = "https://hm.baidu.com/hm.js?90194188523e0a2d04ad3ad170c83f30";
-		var s = document.getElementsByTagName("script")[0];
-		s.parentNode.insertBefore(hm, s);
-	})();
-</script>
-
+<script src="https://v.vaptcha.com/v3.js"></script>
+<link rel="stylesheet" type="text/css" href="lib/login/verify/verify.css">
+<script type="text/javascript" src="lib/login/verify/verify.js" ></script>
 <style>
 .title, h6 {
 	font-family: "黑体";
@@ -116,16 +92,27 @@ span.icon2 {
 					<form id="login" action="" method="post" width="100%">
 						<input placeholder="用户名" name="username" id="username"
 							class="user" type="text" required=""> 
-                    	<span class="icon1"><i class="fa fa-user" aria-hidden="true"></i></span><br><br>
+                    	<span class="icon1">
+                    		<i class="fa fa-user" aria-hidden="true"/>
+                    	</span><br><br>
 						<input placeholder="密码" name="password" id="password" class="pass"
 							type="password" required=""> 
-						 <span class="icon2"><i class="fa fa-unlock" aria-hidden="true"></i></span><br><br>
+						 <span class="icon2">
+						 <i class="fa fa-unlock" aria-hidden="true"/>
+						 </span><br><br>
 
-
-						<div id="captcha">
-							<p id="wait" class="show">正在加载验证码...</p>
+						<div id="captcha" class="verify-bar-area" data-vide-bg="lib/video/captch" style="width: 350px; height: 40px; line-height: 40px;cursor:pointer;">
+							<strong id="cap_msg" class="verify-msg" style="font-weight:bold;">点击进行校验</strong>
+							<div id="cap_check" class="verify-left-bar" style="width: 40px; height: 40px; border-color: rgb(221, 221, 221);display:none;">
+								<span class="verify-msg" style="color: rgb(0, 0, 0);"/>
+								<div class="verify-move-block" style="width: 40px; height: 40px; left: 0px; background-color: rgb(92, 184, 92);">
+									<i class="verify-icon iconfont icon-check" style="color: rgb(0, 0, 0);"></i>
+								</div>
+							</div>
 						</div>
-
+						
+						<p id="cap" style="display:none;"/>
+			
 						<div class="sub-w3l">
 							<h6 onclick="forgetPass()" style="cursor: pointer">
 								<a>游客体验账号密码?</a>
@@ -150,6 +137,7 @@ span.icon2 {
 		</div>
 	</div>
 	<script type="text/javascript">
+	
 		var LOGIN = {
 			checkInput : function() {
 				$("#loginButton").val("登录中...");
@@ -204,9 +192,18 @@ span.icon2 {
 		}
 		$(function() {
 			$("#loginButton").click(function() {
+				if(isVer == false)
+				{	
+					layer.msg("请进行验证");
+					return false;
+				}
 				$("#loginButton").val("登录中...");
 		        $("#loginButton").attr("disabled","disabled");
 				LOGIN.login();
+			});
+			$("#captcha").click(function(){
+				$("#cap").show();
+				$("#captcha").hide();
 			});
 		});
 		$.ajax({
@@ -228,6 +225,46 @@ span.icon2 {
 	            layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status,{title: '错误信息',icon: 2});
 	        }
 	    });
+
+		
+		var isVer = false;
+		
+		
+		$('#cap').slideVerify({
+	    	type : 2,		//类型
+    		vOffset : 5,	//误差量，根据需求自行调整
+	        vSpace : 5,	//间隔
+	        imgName : ['1.jpg', '2.jpg'],
+	        imgSize : {
+	        	width: '350px',
+	        	height: '200px',
+	        },
+	        blockSize : {
+	        	width: '40px',
+	        	height: '40px',
+	        },
+	        barSize : {
+	        	width : '350px',
+	        	height : '40px',
+	        },
+	        ready : function() {
+	    	},
+	        success : function() {
+	        	isVer = true;
+	        	layer.msg('验证成功!');
+	        	$("#cap_check").show();
+	        	$("#cap").hide();
+	        	$("#cap_msg").text("验证成功");
+	        	$("#captcha").unbind("click");
+	        	$("#captcha").css("cursor","auto");
+				$("#captcha").show();
+	        },
+	        error : function() {
+	        	layer.msg('验证失败!');
+	        }
+	        
+	    });
+		
 	</script>
 </body>
 </html>

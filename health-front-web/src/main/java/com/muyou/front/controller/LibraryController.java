@@ -14,9 +14,9 @@ import com.muyou.common.exception.ServiceException;
 import com.muyou.common.form.RequestForm;
 import com.muyou.common.pojo.ResponseBuilder;
 import com.muyou.common.util.StringUtil;
-import com.muyou.front.pojo.BookDetailVo;
-import com.muyou.front.pojo.BookVo;
 import com.muyou.front.service.LibraryService;
+import com.muyou.front.vo.BookDetailVo;
+import com.muyou.front.vo.BookVo;
 import com.muyou.sso.service.CollectService;
 
 @Controller

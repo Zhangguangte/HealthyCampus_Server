@@ -64,9 +64,8 @@
 	<dubbo:reference
 		interface="com.muyou.front.service.MedicineService"
 		id="medicineService" />
-	<!-- <dubbo:reference
+	<dubbo:reference
 		interface="com.muyou.search.service.SearchResultService"
-		id="searchResultService" /> -->
-
+		id="searchResultService" />
 
 </beans>

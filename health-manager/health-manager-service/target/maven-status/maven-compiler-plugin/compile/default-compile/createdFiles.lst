@@ -1,5 +1,10 @@
 com\muyou\service\impl\SystemServiceImpl.class
 com\muyou\service\impl\UserServiceImpl.class
+com\muyou\service\impl\ItemMedServiceImpl$1.class
 com\muyou\service\impl\AdminServiceImpl.class
 com\muyou\service\impl\DictServiceImpl.class
+com\muyou\service\impl\ItemDisServiceImpl$1.class
+com\muyou\service\impl\ItemDisServiceImpl.class
+com\muyou\service\impl\ItemMedServiceImpl.class
+com\muyou\service\impl\ItemCateServiceImpl.class
 com\muyou\service\impl\RedisServiceImpl.class

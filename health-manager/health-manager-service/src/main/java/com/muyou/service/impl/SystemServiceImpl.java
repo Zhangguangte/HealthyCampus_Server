@@ -1,6 +1,7 @@
 package com.muyou.service.impl;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,9 +18,13 @@ import com.muyou.common.redis.JedisClient;
 import com.muyou.common.util.JsonUtils;
 import com.muyou.common.util.ResultUtil;
 import com.muyou.mapper.TbBaseMapper;
+import com.muyou.mapper.TbDataMapper;
 import com.muyou.mapper.TbLogMapper;
 import com.muyou.mapper.TbShiroFilterMapper;
 import com.muyou.pojo.TbBase;
+import com.muyou.pojo.TbData;
+import com.muyou.pojo.TbDataExample;
+import com.muyou.pojo.TbDataExample.Criteria;
 import com.muyou.pojo.TbLog;
 import com.muyou.pojo.TbLogExample;
 import com.muyou.pojo.TbShiroFilter;
@@ -39,11 +44,14 @@ public class SystemServiceImpl implements SystemService {
 	private TbLogMapper tbLogMapper;
 
 	@Autowired
+	private TbDataMapper dataMapper;
+
+	@Autowired
 	private JedisClient jedisClient;
 
 	@Value("${PAGE_BROWSE}")
 	private String PAGE_BROWSE;
-	
+
 	@Value("${SYTEM_PRE}")
 	private String SYTEM_PRE;
 
@@ -152,44 +160,119 @@ public class SystemServiceImpl implements SystemService {
 
 	@Override
 	public DataTablesResult getBrowseCount(boolean isIncr) {
-
+		//以下部分,可以去找个网站计数的插件、API这些，更加方便
+		
 		DataTablesResult result = new DataTablesResult();
 		result.setSuccess(true);
+
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH);
-		
+
 		List<Integer> list = null;
 
-		boolean r = true;
+		// 数据库
+		List<TbData> datas = null;
 
+		// 操作switch
+		int r = 0;
+
+		// 缓存中是否有数据
 		try {
 			String json = jedisClient.get(PAGE_BROWSE + ":" + year);
 			if (StringUtils.isNotBlank(json)) {
 				list = JsonUtils.jsonToList(json, Integer.class);
-				r = false;
+				r = 1;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		if (r) {
-			list = new LinkedList<>();
-			for (int i = 0; i < 12; i++) {
-				list.add(new Integer(0));
-			}
+		// 如果无数据,查询数据库
+		if (0 == r) {
+			TbDataExample example = new TbDataExample();
+			example.setOrderByClause("create_time desc");
+			Criteria criteria = example.createCriteria();
+			criteria.andTypeEqualTo(PAGE_BROWSE + ":" + year);
+			datas = dataMapper.selectByExample(example);
+			if (null != datas && datas.size() > 0)
+				r = 2;
 		}
 
-		if (isIncr) {
-			list.set(month, list.get(month) + 1);
+		// 操作
+		switch (r) {
+		// mysql、redis都没有数据,初始化数据,且两个数据库正常，把数据加入redis、msql
+		case 0:
 			try {
+				list = new LinkedList<>();
+				for (int i = 0; i < 12; i++) {
+					list.add(new Integer(0));
+				}
+				list.set(month, list.get(month) + 1);
+				result.setRecordsTotal(datas.get(0).getNum() + 1);
+
+				// mysql
+				TbData data = new TbData();
+				data.setCreateTime(new Date());
+				data.setDescription(JsonUtils.objectToJson(jedisClient.get(PAGE_BROWSE + ":" + year)));
+				data.setNum(Integer.valueOf(jedisClient.get(PAGE_BROWSE + ":" + year + "NUM")));
+				data.setType(PAGE_BROWSE + ":" + year);
+				dataMapper.insert(data);
+
+				// redis
 				jedisClient.set(PAGE_BROWSE + ":" + year, JsonUtils.objectToJson(list));
+				jedisClient.incr(PAGE_BROWSE + ":" + year + "NUM");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			result.setRecordsTotal(jedisClient.incr(PAGE_BROWSE + ":" + year + "NUM").intValue());
-		} else
-			result.setRecordsTotal(Integer.valueOf(jedisClient.get(PAGE_BROWSE + ":" + year + "NUM")));
+			break;
+		// redis正常
+		case 1:
+			try {
+				// 是否增加
+				if (isIncr) {
+					list.set(month, list.get(month) + 1);
+					jedisClient.set(PAGE_BROWSE + ":" + year, JsonUtils.objectToJson(list));
+					result.setRecordsTotal(jedisClient.incr(PAGE_BROWSE + ":" + year + "NUM").intValue());
+
+					// 如果访问量到底100的倍数,添加入mysql
+					if (0 == list.get(month) % 100) {
+						TbData data = new TbData();
+						data.setCreateTime(new Date());
+						data.setDescription(JsonUtils.objectToJson(jedisClient.get(PAGE_BROWSE + ":" + year)));
+						data.setNum(Integer.valueOf(jedisClient.get(PAGE_BROWSE + ":" + year + "NUM")));
+						data.setType(PAGE_BROWSE + ":" + year);
+						dataMapper.insert(data);
+					}
+				} else
+					result.setRecordsTotal(Integer.valueOf(jedisClient.get(PAGE_BROWSE + ":" + year + "NUM")));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		// redis没有数据,mysql有数据
+		case 2:
+			list = JsonUtils.jsonToList(datas.get(0).getDescription(), Integer.class);
+			// 是否增加
+			if (isIncr) {
+				list.set(month, list.get(month) + 1);
+				result.setRecordsTotal(datas.get(0).getNum() + 1);
+			} else
+				result.setRecordsTotal(datas.get(0).getNum());
+			
+			//如果redis正常,且无数据
+			try {
+				jedisClient.set(PAGE_BROWSE + ":" + year, JsonUtils.objectToJson(list));
+				jedisClient.incr(PAGE_BROWSE + ":" + year + "NUM");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			//至于redis异常
+			//不进行mysql插入,因为这只有在redis报废的情况下,这样的redis已经异常,访问量+1过于频繁,会增加mysql的压力,所以,还不如不添加。个人理解。
+			break;
+		}
+
 		result.setData(list);
 		return result;
 	}

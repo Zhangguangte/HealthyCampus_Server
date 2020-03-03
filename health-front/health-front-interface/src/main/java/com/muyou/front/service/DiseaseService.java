@@ -3,9 +3,8 @@ package com.muyou.front.service;
 import java.util.List;
 
 import com.muyou.common.form.RequestForm;
-import com.muyou.common.pojo.DiseaseSortVo;
-import com.muyou.front.pojo.DiseaseDetailVo;
-import com.muyou.front.pojo.DiseaseSortListVo;
+import com.muyou.front.vo.DiseaseDetailVo;
+import com.muyou.front.vo.DiseaseSortListVo;
 
 /**
  * 疾病

@@ -33,11 +33,11 @@ public class ItemDiseaseListener implements MessageListener {
 			// 创建一SolrInputDocument对象。
 			SolrInputDocument document = new SolrInputDocument();
 			document.addField("di_id", searchItem.getId());
-			document.addField("di_title", searchItem.getDiseaseName());
-			document.addField("di_intro", searchItem.getDiseaseIntroduce());
-			document.addField("di_url", searchItem.getDiseaseUrl());
-			document.addField("di_part", searchItem.getDiseasePart());
-			document.addField("di_depart", searchItem.getCureDepart());
+			document.addField("di_title", searchItem.getName());
+			document.addField("di_intro", searchItem.getIntroduce());
+			document.addField("di_url", searchItem.getUrl());
+			document.addField("di_part", searchItem.getPart());
+			document.addField("di_depart", searchItem.getPart());
 			solrServer.add(document);
 			solrServer.commit();
 		} catch (Exception e) {

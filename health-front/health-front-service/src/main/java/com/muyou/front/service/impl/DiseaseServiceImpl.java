@@ -11,17 +11,16 @@ import org.springframework.stereotype.Service;
 import com.muyou.common.form.RequestForm;
 import com.muyou.common.redis.JedisClient;
 import com.muyou.common.util.JsonUtils;
-import com.muyou.front.pojo.DiseaseDetailVo;
-import com.muyou.front.pojo.DiseaseSortListVo;
 import com.muyou.front.service.DiseaseService;
-import com.muyou.mapper.TbDepartmentMapper;
+import com.muyou.front.vo.DiseaseDetailVo;
+import com.muyou.front.vo.DiseaseSortListVo;
+import com.muyou.mapper.TbClassifyMapper;
 import com.muyou.mapper.TbDiseaseMapper;
-import com.muyou.mapper.TbPartMapper;
-import com.muyou.pojo.TbDepartment;
+import com.muyou.pojo.TbClassify;
+import com.muyou.pojo.TbClassifyExample;
 import com.muyou.pojo.TbDisease;
 import com.muyou.pojo.TbDiseaseExample;
 import com.muyou.pojo.TbDiseaseExample.Criteria;
-import com.muyou.pojo.TbPart;
 
 @Service
 public class DiseaseServiceImpl implements DiseaseService {
@@ -30,10 +29,7 @@ public class DiseaseServiceImpl implements DiseaseService {
 	private TbDiseaseMapper diseaseMapper;
 
 	@Autowired
-	private TbPartMapper partMapper;
-
-	@Autowired
-	private TbDepartmentMapper departmentMapper;
+	private TbClassifyMapper classifyMapper;
 
 	@Autowired
 	private JedisClient jedisClient;
@@ -49,7 +45,7 @@ public class DiseaseServiceImpl implements DiseaseService {
 
 	@Value("${DISEASE_EXPIRE}")
 	private Integer DISEASE_EXPIRE;
-	
+
 	// 疾病分类
 	@Override
 	public List<DiseaseSortListVo> getDiseaseSortList(RequestForm requestForm) {
@@ -62,22 +58,16 @@ public class DiseaseServiceImpl implements DiseaseService {
 			e.printStackTrace();
 		}
 
-		List<DiseaseSortListVo> list = new LinkedList<>();
-		// 0.代表部位;1.代表科室
-		if ("0".equals(requestForm.getQuest_id())) { // 部位
-			List<TbPart> parts = partMapper.selectAll();
-			if (null == parts)
-				return null;
-			for (TbPart part : parts) {
-				list.add(new DiseaseSortListVo(part));
-			}
-		} else { // 科室
-			List<TbDepartment> departments = departmentMapper.selectAll();
-			if (null == departments)
-				return null;
-			for (TbDepartment department : departments) {
-				list.add(new DiseaseSortListVo(department));
-			}
+		//查询数据
+		TbClassifyExample example = new TbClassifyExample();
+		TbClassifyExample.Criteria criteria = example.createCriteria();
+		criteria.andTypeEqualTo(Integer.valueOf(requestForm.getQuest_id()));
+		List<TbClassify> list = classifyMapper.selectByExample(example);
+		
+		//封装数据
+		List<DiseaseSortListVo> result = new LinkedList<DiseaseSortListVo>();
+		for (TbClassify classify : list) {
+			result.add(new DiseaseSortListVo(classify));	
 		}
 
 		try {
@@ -86,7 +76,7 @@ public class DiseaseServiceImpl implements DiseaseService {
 			e.printStackTrace();
 		}
 
-		return list;
+		return result;
 	}
 
 	// // 分类疾病
@@ -164,7 +154,7 @@ public class DiseaseServiceImpl implements DiseaseService {
 		} else if ("NAME".equals(requestForm.getQuest_id())) {
 			TbDiseaseExample example = new TbDiseaseExample();
 			Criteria criteria = example.createCriteria();
-			criteria.andDiseaseNameEqualTo(requestForm.getContent());
+			criteria.andNameEqualTo(requestForm.getContent());
 			List<TbDisease> diseases = diseaseMapper.selectByExample(example);
 			if (null == diseases || diseases.size() == 0)
 				return null;

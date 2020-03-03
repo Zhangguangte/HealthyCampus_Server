@@ -6,21 +6,30 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TbMedicineMapper {
-	int countByExample(TbMedicineExample example);
+    int countByExample(TbMedicineExample example);
 
-	int deleteByExample(TbMedicineExample example);
+    int deleteByExample(TbMedicineExample example);
 
-	int deleteByPrimaryKey(Integer goodsId);
+    int deleteByPrimaryKey(Integer id);
 
-	int insert(TbMedicine record);
+    int insert(TbMedicine record);
 
-	int insertSelective(TbMedicine record);
+    int insertSelective(TbMedicine record);
 
-	List<TbMedicine> selectByExample(TbMedicineExample example);
+    List<TbMedicine> selectByExample(TbMedicineExample example);
 
-	// **********************************************
+    TbMedicine selectByPrimaryKey(Integer id);
 
-	List<TbMedicine> getAllMedicine(@Param("classifyName") String classifyName, @Param("start") int start);
+    int updateByExampleSelective(@Param("record") TbMedicine record, @Param("example") TbMedicineExample example);
+
+    int updateByExample(@Param("record") TbMedicine record, @Param("example") TbMedicineExample example);
+
+    int updateByPrimaryKeySelective(TbMedicine record);
+
+    int updateByPrimaryKey(TbMedicine record);
+    
+    //客户端
+    List<TbMedicine> getAllMedicine(@Param("classifyName") String classifyName, @Param("start") int start);
 
 	List<TbMedicine> getAllMedicineByKey(@Param("scope") String scope, @Param("content") String content,
 			@Param("start") int start);
@@ -29,14 +38,12 @@ public interface TbMedicineMapper {
 
 	TbMedicine getMedicineDetailByCode(@Param("bar_code") String bar_code);
 
-	// **********************************************
-	TbMedicine selectByPrimaryKey(Integer goodsId);
+	//后台
+	List<TbMedicine> selectItemByCondition(@Param("cid") int cid, @Param("search") String search,
+			@Param("orderCol") String orderCol, @Param("orderDir") String orderDir);
 
-	int updateByExampleSelective(@Param("record") TbMedicine record, @Param("example") TbMedicineExample example);
+	List<TbMedicine> selectItemByMultiCondition(@Param("cid") int cid, @Param("search") String search,
+			@Param("minDate") String minDate, @Param("maxDate") String maxDate, @Param("orderCol") String orderCol,
+			@Param("orderDir") String orderDir);
 
-	int updateByExample(@Param("record") TbMedicine record, @Param("example") TbMedicineExample example);
-
-	int updateByPrimaryKeySelective(TbMedicine record);
-
-	int updateByPrimaryKey(TbMedicine record);
 }

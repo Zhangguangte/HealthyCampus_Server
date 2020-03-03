@@ -2,21 +2,14 @@ package com.muyou.pojo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
-public class TbMedicine implements Serializable{
-    private Integer goodsId;
-
-    private Integer c1Id;
-
-    private Integer c2Id;
-
-    private String c1;
-
-    private String c2;
+public class TbMedicine implements Serializable {
+    private Integer id;
 
     private String goodsName;
 
-    private String pyCode;
+    private String spell;
 
     private String spec;
 
@@ -28,60 +21,41 @@ public class TbMedicine implements Serializable{
 
     private String barCode;
 
-    private String zhuzhi;
+    private String indications;
 
-    private String explainBook;
+    private String instruction;
 
     private String replenish;
 
     private String logo;
 
-    private Integer isOtc;
+    private Boolean otc;
 
-    private Integer isDel;
+    private Boolean status;
 
-    private String cTime;
+    private Date created;
 
     private BigDecimal price;
 
-    public Integer getGoodsId() {
-        return goodsId;
+    private Date updated;
+
+    //分类名称
+    private String cName;
+
+    public String getcName() {
+		return cName;
+	}
+
+	public void setcName(String cName) {
+		this.cName = cName;
+	}
+
+	public Integer getId() {
+        return id;
     }
 
-    public void setGoodsId(Integer goodsId) {
-        this.goodsId = goodsId;
-    }
-
-    public Integer getC1Id() {
-        return c1Id;
-    }
-
-    public void setC1Id(Integer c1Id) {
-        this.c1Id = c1Id;
-    }
-
-    public Integer getC2Id() {
-        return c2Id;
-    }
-
-    public void setC2Id(Integer c2Id) {
-        this.c2Id = c2Id;
-    }
-
-    public String getC1() {
-        return c1;
-    }
-
-    public void setC1(String c1) {
-        this.c1 = c1 == null ? null : c1.trim();
-    }
-
-    public String getC2() {
-        return c2;
-    }
-
-    public void setC2(String c2) {
-        this.c2 = c2 == null ? null : c2.trim();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getGoodsName() {
@@ -92,12 +66,12 @@ public class TbMedicine implements Serializable{
         this.goodsName = goodsName == null ? null : goodsName.trim();
     }
 
-    public String getPyCode() {
-        return pyCode;
+    public String getSpell() {
+        return spell;
     }
 
-    public void setPyCode(String pyCode) {
-        this.pyCode = pyCode == null ? null : pyCode.trim();
+    public void setSpell(String spell) {
+        this.spell = spell == null ? null : spell.trim();
     }
 
     public String getSpec() {
@@ -140,20 +114,20 @@ public class TbMedicine implements Serializable{
         this.barCode = barCode == null ? null : barCode.trim();
     }
 
-    public String getZhuzhi() {
-        return zhuzhi;
+    public String getIndications() {
+        return indications;
     }
 
-    public void setZhuzhi(String zhuzhi) {
-        this.zhuzhi = zhuzhi == null ? null : zhuzhi.trim();
+    public void setIndications(String indications) {
+        this.indications = indications == null ? null : indications.trim();
     }
 
-    public String getExplainBook() {
-        return explainBook;
+    public String getInstruction() {
+        return instruction;
     }
 
-    public void setExplainBook(String explainBook) {
-        this.explainBook = explainBook == null ? null : explainBook.trim();
+    public void setInstruction(String instruction) {
+        this.instruction = instruction == null ? null : instruction.trim();
     }
 
     public String getReplenish() {
@@ -172,28 +146,28 @@ public class TbMedicine implements Serializable{
         this.logo = logo == null ? null : logo.trim();
     }
 
-    public Integer getIsOtc() {
-        return isOtc;
+    public Boolean getOtc() {
+        return otc;
     }
 
-    public void setIsOtc(Integer isOtc) {
-        this.isOtc = isOtc;
+    public void setOtc(Boolean otc) {
+        this.otc = otc;
     }
 
-    public Integer getIsDel() {
-        return isDel;
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setIsDel(Integer isDel) {
-        this.isDel = isDel;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
-    public String getcTime() {
-        return cTime;
+    public Date getCreated() {
+        return created;
     }
 
-    public void setcTime(String cTime) {
-        this.cTime = cTime == null ? null : cTime.trim();
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     public BigDecimal getPrice() {
@@ -202,5 +176,13 @@ public class TbMedicine implements Serializable{
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
 }

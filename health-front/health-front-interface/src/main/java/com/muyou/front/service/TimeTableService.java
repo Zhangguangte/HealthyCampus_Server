@@ -3,7 +3,7 @@ package com.muyou.front.service;
 import java.util.List;
 
 import com.muyou.common.form.RequestForm;
-import com.muyou.front.pojo.CourseVo;
+import com.muyou.front.vo.CourseVo;
 
 /**
  * 课表服务

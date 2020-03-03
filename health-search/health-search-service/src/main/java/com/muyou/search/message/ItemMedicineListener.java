@@ -32,16 +32,16 @@ public class ItemMedicineListener implements MessageListener {
 			TbMedicine searchItem = itemMapper.getMedicineItemById(itemId);
 			// 创建一SolrInputDocument对象。
 			SolrInputDocument document = new SolrInputDocument();
-			document.addField("md_id", searchItem.getGoodsId());
+			document.addField("md_id", searchItem.getId());
 			document.addField("md_price", searchItem.getPrice()+"");
 			document.addField("md_goodName", searchItem.getGoodsName());
-			document.addField("md_desc", searchItem.getExplainBook());
-			document.addField("md_isOct", searchItem.getIsOtc()+"");
+			document.addField("md_desc", searchItem.getInstruction());
+			document.addField("md_isOct", searchItem.getOtc()+"");
 			document.addField("md_image", searchItem.getLogo());
 			document.addField("md_approval", searchItem.getApprovalNumber());
 			document.addField("md_manufacturer", searchItem.getManufacturer());
-			document.addField("md_zhuzhi", searchItem.getZhuzhi());
-			document.addField("md_type", searchItem.getC2());
+			document.addField("md_zhuzhi", searchItem.getIndications());
+			document.addField("md_type", searchItem.getcName());
 			solrServer.add(document);
 			solrServer.commit();
 		} catch (Exception e) {
