@@ -16,27 +16,37 @@ public interface TbRecipesMapper {
 
 	int insertSelective(TbRecipes record);
 
-	List<TbRecipes> selectByExampleWithBLOBs(TbRecipesExample example);
-
 	List<TbRecipes> selectByExample(TbRecipesExample example);
 
+	TbRecipes selectByPrimaryKey(Integer id);
+
+	int updateByExampleSelective(@Param("record") TbRecipes record, @Param("example") TbRecipesExample example);
+
+	int updateByExample(@Param("record") TbRecipes record, @Param("example") TbRecipesExample example);
+
+	int updateByPrimaryKeySelective(TbRecipes record);
+
+	int updateByPrimaryKey(TbRecipes record);
+
+	// 客户端
 	List<TbRecipes> getRecommendRecipes(@Param("physique") String physique);
 
 	List<TbRecipes> getRecipesByThreeMeals(@Param("type") String type, @Param("week") String week);
 
 	List<TbRecipes> getRecipeDetailByName(@Param("name") String name);
 
-	TbRecipes selectByPrimaryKey(Integer id);
+	List<TbRecipes> selectItemByClassify(@Param("row") int row, @Param("count") int count,
+			@Param("search") String search);
 
-	int updateByExampleSelective(@Param("record") TbRecipes record, @Param("example") TbRecipesExample example);
+	// 后台
+	List<TbRecipes> selectItemByCondition(@Param("cid") int cid, @Param("search") String search,
+			@Param("orderCol") String orderCol, @Param("orderDir") String orderDir);
 
-	int updateByExampleWithBLOBs(@Param("record") TbRecipes record, @Param("example") TbRecipesExample example);
+	List<TbRecipes> selectItemByMultiCondition(@Param("cid") int cid, @Param("search") String search,
+			@Param("minDate") String minDate, @Param("maxDate") String maxDate, @Param("orderCol") String orderCol,
+			@Param("orderDir") String orderDir);
 
-	int updateByExample(@Param("record") TbRecipes record, @Param("example") TbRecipesExample example);
+	List<TbRecipes> selectItemByIds(@Param("ids") String ids, @Param("orderCol") String orderCol,
+			@Param("orderDir") String orderDir);
 
-	int updateByPrimaryKeySelective(TbRecipes record);
-
-	int updateByPrimaryKeyWithBLOBs(TbRecipes record);
-
-	int updateByPrimaryKey(TbRecipes record);
 }

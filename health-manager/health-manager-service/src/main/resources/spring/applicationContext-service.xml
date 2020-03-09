@@ -14,6 +14,7 @@
 
 	<context:component-scan
 		base-package="com.muyou.service" />
+		
 	<!-- 使用dubbo发布服务 -->
 	<!-- 提供方应用信息，用于计算依赖关系 -->
 	<dubbo:application name="health-manager" />
@@ -45,6 +46,30 @@
 		timeout="600000" /> 
 	<dubbo:service
 		interface="com.muyou.service.ItemMedService" ref="itemMedServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.ItemRecService" ref="itemRecServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.ContentService" ref="contentServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.PanelService" ref="panelServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.ArticleService" ref="articleServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.ArticleService" ref="articleServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.ItemLibService" ref="itemLibServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.ItemLecService" ref="itemLecServiceImpl"
+		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.ItemTimService" ref="itemTimServiceImpl"
 		timeout="600000" /> 
 		
 		

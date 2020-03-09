@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.muyou.common.annotation.SystemControllerLog;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.pojo.Result;
 import com.muyou.common.util.ResultUtil;
-import com.muyou.pojo.TbDisease;
 import com.muyou.service.ItemMedService;
 import com.muyou.vo.MedicineVo;
 
@@ -23,6 +23,7 @@ public class ItemMedController {
 	private ItemMedService itemMedService;
 
 	@RequestMapping(value = "/{itemId}", method = RequestMethod.GET)
+	@SystemControllerLog(description="登录系统")
 	@ResponseBody
 	public Result<MedicineVo> getItemById(@PathVariable Integer itemId) {
 		return new ResultUtil<MedicineVo>().setData(itemMedService.getItemById(itemId));
@@ -56,6 +57,9 @@ public class ItemMedController {
 			break;
 		case 12:
 			orderCol = 3;
+			break;
+		default:
+			orderCol = 0;
 			break;
 		}
 
@@ -92,6 +96,9 @@ public class ItemMedController {
 		case 12:
 			orderCol = 3;
 			break;
+		default:
+			orderCol = 0;
+			break;
 		}
 
 		// 默认排序列
@@ -120,16 +127,16 @@ public class ItemMedController {
 
 	@RequestMapping(value = "/stop/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<TbDisease> stopItem(@PathVariable Integer id) {
+	public Result<Object> stopItem(@PathVariable Integer id) {
 		itemMedService.alertItemState(id, false);
-		return new ResultUtil<TbDisease>().setData(null);
+		return new ResultUtil<Object>().setData(null);
 	}
 
 	@RequestMapping(value = "/start/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<TbDisease> startItem(@PathVariable Integer id) {
+	public Result<Object> startItem(@PathVariable Integer id) {
 		itemMedService.alertItemState(id, true);
-		return new ResultUtil<TbDisease>().setData(null);
+		return new ResultUtil<Object>().setData(null);
 	}
 
 	@RequestMapping(value = "/del/{ids}", method = RequestMethod.DELETE)

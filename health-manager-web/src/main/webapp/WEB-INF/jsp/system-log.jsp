@@ -82,7 +82,7 @@
             "ajax": {
                 url:"/system/log",
                 type: 'GET',
-                dataType: "json",
+                dataType: "json"
             },
             "columns": [
                 { "data": null,
@@ -133,15 +133,14 @@
             },
             colReorder: true
         });
-
-        logCount();
     });
 
+    logCount();
+    
     function logCount() {
         $.ajax({
             url:"/system/log/count",
             type: 'GET',
-            dataType: "json",
             success:function (data) {
                 if(data.success!=true){
                     layer.alert(data.message,{title: '错误信息',icon: 2});

@@ -21,7 +21,7 @@
     <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
-    <title>产品分类</title>
+    <title>项目分类</title>
 </head>
 <body>
 <table class="table">
@@ -55,7 +55,7 @@
         },
         async: {
             enable: true,
-            url: "/item/cat/list?type="+parent.cate_type+"&factor=-1",
+            url: "/item/cate/list?type="+parent.cate_type+"&factor=-1",
             type: "GET",
             contentType: "application/json",
             autoParam: ["id"]

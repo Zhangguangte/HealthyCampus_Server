@@ -3,7 +3,6 @@
 <mapper namespace="com.muyou.mapper.TbLibraryMapper" >
   <resultMap id="BaseResultMap" type="com.muyou.pojo.TbLibrary" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="classify" property="classify" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="author" property="author" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
@@ -14,6 +13,9 @@
     <result column="rest" property="rest" jdbcType="INTEGER" />
     <result column="place" property="place" jdbcType="VARCHAR" />
     <result column="b_index" property="bIndex" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,7 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, classify, name, author, price, publish, introduced, url, sum, rest, place, b_index
+    id, name, author, price, publish, introduced, url, sum, rest, place, b_index, status, 
+    created, updated
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.muyou.pojo.TbLibraryExample" >
     select
@@ -106,26 +109,23 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.muyou.pojo.TbLibrary" >
-    insert into tb_library (id, classify, name, 
-      author, price, publish, 
-      introduced, url, sum, 
-      rest, place, b_index
-      )
-    values (#{id,jdbcType=INTEGER}, #{classify,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{author,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{publish,jdbcType=VARCHAR}, 
-      #{introduced,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{sum,jdbcType=INTEGER}, 
-      #{rest,jdbcType=INTEGER}, #{place,jdbcType=VARCHAR}, #{bIndex,jdbcType=VARCHAR}
-      )
+  <insert id="insert" parameterType="com.muyou.pojo.TbLibrary" useGeneratedKeys="true" keyProperty="id" >
+    insert into tb_library (id, name, author, 
+      price, publish, introduced, 
+      url, sum, rest, place, 
+      b_index, status, created, 
+      updated)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{publish,jdbcType=VARCHAR}, #{introduced,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{sum,jdbcType=INTEGER}, #{rest,jdbcType=INTEGER}, #{place,jdbcType=VARCHAR}, 
+      #{bIndex,jdbcType=VARCHAR}, #{status,jdbcType=BIT}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.muyou.pojo.TbLibrary" >
     insert into tb_library
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
-      </if>
-      <if test="classify != null" >
-        classify,
       </if>
       <if test="name != null" >
         name,
@@ -157,13 +157,19 @@
       <if test="bIndex != null" >
         b_index,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="updated != null" >
+        updated,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
-      </if>
-      <if test="classify != null" >
-        #{classify,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -195,6 +201,15 @@
       <if test="bIndex != null" >
         #{bIndex,jdbcType=VARCHAR},
       </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.muyou.pojo.TbLibraryExample" resultType="java.lang.Integer" >
@@ -208,9 +223,6 @@
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.classify != null" >
-        classify = #{record.classify,jdbcType=VARCHAR},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -242,6 +254,15 @@
       <if test="record.bIndex != null" >
         b_index = #{record.bIndex,jdbcType=VARCHAR},
       </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=BIT},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null" >
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -250,7 +271,6 @@
   <update id="updateByExample" parameterType="map" >
     update tb_library
     set id = #{record.id,jdbcType=INTEGER},
-      classify = #{record.classify,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       author = #{record.author,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
@@ -260,7 +280,10 @@
       sum = #{record.sum,jdbcType=INTEGER},
       rest = #{record.rest,jdbcType=INTEGER},
       place = #{record.place,jdbcType=VARCHAR},
-      b_index = #{record.bIndex,jdbcType=VARCHAR}
+      b_index = #{record.bIndex,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=BIT},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -268,9 +291,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.muyou.pojo.TbLibrary" >
     update tb_library
     <set >
-      <if test="classify != null" >
-        classify = #{classify,jdbcType=VARCHAR},
-      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -301,13 +321,21 @@
       <if test="bIndex != null" >
         b_index = #{bIndex,jdbcType=VARCHAR},
       </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.muyou.pojo.TbLibrary" >
     update tb_library
-    set classify = #{classify,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
+    set name = #{name,jdbcType=VARCHAR},
       author = #{author,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       publish = #{publish,jdbcType=VARCHAR},
@@ -316,7 +344,58 @@
       sum = #{sum,jdbcType=INTEGER},
       rest = #{rest,jdbcType=INTEGER},
       place = #{place,jdbcType=VARCHAR},
-      b_index = #{bIndex,jdbcType=VARCHAR}
+      b_index = #{bIndex,jdbcType=VARCHAR},
+      status = #{status,jdbcType=BIT},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  	<!-- 后台 -->
+  	<select id="selectItemByCondition" resultMap="BaseResultMap">
+	    SELECT 
+			l.*
+		FROM 
+		<if test="cid == -1">
+	    	tb_library l 
+	  	</if>
+	  	<if test="cid != -1">
+	    	tb_library l  ,tb_item_rela_cate r , tb_cate c 
+	    WHERE
+			l.id = r.item_id and r.cate_id = c.id
+		AND  c.id = #{cid}
+	  	</if>
+	    ORDER BY
+	    ${orderCol}
+	    ${orderDir}
+  	</select>
+  	
+  	<select id="selectItemByMultiCondition" resultMap="BaseResultMap">
+	    SELECT 
+			l.*
+		FROM 
+		<if test="cid == -1">
+	    	tb_library l
+	  	</if>
+	  	<if test="cid != -1">
+	    	tb_library l  RIGHT JOIN  tb_item_rela_cate r ON l.id = r.item_id RIGHT JOIN tb_cate c ON	r.cate_id = c.id
+	  	</if>
+	  	WHERE (
+	  		l.id like #{search} 
+	  	OR 	l.name like #{search}
+	  	OR	l.author like #{search}
+	  	OR	l.publish like #{search}
+	  	OR	l.place like #{search}
+	  	OR	l.b_index like #{search})
+	  	<if test="cid != -1">
+      		AND c.id = #{cid}
+    	</if>
+	    <if test="minDate != null and minDate != '' and maxDate != null and maxDate != ''">
+      	AND l.created BETWEEN #{minDate} AND #{maxDate}
+    	</if>
+	    ORDER BY
+	    ${orderCol}
+	    ${orderDir}
+  	</select>
+  	
 </mapper>

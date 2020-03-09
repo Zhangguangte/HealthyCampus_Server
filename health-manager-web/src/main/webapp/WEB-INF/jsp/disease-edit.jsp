@@ -38,13 +38,13 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>疾病名称:</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="name" name="name"/>
+                <input type="text" class="input-text" value="" placeholder="请填写疾病名称" id="name" name="name"/>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>疾病别名:</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="alias" name="alias"/>
+                <input type="text" class="input-text" value="" placeholder="请填写疾病别名:例:(暂无)" id="alias" name="alias"/>
             </div>
         </div>
         <div class="row cl">
@@ -56,25 +56,25 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>传染性:</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="contagious" name="contagious">
+                <input type="text" class="input-text" value="" placeholder="请填写传染性" id="contagious" name="contagious">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>多发人群:</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="population" name="population">
+                <input type="text" class="input-text" value="" placeholder="请填写多发人群" id="population" name="population">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>有无医保:</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="insurance" name="insurance">
+                <input type="text" class="input-text" value="" placeholder="请填写是否医保:例:(无)" id="insurance" name="insurance">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>临床检查:</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="dcheck" name="dcheck">
+                <input type="text" class="input-text" value="" placeholder="请填写传临床检查" id="dcheck" name="dcheck">
             </div>
         </div>
         <div class="row cl">
@@ -148,13 +148,13 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>并发症:</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="complication" name="complication">
+                <input type="text" class="input-text" value="请填写并发症" placeholder="" id="complication" name="complication">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>典型症状:</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="symptoms" name="symptoms">
+                <input type="text" class="input-text" value="请填写典型症状:例:(xxx xxx)" placeholder="" id="symptoms" name="symptoms">
             </div>
         </div>
         <div class="row cl">
@@ -175,31 +175,31 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>推荐药品:</label>
              <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="drug" name="drug">
+                <input type="text" class="input-text" value="" placeholder="请填写推荐药品:例:(xxx xxx)" id="drug" name="drug">
             </div>
         </div>
         <div class="row cl">
              <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>治疗方法:</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="way" name="way">
+                <input type="text" class="input-text" value="" placeholder="请填写治疗方法:例:(xx xxx)" id="way" name="way">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>治疗率:</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="rate" name="rate">
+                <input type="text" class="input-text" value="" placeholder="请填写治疗率:例:(100%)" id="rate" name="rate">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>治疗费用:</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="cost" name="cost">
+                <input type="text" class="input-text" value="" placeholder="请填写治疗费用" id="cost" name="cost">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>治疗时间:</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="time" name="time">
+                <input type="text" class="input-text" value="" placeholder="请填写治疗时间:例:(2-4个月)" id="time" name="time">
             </div>
         </div>
         <div class="row cl">

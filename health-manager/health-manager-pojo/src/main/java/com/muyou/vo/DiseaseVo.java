@@ -5,6 +5,8 @@ import java.util.List;
 
 public class DiseaseVo implements Serializable {
 
+	private Integer id;
+
 	private String name;
 
 	private String alias;
@@ -47,6 +49,14 @@ public class DiseaseVo implements Serializable {
 	
 	private List<String> pid;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	public List<String> getDepart() {
 		return depart;
 	}

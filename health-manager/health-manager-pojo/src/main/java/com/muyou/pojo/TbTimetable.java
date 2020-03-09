@@ -1,95 +1,137 @@
 package com.muyou.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
-public class TbTimetable implements Serializable{
-    private Integer id;
+public class TbTimetable implements Serializable {
+	private Integer id;
 
-    private String descr;
+	private Integer tId;
 
-    private String semester;
+	private String descr;
 
-    private Integer weeks;
+	private Integer semester;
 
-    private Integer cStart;
+	private Integer weeks;
 
-    private Integer period;
+	private Integer cStart;
 
-    private String cYear;
+	private Integer period;
 
-    private String major;
+	private Integer cYear;
 
-    private String state;
+	private Boolean state;
 
-    public Integer getId() {
-        return id;
-    }
+	private Date created;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	private Date updated;
 
-    public String getDescr() {
-        return descr;
-    }
+	private List<String> cid;
 
-    public void setDescr(String descr) {
-        this.descr = descr == null ? null : descr.trim();
-    }
+	private List<String> cname;
 
-    public String getSemester() {
-        return semester;
-    }
+	public List<String> getCid() {
+		return cid;
+	}
 
-    public void setSemester(String semester) {
-        this.semester = semester == null ? null : semester.trim();
-    }
+	public void setCid(List<String> cid) {
+		this.cid = cid;
+	}
 
-    public Integer getWeeks() {
-        return weeks;
-    }
+	public List<String> getCname() {
+		return cname;
+	}
 
-    public void setWeeks(Integer weeks) {
-        this.weeks = weeks;
-    }
+	public void setCname(List<String> cname) {
+		this.cname = cname;
+	}
 
-    public Integer getcStart() {
-        return cStart;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setcStart(Integer cStart) {
-        this.cStart = cStart;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public Integer getPeriod() {
-        return period;
-    }
+	public Integer gettId() {
+		return tId;
+	}
 
-    public void setPeriod(Integer period) {
-        this.period = period;
-    }
+	public void settId(Integer tId) {
+		this.tId = tId;
+	}
 
-    public String getcYear() {
-        return cYear;
-    }
+	public String getDescr() {
+		return descr;
+	}
 
-    public void setcYear(String cYear) {
-        this.cYear = cYear == null ? null : cYear.trim();
-    }
+	public void setDescr(String descr) {
+		this.descr = descr == null ? null : descr.trim();
+	}
 
-    public String getMajor() {
-        return major;
-    }
+	public Integer getSemester() {
+		return semester;
+	}
 
-    public void setMajor(String major) {
-        this.major = major == null ? null : major.trim();
-    }
+	public void setSemester(Integer semester) {
+		this.semester = semester;
+	}
 
-    public String getState() {
-        return state;
-    }
+	public Integer getWeeks() {
+		return weeks;
+	}
 
-    public void setState(String state) {
-        this.state = state == null ? null : state.trim();
-    }
+	public void setWeeks(Integer weeks) {
+		this.weeks = weeks;
+	}
+
+	public Integer getcStart() {
+		return cStart;
+	}
+
+	public void setcStart(Integer cStart) {
+		this.cStart = cStart;
+	}
+
+	public Integer getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(Integer period) {
+		this.period = period;
+	}
+
+	public Integer getcYear() {
+		return cYear;
+	}
+
+	public void setcYear(Integer cYear) {
+		this.cYear = cYear;
+	}
+
+	public Boolean getState() {
+		return state;
+	}
+
+	public void setState(Boolean state) {
+		this.state = state;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
 }

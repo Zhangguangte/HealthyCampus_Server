@@ -46,6 +46,9 @@
 	<dubbo:service
 		interface="com.muyou.sso.service.AdminService"
 		ref="adminServiceImpl" timeout="600000" />
+	<dubbo:service
+		interface="com.muyou.sso.service.LogService"
+		ref="logServiceImpl" timeout="600000" />
 	
 
 

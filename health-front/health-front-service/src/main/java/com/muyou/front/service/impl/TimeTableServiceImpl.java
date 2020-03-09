@@ -43,10 +43,7 @@ public class TimeTableServiceImpl implements TimeTableService {
 			e.printStackTrace();
 		}
 
-		TbTimetableExample tbTimetableExample = new TbTimetableExample();
-		TbTimetableExample.Criteria criteria = tbTimetableExample.createCriteria();
-		criteria.andMajorLike(requestForm.getContent());
-		List<TbTimetable> list = timetableMapper.selectByExample(tbTimetableExample);
+		List<TbTimetable> list = timetableMapper.selectItemByClass(requestForm.getContent());
 		if (null == list)
 			throw null;
 		List<CourseVo> result = new LinkedList<CourseVo>();

@@ -20,6 +20,14 @@ public class ServiceExceptionResolver implements HandlerExceptionResolver {
 			Exception ex) {
 		ModelAndView model = new ModelAndView();
 		GlobalException globaException;
+		
+		System.out.println(ex);
+		System.out.println(ex.getMessage());
+		System.out.println(ex.getClass().getName());
+		System.out.println(ex.getClass().getSimpleName());
+		System.out.println(ex.getClass().getTypeName());
+		System.out.println(ex.getClass().getCanonicalName());
+		
 		if (ex instanceof GlobalException) {
 			globaException = (GlobalException) ex;
 		} else {
@@ -33,8 +41,7 @@ public class ServiceExceptionResolver implements HandlerExceptionResolver {
 		response.setContentType("application/json;charset=UTF-8");
 		response.setHeader("Cache-Control", "no-cache, must-revalidate");
 		try {
-			response.getWriter()
-					.write(JsonUtils.objectToJson(new ResultUtil<>().setErrorMsg(globaException.getMessage())));
+			response.getWriter().write(JsonUtils.objectToJson(new ResultUtil<>().setErrorMsg(globaException.getMessage())));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

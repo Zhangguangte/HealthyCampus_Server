@@ -1,6 +1,7 @@
 package com.muyou.pojo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TbTimetableExample {
@@ -164,6 +165,66 @@ public class TbTimetableExample {
             return (Criteria) this;
         }
 
+        public Criteria andTIdIsNull() {
+            addCriterion("t_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTIdIsNotNull() {
+            addCriterion("t_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTIdEqualTo(Integer value) {
+            addCriterion("t_id =", value, "tId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTIdNotEqualTo(Integer value) {
+            addCriterion("t_id <>", value, "tId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTIdGreaterThan(Integer value) {
+            addCriterion("t_id >", value, "tId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("t_id >=", value, "tId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTIdLessThan(Integer value) {
+            addCriterion("t_id <", value, "tId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTIdLessThanOrEqualTo(Integer value) {
+            addCriterion("t_id <=", value, "tId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTIdIn(List<Integer> values) {
+            addCriterion("t_id in", values, "tId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTIdNotIn(List<Integer> values) {
+            addCriterion("t_id not in", values, "tId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTIdBetween(Integer value1, Integer value2) {
+            addCriterion("t_id between", value1, value2, "tId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("t_id not between", value1, value2, "tId");
+            return (Criteria) this;
+        }
+
         public Criteria andDescrIsNull() {
             addCriterion("descr is null");
             return (Criteria) this;
@@ -244,62 +305,52 @@ public class TbTimetableExample {
             return (Criteria) this;
         }
 
-        public Criteria andSemesterEqualTo(String value) {
+        public Criteria andSemesterEqualTo(Integer value) {
             addCriterion("semester =", value, "semester");
             return (Criteria) this;
         }
 
-        public Criteria andSemesterNotEqualTo(String value) {
+        public Criteria andSemesterNotEqualTo(Integer value) {
             addCriterion("semester <>", value, "semester");
             return (Criteria) this;
         }
 
-        public Criteria andSemesterGreaterThan(String value) {
+        public Criteria andSemesterGreaterThan(Integer value) {
             addCriterion("semester >", value, "semester");
             return (Criteria) this;
         }
 
-        public Criteria andSemesterGreaterThanOrEqualTo(String value) {
+        public Criteria andSemesterGreaterThanOrEqualTo(Integer value) {
             addCriterion("semester >=", value, "semester");
             return (Criteria) this;
         }
 
-        public Criteria andSemesterLessThan(String value) {
+        public Criteria andSemesterLessThan(Integer value) {
             addCriterion("semester <", value, "semester");
             return (Criteria) this;
         }
 
-        public Criteria andSemesterLessThanOrEqualTo(String value) {
+        public Criteria andSemesterLessThanOrEqualTo(Integer value) {
             addCriterion("semester <=", value, "semester");
             return (Criteria) this;
         }
 
-        public Criteria andSemesterLike(String value) {
-            addCriterion("semester like", value, "semester");
-            return (Criteria) this;
-        }
-
-        public Criteria andSemesterNotLike(String value) {
-            addCriterion("semester not like", value, "semester");
-            return (Criteria) this;
-        }
-
-        public Criteria andSemesterIn(List<String> values) {
+        public Criteria andSemesterIn(List<Integer> values) {
             addCriterion("semester in", values, "semester");
             return (Criteria) this;
         }
 
-        public Criteria andSemesterNotIn(List<String> values) {
+        public Criteria andSemesterNotIn(List<Integer> values) {
             addCriterion("semester not in", values, "semester");
             return (Criteria) this;
         }
 
-        public Criteria andSemesterBetween(String value1, String value2) {
+        public Criteria andSemesterBetween(Integer value1, Integer value2) {
             addCriterion("semester between", value1, value2, "semester");
             return (Criteria) this;
         }
 
-        public Criteria andSemesterNotBetween(String value1, String value2) {
+        public Criteria andSemesterNotBetween(Integer value1, Integer value2) {
             addCriterion("semester not between", value1, value2, "semester");
             return (Criteria) this;
         }
@@ -494,133 +545,53 @@ public class TbTimetableExample {
             return (Criteria) this;
         }
 
-        public Criteria andCYearEqualTo(String value) {
+        public Criteria andCYearEqualTo(Integer value) {
             addCriterion("c_year =", value, "cYear");
             return (Criteria) this;
         }
 
-        public Criteria andCYearNotEqualTo(String value) {
+        public Criteria andCYearNotEqualTo(Integer value) {
             addCriterion("c_year <>", value, "cYear");
             return (Criteria) this;
         }
 
-        public Criteria andCYearGreaterThan(String value) {
+        public Criteria andCYearGreaterThan(Integer value) {
             addCriterion("c_year >", value, "cYear");
             return (Criteria) this;
         }
 
-        public Criteria andCYearGreaterThanOrEqualTo(String value) {
+        public Criteria andCYearGreaterThanOrEqualTo(Integer value) {
             addCriterion("c_year >=", value, "cYear");
             return (Criteria) this;
         }
 
-        public Criteria andCYearLessThan(String value) {
+        public Criteria andCYearLessThan(Integer value) {
             addCriterion("c_year <", value, "cYear");
             return (Criteria) this;
         }
 
-        public Criteria andCYearLessThanOrEqualTo(String value) {
+        public Criteria andCYearLessThanOrEqualTo(Integer value) {
             addCriterion("c_year <=", value, "cYear");
             return (Criteria) this;
         }
 
-        public Criteria andCYearLike(String value) {
-            addCriterion("c_year like", value, "cYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andCYearNotLike(String value) {
-            addCriterion("c_year not like", value, "cYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andCYearIn(List<String> values) {
+        public Criteria andCYearIn(List<Integer> values) {
             addCriterion("c_year in", values, "cYear");
             return (Criteria) this;
         }
 
-        public Criteria andCYearNotIn(List<String> values) {
+        public Criteria andCYearNotIn(List<Integer> values) {
             addCriterion("c_year not in", values, "cYear");
             return (Criteria) this;
         }
 
-        public Criteria andCYearBetween(String value1, String value2) {
+        public Criteria andCYearBetween(Integer value1, Integer value2) {
             addCriterion("c_year between", value1, value2, "cYear");
             return (Criteria) this;
         }
 
-        public Criteria andCYearNotBetween(String value1, String value2) {
+        public Criteria andCYearNotBetween(Integer value1, Integer value2) {
             addCriterion("c_year not between", value1, value2, "cYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorIsNull() {
-            addCriterion("major is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorIsNotNull() {
-            addCriterion("major is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorEqualTo(String value) {
-            addCriterion("major =", value, "major");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorNotEqualTo(String value) {
-            addCriterion("major <>", value, "major");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorGreaterThan(String value) {
-            addCriterion("major >", value, "major");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorGreaterThanOrEqualTo(String value) {
-            addCriterion("major >=", value, "major");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorLessThan(String value) {
-            addCriterion("major <", value, "major");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorLessThanOrEqualTo(String value) {
-            addCriterion("major <=", value, "major");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorLike(String value) {
-            addCriterion("major like", value, "major");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorNotLike(String value) {
-            addCriterion("major not like", value, "major");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorIn(List<String> values) {
-            addCriterion("major in", values, "major");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorNotIn(List<String> values) {
-            addCriterion("major not in", values, "major");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorBetween(String value1, String value2) {
-            addCriterion("major between", value1, value2, "major");
-            return (Criteria) this;
-        }
-
-        public Criteria andMajorNotBetween(String value1, String value2) {
-            addCriterion("major not between", value1, value2, "major");
             return (Criteria) this;
         }
 
@@ -634,63 +605,173 @@ public class TbTimetableExample {
             return (Criteria) this;
         }
 
-        public Criteria andStateEqualTo(String value) {
+        public Criteria andStateEqualTo(Boolean value) {
             addCriterion("state =", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateNotEqualTo(String value) {
+        public Criteria andStateNotEqualTo(Boolean value) {
             addCriterion("state <>", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateGreaterThan(String value) {
+        public Criteria andStateGreaterThan(Boolean value) {
             addCriterion("state >", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateGreaterThanOrEqualTo(String value) {
+        public Criteria andStateGreaterThanOrEqualTo(Boolean value) {
             addCriterion("state >=", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateLessThan(String value) {
+        public Criteria andStateLessThan(Boolean value) {
             addCriterion("state <", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateLessThanOrEqualTo(String value) {
+        public Criteria andStateLessThanOrEqualTo(Boolean value) {
             addCriterion("state <=", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateLike(String value) {
-            addCriterion("state like", value, "state");
-            return (Criteria) this;
-        }
-
-        public Criteria andStateNotLike(String value) {
-            addCriterion("state not like", value, "state");
-            return (Criteria) this;
-        }
-
-        public Criteria andStateIn(List<String> values) {
+        public Criteria andStateIn(List<Boolean> values) {
             addCriterion("state in", values, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateNotIn(List<String> values) {
+        public Criteria andStateNotIn(List<Boolean> values) {
             addCriterion("state not in", values, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateBetween(String value1, String value2) {
+        public Criteria andStateBetween(Boolean value1, Boolean value2) {
             addCriterion("state between", value1, value2, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateNotBetween(String value1, String value2) {
+        public Criteria andStateNotBetween(Boolean value1, Boolean value2) {
             addCriterion("state not between", value1, value2, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedIsNull() {
+            addCriterion("created is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedIsNotNull() {
+            addCriterion("created is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedEqualTo(Date value) {
+            addCriterion("created =", value, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedNotEqualTo(Date value) {
+            addCriterion("created <>", value, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedGreaterThan(Date value) {
+            addCriterion("created >", value, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedGreaterThanOrEqualTo(Date value) {
+            addCriterion("created >=", value, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedLessThan(Date value) {
+            addCriterion("created <", value, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedLessThanOrEqualTo(Date value) {
+            addCriterion("created <=", value, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedIn(List<Date> values) {
+            addCriterion("created in", values, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedNotIn(List<Date> values) {
+            addCriterion("created not in", values, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedBetween(Date value1, Date value2) {
+            addCriterion("created between", value1, value2, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedNotBetween(Date value1, Date value2) {
+            addCriterion("created not between", value1, value2, "created");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedIsNull() {
+            addCriterion("updated is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedIsNotNull() {
+            addCriterion("updated is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedEqualTo(Date value) {
+            addCriterion("updated =", value, "updated");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedNotEqualTo(Date value) {
+            addCriterion("updated <>", value, "updated");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedGreaterThan(Date value) {
+            addCriterion("updated >", value, "updated");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedGreaterThanOrEqualTo(Date value) {
+            addCriterion("updated >=", value, "updated");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedLessThan(Date value) {
+            addCriterion("updated <", value, "updated");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedLessThanOrEqualTo(Date value) {
+            addCriterion("updated <=", value, "updated");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedIn(List<Date> values) {
+            addCriterion("updated in", values, "updated");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedNotIn(List<Date> values) {
+            addCriterion("updated not in", values, "updated");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedBetween(Date value1, Date value2) {
+            addCriterion("updated between", value1, value2, "updated");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedNotBetween(Date value1, Date value2) {
+            addCriterion("updated not between", value1, value2, "updated");
             return (Criteria) this;
         }
     }

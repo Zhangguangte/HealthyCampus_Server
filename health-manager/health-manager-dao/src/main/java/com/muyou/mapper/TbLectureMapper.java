@@ -6,31 +6,38 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TbLectureMapper {
-    int countByExample(TbLectureExample example);
+	int countByExample(TbLectureExample example);
 
-    int deleteByExample(TbLectureExample example);
+	int deleteByExample(TbLectureExample example);
 
-    int deleteByPrimaryKey(Integer id);
+	int deleteByPrimaryKey(Integer id);
 
-    int insert(TbLecture record);
+	int insert(TbLecture record);
 
-    int insertSelective(TbLecture record);
+	int insertSelective(TbLecture record);
 
-    List<TbLecture> selectByExampleWithBLOBs(TbLectureExample example);
+	List<TbLecture> selectByExample(TbLectureExample example);
 
-    List<TbLecture> selectByExample(TbLectureExample example);
+	TbLecture selectByPrimaryKey(Integer id);
 
-    TbLecture selectByPrimaryKey(Integer id);
+	int updateByExampleSelective(@Param("record") TbLecture record, @Param("example") TbLectureExample example);
 
-    int updateByExampleSelective(@Param("record") TbLecture record, @Param("example") TbLectureExample example);
+	int updateByExample(@Param("record") TbLecture record, @Param("example") TbLectureExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") TbLecture record, @Param("example") TbLectureExample example);
+	int updateByPrimaryKeySelective(TbLecture record);
 
-    int updateByExample(@Param("record") TbLecture record, @Param("example") TbLectureExample example);
+	int updateByPrimaryKey(TbLecture record);
 
-    int updateByPrimaryKeySelective(TbLecture record);
+	//前台
+	List<TbLecture> selectItemByCollege(@Param("college") String college,@Param("row") Integer row);
+	
+	
+	// 后台
+	List<TbLecture> selectItemByCondition(@Param("cid") int cid, @Param("orderCol") String orderCol,
+			@Param("orderDir") String orderDir);
 
-    int updateByPrimaryKeyWithBLOBs(TbLecture record);
+	List<TbLecture> selectItemByMultiCondition(@Param("cid") int cid, @Param("search") String search,
+			@Param("minDate") String minDate, @Param("maxDate") String maxDate, @Param("orderCol") String orderCol,
+			@Param("orderDir") String orderDir);
 
-    int updateByPrimaryKey(TbLecture record);
 }

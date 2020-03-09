@@ -2,6 +2,7 @@ package com.muyou.front.vo;
 
 import java.io.Serializable;
 
+import com.muyou.common.util.DateUtil;
 import com.muyou.pojo.TbLecture;
 
 public class LectureVo implements Serializable {
@@ -19,10 +20,9 @@ public class LectureVo implements Serializable {
 	public LectureVo(TbLecture lecture, int type) {
 		this.id = lecture.getId() + "";
 		this.title = lecture.getTitle();
-		this.date = lecture.getDate();
+		this.date = DateUtil.getStringDate(lecture.getCreated());
 		if (type == 1) {
 			this.content = lecture.getContent();
-			this.college = lecture.getCollege();
 			this.author = lecture.getAuthor();
 		}
 	}

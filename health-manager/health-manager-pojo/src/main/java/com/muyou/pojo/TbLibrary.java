@@ -1,125 +1,168 @@
 package com.muyou.pojo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
-public class TbLibrary {
-    private Integer id;
+public class TbLibrary implements Serializable {
+	private Integer id;
 
-    private String classify;
+	private String name;
 
-    private String name;
+	private String author;
 
-    private String author;
+	private BigDecimal price;
 
-    private BigDecimal price;
+	private String publish;
 
-    private String publish;
+	private String introduced;
 
-    private String introduced;
+	private String url;
 
-    private String url;
+	private Integer sum;
 
-    private Integer sum;
+	private Integer rest;
 
-    private Integer rest;
+	private String place;
 
-    private String place;
+	private String bIndex;
 
-    private String bIndex;
+	private Boolean status;
 
-    public Integer getId() {
-        return id;
-    }
+	private Date created;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	private Date updated;
 
-    public String getClassify() {
-        return classify;
-    }
+	private String cid;
 
-    public void setClassify(String classify) {
-        this.classify = classify == null ? null : classify.trim();
-    }
+	private String cname;
 
-    public String getName() {
-        return name;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getAuthor() {
-        return author;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setAuthor(String author) {
-        this.author = author == null ? null : author.trim();
-    }
+	public void setName(String name) {
+		this.name = name == null ? null : name.trim();
+	}
 
-    public BigDecimal getPrice() {
-        return price;
-    }
+	public String getAuthor() {
+		return author;
+	}
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
+	public void setAuthor(String author) {
+		this.author = author == null ? null : author.trim();
+	}
 
-    public String getPublish() {
-        return publish;
-    }
+	public BigDecimal getPrice() {
+		return price;
+	}
 
-    public void setPublish(String publish) {
-        this.publish = publish == null ? null : publish.trim();
-    }
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
 
-    public String getIntroduced() {
-        return introduced;
-    }
+	public String getPublish() {
+		return publish;
+	}
 
-    public void setIntroduced(String introduced) {
-        this.introduced = introduced == null ? null : introduced.trim();
-    }
+	public void setPublish(String publish) {
+		this.publish = publish == null ? null : publish.trim();
+	}
 
-    public String getUrl() {
-        return url;
-    }
+	public String getIntroduced() {
+		return introduced;
+	}
 
-    public void setUrl(String url) {
-        this.url = url == null ? null : url.trim();
-    }
+	public void setIntroduced(String introduced) {
+		this.introduced = introduced == null ? null : introduced.trim();
+	}
 
-    public Integer getSum() {
-        return sum;
-    }
+	public String getUrl() {
+		return url;
+	}
 
-    public void setSum(Integer sum) {
-        this.sum = sum;
-    }
+	public void setUrl(String url) {
+		this.url = url == null ? null : url.trim();
+	}
 
-    public Integer getRest() {
-        return rest;
-    }
+	public Integer getSum() {
+		return sum;
+	}
 
-    public void setRest(Integer rest) {
-        this.rest = rest;
-    }
+	public void setSum(Integer sum) {
+		this.sum = sum;
+	}
 
-    public String getPlace() {
-        return place;
-    }
+	public Integer getRest() {
+		return rest;
+	}
 
-    public void setPlace(String place) {
-        this.place = place == null ? null : place.trim();
-    }
+	public void setRest(Integer rest) {
+		this.rest = rest;
+	}
 
-    public String getbIndex() {
-        return bIndex;
-    }
+	public String getPlace() {
+		return place;
+	}
 
-    public void setbIndex(String bIndex) {
-        this.bIndex = bIndex == null ? null : bIndex.trim();
-    }
+	public void setPlace(String place) {
+		this.place = place == null ? null : place.trim();
+	}
+
+	public String getbIndex() {
+		return bIndex;
+	}
+
+	public void setbIndex(String bIndex) {
+		this.bIndex = bIndex == null ? null : bIndex.trim();
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public String getCid() {
+		return cid;
+	}
+
+	public void setCid(String cid) {
+		this.cid = cid;
+	}
+
+	public String getCname() {
+		return cname;
+	}
+
+	public void setCname(String cname) {
+		this.cname = cname;
+	}
+	
 }

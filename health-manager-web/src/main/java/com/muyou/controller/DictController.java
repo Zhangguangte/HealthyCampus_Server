@@ -1,6 +1,9 @@
 package com.muyou.controller;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.muyou.common.constant.DictConstant;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.pojo.Result;
 import com.muyou.common.util.ResultUtil;
@@ -22,6 +26,45 @@ public class DictController {
 
 	@Autowired
 	private DictService dictService;
+
+	@RequestMapping(value = "/777")
+	@ResponseBody
+	public String gettest(HttpServletResponse response) {
+		System.out.println("77777777");
+
+		response.addHeader(DictConstant.LAST_MODIFIED, String.valueOf(System.currentTimeMillis()));
+		response.addHeader(DictConstant.ETAG, String.valueOf(System.currentTimeMillis()));
+		return "7777";
+	}
+
+	@RequestMapping(value = "/getDictList", produces = "text/plain;charset=utf-8")
+	@ResponseBody
+	public String getDictExtList(HttpServletResponse response) {
+		Map<Object, Object> map = dictService.getRemoteList(DictConstant.EXT_KEY);
+		Boolean bol = (Boolean) map.get(DictConstant.NEW);
+		System.out.println("999999999");
+		// if (bol)
+		// return (String) map.get(DictConstant.EXT_KEY);
+
+		response.addHeader(DictConstant.LAST_MODIFIED, (String) map.get(DictConstant.LAST_MODIFIED));
+		response.addHeader(DictConstant.ETAG, (String) map.get(DictConstant.ETAG));
+		return (String) map.get(DictConstant.EXT_KEY);
+	}
+
+	@RequestMapping(value = "/getStopDictList", produces = "text/plain;charset=utf-8")
+	@ResponseBody
+	public String getStopDictList(HttpServletResponse response) {
+		Map<Object, Object> map = dictService.getRemoteList(DictConstant.STOP_KEY);
+		Boolean bol = (Boolean) map.get(DictConstant.NEW);
+		System.out.println("88888");
+
+		// if (bol)
+		// return (String) map.get(DictConstant.STOP_KEY);
+
+		response.addHeader(DictConstant.LAST_MODIFIED, (String) map.get(DictConstant.LAST_MODIFIED));
+		response.addHeader(DictConstant.ETAG, (String) map.get(DictConstant.ETAG));
+		return (String) map.get(DictConstant.STOP_KEY);
+	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody

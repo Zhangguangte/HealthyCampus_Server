@@ -12,7 +12,7 @@
     <result column="ip" property="ip" jdbcType="VARCHAR" />
     <result column="ipInfo" property="ipInfo" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="INTEGER" />
-    <result column="createDate" property="createDate" jdbcType="DATE" />
+    <result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -302,37 +302,5 @@
       createDate = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  
-  <select id="selectByMulti" resultMap="BaseResultMap">
-    SELECT * FROM tb_log
-    WHERE
-    id LIKE #{search}
-    OR
-    name LIKE #{search}
-    OR
-    type LIKE #{search}
-    OR
-    url LIKE #{search}
-    OR
-    requestType LIKE #{search}
-    OR
-    requestParam LIKE #{search}
-    OR
-    user LIKE #{search}
-    OR
-    ip LIKE #{search}
-    OR
-    ipInfo LIKE #{search}
-    OR
-    time LIKE #{search}
-    OR
-    createDate LIKE #{search}
-    ORDER BY
-    ${orderCol}
-    ${orderDir}
-  </select>
-  
-  
-  
   
 </mapper>

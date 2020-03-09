@@ -14,6 +14,7 @@ import com.muyou.search.service.SearchResultService;
 @Service
 public class SearchResultServiceImpl implements SearchResultService {
 
+	
 	@Autowired
 	private SearchDao searchDao;
 

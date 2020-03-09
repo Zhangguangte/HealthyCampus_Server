@@ -29,7 +29,7 @@
     <span class="l">
         <a href="javascript:;" onclick="category_del()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除所选分类</a>
         <a class="btn btn-primary radius" onclick="categoryAdd('添加子级分类','item-category-add')" href="javascript:void();"><i class="Hui-iconfont">&#xe600;</i> 添加子级分类</a>
-        <a class="btn btn-primary radius" onclick="categoryRootAdd('添加根节点分类','item-category-add')" href="javascript:location.replace(location.href);"><i class="Hui-iconfont">&#xe600;</i> 添加根节点分类</a>
+        <a class="btn btn-primary radius" onclick="categoryRootAdd('添加根节点分类','item-category-add')" href="javascript:void();"><i class="Hui-iconfont">&#xe600;</i> 添加根节点分类</a>
     </span>
 </div>
 <table class="table">
@@ -159,7 +159,7 @@
         },
         async: {
             enable: true,
-            url: "/item/cat/list?type="+cate_type+"&factor=0",
+            url: "/item/cate/list?type="+cate_type+"&factor=0",
             type: "GET",
             contentType: "application/json",
             autoParam: ["id"]
@@ -261,7 +261,7 @@
         submitHandler:function(form){
             var index = layer.load(3);
             $(form).ajaxSubmit({
-                url: "/item/cat/update",
+                url: "/item/cate/update",
                 type: "POST",
                 success: function(data) {
                     layer.close(index);
@@ -309,7 +309,7 @@
             var index = layer.load(3);
             $.ajax({
                 type: 'DELETE',
-                url: '/item/cat/del/' +id+"&type="+cate_type,
+                url: '/item/cate/del/' +id+"&type="+cate_type,
                 dataType: 'json',
                 success: function(data) {
                     layer.close(index);

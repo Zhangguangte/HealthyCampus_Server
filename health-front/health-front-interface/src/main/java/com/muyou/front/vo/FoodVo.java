@@ -22,12 +22,12 @@ public class FoodVo implements Serializable {
 	
 	public FoodVo(TbRecipes recipes) {
 		this.id = recipes.getId()+"";
-		this.dishName = recipes.getDishName();
+		this.dishName = recipes.getName();
 		this.practice = recipes.getPractice();
 		this.ingredients = recipes.getIngredients();
-		this.pictureUrl = recipes.getPictureUrl();
-		this.mainProcess = recipes.getMainProcess();
-		this.productionTime = recipes.getProductionTime();
+		this.pictureUrl = recipes.getUrl();
+		this.mainProcess = recipes.getProcess();
+		this.productionTime = recipes.getTime();
 		this.calorie = recipes.getCalorie();
 		this.components = recipes.getComponents();
 		this.flavor = recipes.getFlavor();

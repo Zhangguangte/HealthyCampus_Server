@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.muyou.common.annotation.SystemControllerLog;
 import com.muyou.common.exception.ServiceException;
 import com.muyou.common.form.LoginForm;
 import com.muyou.common.form.RequestForm;
@@ -37,6 +38,7 @@ public class UserController {
 	// 登录
 	@RequestMapping("/login")
 	@ResponseBody
+	@SystemControllerLog(description="用户登录系统")
 	public UserVo userLogin(@RequestBody(required = false) LoginForm form) throws ServiceException {
 		if (form.validate())
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
@@ -48,6 +50,7 @@ public class UserController {
 	
 	// 注册
 	@RequestMapping("/register")
+	@SystemControllerLog(description="用户注册系统")
 	@ResponseBody
 	public UserVo createUser(@RequestBody(required = false) RegisterFrom form) throws ServiceException {
 		if (form.validate())
@@ -60,6 +63,7 @@ public class UserController {
 	
 	// 注销
 	@RequestMapping("/logout")
+	@SystemControllerLog(description="用户注销系统")
 	@ResponseBody
 	public ResponseBuilder userLogout(HttpServletRequest request) throws ServiceException {
 		String user = (String) request.getAttribute("USER");

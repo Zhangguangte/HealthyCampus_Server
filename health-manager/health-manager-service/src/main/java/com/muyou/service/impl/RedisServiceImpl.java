@@ -36,9 +36,6 @@ public class RedisServiceImpl implements RedisService {
 
 	@Value("${SHIRO_LIST}")
 	private String SHIRO_LIST;
-
-	@Value("${LOG_LIST}")
-	private String LOG_LIST;
 	
 	
 	@Override
@@ -194,21 +191,11 @@ public class RedisServiceImpl implements RedisService {
 	@Override
 	public String getLogRedis() {
 		String result = "";
-		try {
-			result = jedisClient.get(LOG_LIST);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		return result;
 	}
 
 	@Override
 	public int updateLogRedis() {
-		try {
-			jedisClient.del(LOG_LIST);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		return 1;
 	}
 }

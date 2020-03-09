@@ -3,114 +3,115 @@ package com.muyou.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TbCate implements Serializable{
-    private Integer id;
+public class TbCate implements Serializable {
+	private Integer id;
 
-    private Integer parentId;
+	private Integer parentId;
 
-    private String name;
+	private String name;
 
-    private Integer status;
+	private Integer status;
 
-    private Integer sortOrder;
+	private Integer sortOrder;
 
-    private Boolean isParent;
+	private Boolean isParent;
 
-    private Date created;
+	private Date created;
 
-    private Date updated;
+	private Date updated;
 
-    private String icon;
+	private String icon;
 
-    private String remark;
+	private String remark;
 
-    private Integer type;
+	private Integer type;
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public Integer getParentId() {
-        return parentId;
-    }
+	public Integer getParentId() {
+		return parentId;
+	}
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
+	public void setName(String name) {
+		this.name = name == null ? null : name.trim();
+	}
 
-    public Integer getStatus() {
-        return status;
-    }
+	public Integer getStatus() {
+		return status;
+	}
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
-    public Integer getSortOrder() {
-        return sortOrder;
-    }
+	public Integer getSortOrder() {
+		return sortOrder;
+	}
 
-    public void setSortOrder(Integer sortOrder) {
-        this.sortOrder = sortOrder;
-    }
+	public void setSortOrder(Integer sortOrder) {
+		this.sortOrder = sortOrder;
+	}
 
-    public Boolean getIsParent() {
-        return isParent;
-    }
+	public Boolean getIsParent() {
+		return isParent;
+	}
 
-    public void setIsParent(Boolean isParent) {
-        this.isParent = isParent;
-    }
+	public void setIsParent(Boolean isParent) {
+		this.isParent = isParent;
+	}
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    public Date getUpdated() {
-        return updated;
-    }
+	public Date getUpdated() {
+		return updated;
+	}
 
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
 
-    public String getIcon() {
-        return icon;
-    }
+	public String getIcon() {
+		return icon;
+	}
 
-    public void setIcon(String icon) {
-        this.icon = icon == null ? null : icon.trim();
-    }
+	public void setIcon(String icon) {
+		this.icon = icon == null ? null : icon.trim();
+	}
 
-    public String getRemark() {
-        return remark;
-    }
+	public String getRemark() {
+		return remark;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
+	public void setRemark(String remark) {
+		this.remark = remark == null ? null : remark.trim();
+	}
 
-    public Integer getType() {
-        return type;
-    }
+	public Integer getType() {
+		return type;
+	}
 
-    public void setType(Integer type) {
-        this.type = type;
-    }
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
 }

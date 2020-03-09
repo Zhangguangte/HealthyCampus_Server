@@ -25,6 +25,7 @@ import com.muyou.common.util.HttpUtil;
 import com.muyou.common.util.ResultUtil;
 import com.muyou.common.util.WeatherUtils;
 import com.muyou.pojo.TbBase;
+import com.muyou.pojo.TbLog;
 import com.muyou.pojo.TbShiroFilter;
 import com.muyou.pojo.TbUser;
 import com.muyou.service.SystemService;
@@ -73,16 +74,15 @@ public class SystemController {
 			return new ResultUtil<Object>().setData(null);
 		return new ResultUtil<Object>().setErrorMsg("添加shiro过滤链失败");
 	}
-	
-	@RequestMapping(value = "/shiro/del/{ids}",method = RequestMethod.DELETE)
+
+	@RequestMapping(value = "/shiro/del/{ids}", method = RequestMethod.DELETE)
 	@ResponseBody
-    public Result<Object> delShiro(@PathVariable int[] ids){
-        for(int id:ids){
-            systemService.deleteShiroFilter(id);
-        }
-        return new ResultUtil<Object>().setData(null);
-    }
-	
+	public Result<Object> delShiro(@PathVariable int[] ids) {
+		for (int id : ids) {
+			systemService.deleteShiroFilter(id);
+		}
+		return new ResultUtil<Object>().setData(null);
+	}
 
 	@RequestMapping(value = "/shiro/update", method = RequestMethod.POST)
 	@ResponseBody
@@ -173,41 +173,39 @@ public class SystemController {
 		}
 	}
 
-	
-	@RequestMapping(value = "/log",method = RequestMethod.GET)
+	@RequestMapping(value = "/log", method = RequestMethod.GET)
 	@ResponseBody
-    public DataTablesResult getLog(int draw, int start, int length,@RequestParam("search[value]") String search,
-                                   @RequestParam("order[0][column]") int orderCol, @RequestParam("order[0][dir]") String orderDir){
-		//获取客户端需要排序的列
-        String[] cols = {"checkbox","id", "name","type", "url", "requestType", "requestParam", "user", "ip", "ipInfo","time","createDate"};
-        String orderColumn = cols[orderCol];
-        //默认排序列
-        if(orderColumn == null) {
-            orderColumn = "createDate";
-        }
-        //获取排序方式 默认为desc(asc)
-        if(orderDir == null) {
-            orderDir = "desc";
-        }
-        DataTablesResult result= systemService.getLogList(draw,start,length,search,orderColumn,orderDir);
-        return result;
-    }
-	
-	@RequestMapping(value = "/log/count",method = RequestMethod.GET)
+	public DataTablesResult getLog(int draw, int start, int length, @RequestParam("order[0][column]") int orderCol,
+			@RequestParam("order[0][dir]") String orderDir) {
+		// 获取客户端需要排序的列
+		String[] cols = { "checkbox", "id", "name", "type", "url", "requestType", "requestParam", "user", "ip",
+				"ipInfo", "time", "createDate" };
+		String orderColumn = cols[orderCol];
+		// 默认排序列
+		if (orderColumn == null) {
+			orderColumn = "createDate";
+		}
+		// 获取排序方式 默认为desc(asc)
+		if (orderDir == null) {
+			orderDir = "desc";
+		}
+
+		return systemService.getLogList(draw, start, length, orderColumn, orderDir);
+	}
+
+	@RequestMapping(value = "/log/count", method = RequestMethod.GET)
 	@ResponseBody
-    public Result<Object> countLog(){
-        return new ResultUtil<Object>().setData(systemService.countLog());
-    }
-	
-	@RequestMapping(value = "/log/del/{ids}",method = RequestMethod.DELETE)
+	public Result<Object> countLog() {
+		return new ResultUtil<Object>().setData(systemService.countLog());
+	}
+
+	@RequestMapping(value = "/log/del/{ids}", method = RequestMethod.DELETE)
 	@ResponseBody
-    public Result<Object> delLog(@PathVariable int[] ids){
-        for(int id:ids){
-            systemService.deleteLog(id);
-        }
-        return new ResultUtil<Object>().setData(null);
-    }
-	
-	
-	
+	public Result<Object> delLog(@PathVariable int[] ids) {
+		for (int id : ids) {
+			systemService.deleteLog(id);
+		}
+		return new ResultUtil<Object>().setData(null);
+	}
+
 }

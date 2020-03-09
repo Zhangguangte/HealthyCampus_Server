@@ -1,6 +1,8 @@
 package com.muyou.search.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -20,8 +22,6 @@ import com.muyou.common.util.JsonUtils;
 import com.muyou.common.util.ResultUtil;
 import com.muyou.common.util.XmlUtils;
 import com.muyou.mapper.TbDataMapper;
-import com.muyou.mapper.TbDiseaseMapper;
-import com.muyou.mapper.TbMedicineMapper;
 import com.muyou.pojo.TbData;
 import com.muyou.pojo.TbDisease;
 import com.muyou.pojo.TbMedicine;
@@ -36,12 +36,6 @@ public class SearchServiceImpl implements SearchService {
 
 	@Autowired
 	private JedisClient jedisClient;
-
-	@Autowired
-	private TbDiseaseMapper diseaseMapper;
-
-	@Autowired
-	private TbMedicineMapper medicineMapper;
 
 	@Autowired
 	private TbDataMapper dataMapper;
@@ -69,6 +63,12 @@ public class SearchServiceImpl implements SearchService {
 
 	@Value("${SOLR_INDEX_EXPIRE}")
 	private Integer SOLR_INDEX_EXPIRE;
+
+	@Value("${RELA_DEP}")
+	private Integer RELA_DEP;
+
+	@Value("${RELA_PAR}")
+	private Integer RELA_PAR;
 
 	@Override
 	public Result<Object> getInfo() {
@@ -144,23 +144,34 @@ public class SearchServiceImpl implements SearchService {
 	public int importAllDiseaseItems() {
 
 		try {
+			List<String> list = new LinkedList<String>();
 			solrServer.setDefaultCollection("collection1");
 
 			// TbDiseaseExample example = new TbDiseaseExample();
 			// List<TbDisease> itemList = diseaseMapper.selectByExample(example);
-
+			int i = 0;
 			List<TbDisease> itemList = itemMapper.getDiseaseItemList();
 			System.out.println(itemList.size());
 
 			for (TbDisease searchItem : itemList) {
 				SolrInputDocument document = new SolrInputDocument();
-				document.addField("id", searchItem.getId());
+				document.addField("id", "" + searchItem.getId());
 				document.addField("di_title", searchItem.getName());
 				document.addField("di_intro", searchItem.getIntroduce());
 				document.addField("di_url", searchItem.getUrl());
-				document.addField("di_part", searchItem.getPart());
-				document.addField("di_depart", searchItem.getDepart());
+
+				// 科室
+				list = itemMapper.getDiseaseType(searchItem.getId(), RELA_DEP);
+				document.addField("di_depart", String.join(",", list));
+				list.clear();
+
+				// 部位
+				list = itemMapper.getDiseaseType(searchItem.getId(), RELA_PAR);
+				document.addField("di_part", String.join(",", list));
 				solrServer.add(document);
+
+				System.out.println(i++);
+
 			}
 			solrServer.commit();
 
@@ -189,15 +200,18 @@ public class SearchServiceImpl implements SearchService {
 	public int importAllMedicineItems() {
 
 		try {
+			List<String> list = new ArrayList<String>();
 			solrServer.setDefaultCollection("collection2");
+
+			int i = 0;
 
 			// TbMedicineExample example = new TbMedicineExample();
 			// List<TbMedicine> itemList = medicineMapper.selectByExample(example);
-
 			List<TbMedicine> itemList = itemMapper.getMedicineItemList();
 			for (TbMedicine searchItem : itemList) {
+				// 获得基本数据
 				SolrInputDocument document = new SolrInputDocument();
-				document.addField("id", searchItem.getId());
+				document.addField("id", "" + searchItem.getId());
 				document.addField("md_price", searchItem.getPrice() + "");
 				document.addField("md_goodName", searchItem.getGoodsName());
 				document.addField("md_desc", searchItem.getIndications());
@@ -206,8 +220,14 @@ public class SearchServiceImpl implements SearchService {
 				document.addField("md_approval", searchItem.getApprovalNumber());
 				document.addField("md_manufacturer", searchItem.getManufacturer());
 				document.addField("md_zhuzhi", searchItem.getIndications());
-				document.addField("md_type", searchItem.getcName());
+
+				// 获取药品类型
+				list = itemMapper.getMedicineType(searchItem.getId());
+				document.addField("md_type", String.join(",", list));
+
 				solrServer.add(document);
+
+				System.out.println(i++);
 			}
 			solrServer.commit();
 

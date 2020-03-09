@@ -120,7 +120,7 @@
             serverSide: true,//开启服务器模式
             "processing": true,//加载显示提示
             "ajax": {
-                url:"/item/disease/list?type="+CATE_DIS+"&factor=0",
+                url:"/item/disease/list",
                 type: 'GET',
                 dataType: "json",
                 data: {
@@ -221,9 +221,9 @@
                     "data": null,
                     render: function (data, type, row, meta) {
                         if (row.status == 1) {
-                            return "<a style=\"text-decoration:none\" onClick=\"disease_stop(this,"+row.id+")\" href=\"javascript:;\" title=\"下架\"><i class=\"Hui-iconfont\">&#xe6de;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"disease_edit('基本信息编辑','disease-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"disease_del(this,"+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
+                            return "<a style=\"text-decoration:none\" onClick=\"disease_stop(this,"+row.id+")\" href=\"javascript:;\" title=\"下架\"><i class=\"Hui-iconfont\">&#xe6de;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"disease_edit('疾病信息编辑','disease-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"disease_del(this,"+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
                         } else {
-                            return "<a style=\"text-decoration:none\" onClick=\"disease_start(this,"+row.id+")\" href=\"javascript:;\" title=\"发布\"><i class=\"Hui-iconfont\">&#xe603;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"disease_edit('基本信息编辑','disease-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"disease_del(this,"+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
+                            return "<a style=\"text-decoration:none\" onClick=\"disease_start(this,"+row.id+")\" href=\"javascript:;\" title=\"发布\"><i class=\"Hui-iconfont\">&#xe603;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"disease_edit('疾病信息编辑','disease-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"disease_del(this,"+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
                         }
                     }
                 }
@@ -310,7 +310,7 @@
         },
         async: {
             enable: true,
-            url: "/item/cat/list?type="+CATE_DIS+"&factor=0",
+            url: "/item/cate/list?type="+CATE_DIS+"&factor=0",
             type: "GET",
             contentType: "application/json",
             autoParam: ["id"],
@@ -323,6 +323,9 @@
                 if (treeNode.isParent) {
                     return false;
                 } else {
+                	$("#searchKey").val("");
+                	$("#maxDate").val("");
+                	$("#minDate").val("");
                 	cid=treeNode.id;
                     $("#category").html(treeNode.name);
                     var param = {
@@ -330,7 +333,7 @@
                     };
                     var table = $('.table').DataTable();
                     table.settings()[0].ajax.data = param;
-                    table.ajax.reload();
+                    table.ajax.url( '/item/disease/list' ).load();
                     return true;
                 }
             }

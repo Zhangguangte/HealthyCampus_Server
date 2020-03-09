@@ -40,7 +40,7 @@
         <div class="text-c"> 日期范围：
             <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'maxDate\')||\'%y-%M-%d\'}' })" id="minDate" name="minDate" class="input-text Wdate" style="width:120px;">
             <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'minDate\')}',maxDate:'%y-%M-%d' })" id="maxDate" name="maxDate" class="input-text Wdate" style="width:120px;">
-            <input type="text" name="searchKey" id="searchKey" placeholder=" 药品ID、药品名称、科室等" style="width:250px" class="input-text">
+            <input type="text" name="searchKey" id="searchKey" placeholder=" 药品ID、药品名称、批准文号等" style="width:250px" class="input-text">
             <button name="" id="searchButton" type="submit" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i> 搜药品</button>
         </div>
         <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" onclick="medicine_add('添加药品','medicine-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加药品</a></span> <span class="r">共有数据：<strong id="itemListCount">0</strong> 条</span> </div>
@@ -91,27 +91,13 @@
 
 	var CATE_MED=1;
 	
-	function imageShow(data){
-	    if(data==""||data==null){
-	        return "http://ow2h3ee9w.bkt.clouddn.com/nopic.jpg";
-	    }
-	    var images= new Array(); //定义一数组
-	    images=data.split(","); //字符分割
-	    if(images.length>0){
-	        return images[0];
-	    }else{
-	        return data;
-	    }
-	}
-
-
     /*datatables配置*/
     $(document).ready(function () {
         $('.table').DataTable({
             serverSide: true,//开启服务器模式
             "processing": true,//加载显示提示
             "ajax": {
-            	 url:"/item/medicine/list?type="+CATE_MED+"&factor=0",
+            	url:"/item/medicine/list",
                 type: 'GET',
                 dataType: "json",
                 data: {
@@ -127,7 +113,7 @@
                 { "data": "id"},
                 { "data": "logo",
                     render: function(data, type, row, meta) {
-                        return '<a href="'+data+'" target="_blank"><img src="'+imageShow(data)+'" style="width: 80px;height: 70px" alt="lose image" />';
+                        return '<a href="'+data+'" target="_blank"><img src="'+data+'" style="width: 80px;height: 70px" alt="lose image" />';
                     }
                 },
                 { "data": "goodsName",
@@ -329,7 +315,7 @@
         },
         async: {
             enable: true,
-            url: "/item/cat/list?type="+CATE_MED+"&factor=0",
+            url: "/item/cate/list?type="+CATE_MED+"&factor=0",
             type: "GET",
             contentType: "application/json",
             autoParam: ["id"],
@@ -342,6 +328,9 @@
                 if (treeNode.isParent) {
                     return false;
                 } else {
+                	$("#searchKey").val("");
+                	$("#maxDate").val("");
+                	$("#minDate").val("");
                 	cid=treeNode.id;
                     $("#category").html(treeNode.name);
                     var param = {
@@ -349,7 +338,7 @@
                     };
                     var table = $('.table').DataTable();
                     table.settings()[0].ajax.data = param;
-                    table.ajax.reload();
+                    table.ajax.url( '/item/medicine/list' ).load();
                     return true;
                 }
             }

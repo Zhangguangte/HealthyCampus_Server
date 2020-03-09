@@ -3,8 +3,7 @@
 <mapper namespace="com.muyou.search.mapper.ItemMapper">
 	<select id="getMedicineItemList" resultType="com.muyou.pojo.TbMedicine">
 		SELECT
-			c.name cName,
-			m.id id,
+			DISTINCT(m.id) id,
 			m.price price,
 			m.goods_name goodsName,
 			m.instruction instruction,
@@ -14,17 +13,25 @@
 			m.manufacturer manufacturer,
 			m.indications indications
 		FROM
-			tb_medicine m	RIGHT JOIN tb_item_rela_cate r on m.id = r.item_id RIGHT JOIN tb_cate c on r.cate_id = c.id
-		where 
-			m.id = #{id} 
-		and 
+			tb_medicine m	
+		where  
 			m.status = 1
 	</select> 
 	
-	<select id="getMedicineItemById" parameterType="String" resultType="com.muyou.pojo.TbMedicine">
+	<select id="getMedicineType" parameterType="Integer" resultType="String">
 		SELECT
-			c.name cName,
-			m.id id,
+			c.name
+		FROM
+			tb_medicine m	RIGHT JOIN tb_item_rela_cate r on m.id = r.item_id RIGHT JOIN tb_cate c on r.cate_id = c.id
+		where 
+			m.status = 1
+		and
+			m.id = #{id} 
+	</select> 
+	
+	<select id="getMedicineItemById" parameterType="Integer" resultType="com.muyou.pojo.TbMedicine">
+		SELECT
+			DISTINCT(m.id) id,
 			m.price price,
 			m.goods_name goodsName,
 			m.instruction instruction,
@@ -34,35 +41,47 @@
 			m.manufacturer manufacturer,
 			m.indications indications
 		FROM
-			tb_medicine m	RIGHT JOIN tb_item_rela_cate r on m.id = r.item_id RIGHT JOIN tb_cate c on r.cate_id = c.id
+			tb_medicine m RIGHT JOIN tb_item_rela_cate r on m.id = r.item_id RIGHT JOIN tb_cate c on r.cate_id = c.id
 		where 
 			m.id = #{id} 
+		LIMIT 0,1
 	</select>
 	
 	<select id="getDiseaseItemList" resultType="com.muyou.pojo.TbDisease">
 		SELECT
 			d.id id,
 			d.name name,
-			d.introduce ntroduce,
-			d.url url,
-			d.part part,
-			d.depart depart
+			d.introduce introduce,
+			d.url url
 		FROM
 			tb_disease d	
 		where 
 			d.status = 1
 	</select>
 	
-	<select id="getDiseaseItemById" parameterType="String" resultType="com.muyou.pojo.TbDisease">
+	<select id="getDiseaseType" parameterType="Integer" resultType="String">
+		SELECT
+			c.name cName
+		FROM
+			tb_disease d	RIGHT JOIN tb_item_rela_cate r on d.id = r.item_id RIGHT JOIN tb_cate c on r.cate_id = c.id
+		where 
+			d.id = #{id} 
+		and 
+			r.type = #{type}
+	</select>
+	
+	
+	<select id="getDiseaseItemById" parameterType="Integer" resultType="com.muyou.pojo.TbDisease">
 		SELECT
 			d.id id,
 			d.name name,
-			d.introduce ntroduce,
-			d.url url,
-			d.part part,
-			d.depart depart
+			d.introduce introduce,
+			d.url url
 		FROM
 			tb_disease d	
+		where 
+			d.id = #{id} 
+		LIMIT 0,1
 	</select> 
 	
 	<select id="getDocumentsNum" parameterType="String" resultType="Integer">

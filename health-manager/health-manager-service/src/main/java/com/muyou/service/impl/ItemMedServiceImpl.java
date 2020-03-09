@@ -12,6 +12,8 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
@@ -39,6 +41,8 @@ import com.muyou.vo.MedicineVo;
 
 @Service
 public class ItemMedServiceImpl implements ItemMedService {
+
+	private final static Logger log = LoggerFactory.getLogger(ItemMedServiceImpl.class);
 
 	@Autowired
 	private JedisClient jedisClient;
@@ -110,7 +114,7 @@ public class ItemMedServiceImpl implements ItemMedService {
 		DataTablesResult result = new DataTablesResult();
 
 		System.out.println(search);
-		
+
 		// 分页执行查询返回结果
 		PageHelper.startPage(start / length + 1, length);
 		List<TbMedicine> list = medicineMapper.selectItemByCondition(cid, "%" + search + "%", orderCol, orderDir);
@@ -138,7 +142,7 @@ public class ItemMedServiceImpl implements ItemMedService {
 			String maxDate, String orderCol, String orderDir) {
 
 		DataTablesResult result = new DataTablesResult();
-		
+
 		// 分页执行查询返回结果
 		PageHelper.startPage(start / length + 1, length);
 		List<TbMedicine> list = medicineMapper.selectItemByMultiCondition(cid, "%" + search + "%", minDate, maxDate,
@@ -174,9 +178,7 @@ public class ItemMedServiceImpl implements ItemMedService {
 			cateList.add(tbCate.getName());
 			cidList.add(tbCate.getId() + "");
 		}
-		
-		System.out.println("***"+String.join(",", cateList));
-		
+
 		result.setCid(cidList);
 		result.setcName(cateList);
 
@@ -244,12 +246,12 @@ public class ItemMedServiceImpl implements ItemMedService {
 			e.printStackTrace();
 		}
 
-		// // 发送消息同步索引库
-		// try {
-		// sendRefreshESMessage("add", id);
-		// } catch (Exception e) {
-		// log.error("同步索引出错");
-		// }
+		// 发送消息同步索引库
+		try {
+			sendRefreshSolrMessage(MEDICINE, "add", medicine.getId(), "-1");
+		} catch (Exception e) {
+			log.error("同步索引出错");
+		}
 		return 1;
 	}
 
@@ -272,12 +274,12 @@ public class ItemMedServiceImpl implements ItemMedService {
 			e.printStackTrace();
 		}
 
-		// // 发送消息同步索引库
-		// try {
-		// sendRefreshESMessage("delete", id);
-		// } catch (Exception e) {
-		// log.error("同步索引出错");
-		// }
+		// 发送消息同步索引库
+		try {
+			sendRefreshSolrMessage(MEDICINE, "delete", id, "-1");
+		} catch (Exception e) {
+			log.error("同步索引出错");
+		}
 
 		return 1;
 	}
@@ -300,6 +302,13 @@ public class ItemMedServiceImpl implements ItemMedService {
 			e.printStackTrace();
 		}
 
+		// 发送消息同步索引库
+		try {
+			sendRefreshSolrMessage(MEDICINE, "update", id, state ? "1" : "2");
+		} catch (Exception e) {
+			log.error("同步索引出错");
+		}
+
 		return 1;
 	}
 
@@ -319,9 +328,7 @@ public class ItemMedServiceImpl implements ItemMedService {
 		TbItemRelaCateExample example = new TbItemRelaCateExample();
 		TbItemRelaCateExample.Criteria criteria = example.createCriteria();
 		criteria.andItemIdEqualTo(id);
-		if (itemRelaCateMapper.deleteByExample(example) < 1) {
-			throw new GlobalException("删除药品&分类关系失败");
-		}
+		itemRelaCateMapper.deleteByExample(example);
 
 		TbItemRelaCate itemRelaCate = new TbItemRelaCate();
 		// 分类数据
@@ -342,27 +349,29 @@ public class ItemMedServiceImpl implements ItemMedService {
 			e.printStackTrace();
 		}
 
-		// // 发送消息同步索引库
-		// try {
-		// sendRefreshESMessage("add", id);
-		// } catch (Exception e) {
-		// log.error("同步索引出错");
-		// }
+		// 发送消息同步索引库
+		try {
+			sendRefreshSolrMessage(MEDICINE, "update", id, "0");
+		} catch (Exception e) {
+			log.error("同步索引出错");
+		}
 
 		return 1;
 	}
 
 	/**
-	 * 发送消息同步索引库
+	 * /** 发送消息同步索引库
 	 * 
 	 * @param type
+	 * @param oper
 	 * @param id
 	 */
-	public void sendRefreshESMessage(String type, int id) {
+	public void sendRefreshSolrMessage(String type, String oper, int id, String fac) {
 		jmsTemplate.send(topicDestination, new MessageCreator() {
 			@Override
 			public Message createMessage(Session session) throws JMSException {
-				TextMessage textMessage = session.createTextMessage(type + "," + String.valueOf(id));
+				TextMessage textMessage = session
+						.createTextMessage(type + "," + oper + "," + String.valueOf(id) + "," + fac);
 				return textMessage;
 			}
 		});

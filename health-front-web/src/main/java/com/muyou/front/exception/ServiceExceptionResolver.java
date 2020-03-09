@@ -1,7 +1,6 @@
 package com.muyou.front.exception;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.dubbo.common.json.JSONObject;
 import com.muyou.common.exception.ServiceException;
 import com.muyou.common.pojo.ResponseBuilder;
 import com.muyou.common.util.JsonUtil;

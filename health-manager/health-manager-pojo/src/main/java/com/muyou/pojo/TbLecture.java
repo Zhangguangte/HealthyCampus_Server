@@ -1,20 +1,27 @@
 package com.muyou.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class TbLecture implements Serializable{
     private Integer id;
 
     private String title;
 
-    private String college;
-
-    private String date;
+    private String content;
 
     private String author;
 
-    private String content;
+    private Boolean status;
 
+    private Date created;
+
+    private Date updated;
+    
+    private String cid;
+
+	private String cname;
+    
     public Integer getId() {
         return id;
     }
@@ -31,20 +38,12 @@ public class TbLecture implements Serializable{
         this.title = title == null ? null : title.trim();
     }
 
-    public String getCollege() {
-        return college;
+    public String getContent() {
+        return content;
     }
 
-    public void setCollege(String college) {
-        this.college = college == null ? null : college.trim();
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date == null ? null : date.trim();
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
     public String getAuthor() {
@@ -55,11 +54,43 @@ public class TbLecture implements Serializable{
         this.author = author == null ? null : author.trim();
     }
 
-    public String getContent() {
-        return content;
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+    
+    public String getCid() {
+		return cid;
+	}
+
+	public void setCid(String cid) {
+		this.cid = cid;
+	}
+
+	public String getCname() {
+		return cname;
+	}
+
+	public void setCname(String cname) {
+		this.cname = cname;
+	}
 }

@@ -222,6 +222,17 @@ public class ItemDisServiceImpl implements ItemDisService {
 		PageHelper.startPage(start / length + 1, length);
 		List<TbDisease> list = diseaseMapper.selectItemByMultiCondition(cid, "%" + search + "%", minDate, maxDate,
 				orderCol, orderDir);
+
+		List<String> cateList;
+		for (TbDisease tbDisease : list) {
+			// 获得科室数据
+			cateList = cateMapper.selectCateNameByItemIdAndType(tbDisease.getId(), RELA_DEP);
+			tbDisease.setDepart(String.join(",", cateList));
+			// 获得部位数据
+			cateList = cateMapper.selectCateNameByItemIdAndType(tbDisease.getId(), RELA_PAR);
+			tbDisease.setPart(String.join(",", cateList));
+		}
+
 		PageInfo<TbDisease> pageInfo = new PageInfo<>(list);
 		result.setRecordsFiltered((int) pageInfo.getTotal());
 		result.setRecordsTotal(getAllItemCount().getRecordsTotal());
@@ -247,7 +258,7 @@ public class ItemDisServiceImpl implements ItemDisService {
 		}
 
 		TbItemRelaCate itemRelaCate = new TbItemRelaCate();
-		
+
 		// 部位数据
 		itemRelaCate.setItemId(disease.getId());
 		itemRelaCate.setType(RELA_PAR);
@@ -274,12 +285,13 @@ public class ItemDisServiceImpl implements ItemDisService {
 			e.printStackTrace();
 		}
 
-		// // 发送消息同步索引库
-		// try {
-		// sendRefreshESMessage("add", id);
-		// } catch (Exception e) {
-		// log.error("同步索引出错");
-		// }
+		// 发送消息同步索引库
+		try {
+			sendRefreshSolrMessage(DISEASE, "add", disease.getId(),"-1");
+		} catch (Exception e) {
+			log.error("同步索引出错");
+		}
+
 		return 1;
 	}
 
@@ -295,19 +307,19 @@ public class ItemDisServiceImpl implements ItemDisService {
 		itemRelaCateMapper.deleteByExample(example);
 
 		try {
-			jedisClient.del(ITEM_ID + ":" + id);
-			jedisClient.del(ITEM_DETAIL_ID + ":" + id);
+			jedisClient.del(ITEM_ID + ":" + DISEASE + ":" + id);
+			jedisClient.del(ITEM_DETAIL_ID + ":" + DISEASE + ":" + id);
 			jedisClient.del(ITEM_COUNT + ":" + DISEASE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		// // 发送消息同步索引库
-		// try {
-		// sendRefreshESMessage("delete", id);
-		// } catch (Exception e) {
-		// log.error("同步索引出错");
-		// }
+		// 发送消息同步索引库
+		try {
+			sendRefreshSolrMessage(DISEASE, "delete", id,"-1");
+		} catch (Exception e) {
+			log.error("同步索引出错");
+		}
 
 		return 1;
 	}
@@ -324,10 +336,17 @@ public class ItemDisServiceImpl implements ItemDisService {
 		}
 
 		try {
-			jedisClient.del(ITEM_ID + ":" + id);
-			jedisClient.del(ITEM_DETAIL_ID + ":" + id);
+			jedisClient.del(ITEM_ID + ":" + DISEASE + ":" + id);
+			jedisClient.del(ITEM_DETAIL_ID + ":" + DISEASE + ":" + id);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+
+		// 发送消息同步索引库
+		try {
+			sendRefreshSolrMessage(DISEASE, "update", id, state ? "1" : "2");
+		} catch (Exception e) {
+			log.error("同步索引出错");
 		}
 
 		return 1;
@@ -343,8 +362,6 @@ public class ItemDisServiceImpl implements ItemDisService {
 		disease.setCreated(oldDisease.getCreated());
 		disease.setUpdated(new Date());
 		disease.setStatus(true);
-		disease.setPart("(" + String.join(")(", diseaseVo.getPart()) + ")");
-		disease.setDepart("(" + String.join(")(", diseaseVo.getDepart()) + ")");
 		if (diseaseMapper.updateByPrimaryKey(disease) < 1) {
 			throw new GlobalException("更新疾病失败");
 		}
@@ -352,9 +369,7 @@ public class ItemDisServiceImpl implements ItemDisService {
 		TbItemRelaCateExample example = new TbItemRelaCateExample();
 		TbItemRelaCateExample.Criteria criteria = example.createCriteria();
 		criteria.andItemIdEqualTo(id);
-		if (itemRelaCateMapper.deleteByExample(example) < 1) {
-			throw new GlobalException("删除疾病&分类关系失败");
-		}
+		itemRelaCateMapper.deleteByExample(example);
 
 		TbItemRelaCate itemRelaCate = new TbItemRelaCate();
 		// 部位数据
@@ -379,18 +394,18 @@ public class ItemDisServiceImpl implements ItemDisService {
 
 		// 同步缓存
 		try {
-			jedisClient.del(ITEM_ID + ":" + id);
-			jedisClient.del(ITEM_DETAIL_ID + ":" + id);
+			jedisClient.del(ITEM_ID + ":" + DISEASE + ":" + id);
+			jedisClient.del(ITEM_DETAIL_ID + ":" + DISEASE + ":" + id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		// // 发送消息同步索引库
-		// try {
-		// sendRefreshESMessage("add", id);
-		// } catch (Exception e) {
-		// log.error("同步索引出错");
-		// }
+		// 发送消息同步索引库
+		try {
+			sendRefreshSolrMessage(DISEASE, "update", id, "0");
+		} catch (Exception e) {
+			log.error("同步索引出错");
+		}
 
 		return 1;
 	}
@@ -399,13 +414,15 @@ public class ItemDisServiceImpl implements ItemDisService {
 	 * 发送消息同步索引库
 	 * 
 	 * @param type
+	 * @param oper
 	 * @param id
 	 */
-	public void sendRefreshESMessage(String type, int id) {
+	public void sendRefreshSolrMessage(String type, String oper, int id, String fac) {
 		jmsTemplate.send(topicDestination, new MessageCreator() {
 			@Override
 			public Message createMessage(Session session) throws JMSException {
-				TextMessage textMessage = session.createTextMessage(type + "," + String.valueOf(id));
+				TextMessage textMessage = session
+						.createTextMessage(type + "," + oper + "," + String.valueOf(id) + "," + fac);
 				return textMessage;
 			}
 		});

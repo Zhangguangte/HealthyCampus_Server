@@ -14,6 +14,7 @@ import com.muyou.common.util.JsonUtils;
 import com.muyou.front.service.LibraryService;
 import com.muyou.front.vo.BookDetailVo;
 import com.muyou.front.vo.BookVo;
+import com.muyou.mapper.TbCateMapper;
 import com.muyou.mapper.TbLibraryMapper;
 import com.muyou.pojo.TbLibrary;
 import com.muyou.pojo.TbLibraryExample;
@@ -29,9 +30,15 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Value("${LIBRARY_SEARCH}")
 	private String LIBRARY_SEARCH;
-	
+
 	@Value("${LIBRARY_EXPIRE}")
 	private Integer LIBRARY_EXPIRE;
+
+	@Value("${RELA_LIB}")
+	private Integer RELA_LIB;
+
+	@Autowired
+	private TbCateMapper cateMapper;
 
 	@Autowired
 	private TbLibraryMapper libraryMapper;
@@ -40,7 +47,7 @@ public class LibraryServiceImpl implements LibraryService {
 	public BookDetailVo searchBookDetail(RequestForm requestForm) {
 
 		try {
-			String json = jedisClient.get(LIBRARY_DETAIL+":"+requestForm.getQuest_id());
+			String json = jedisClient.get(LIBRARY_DETAIL + ":" + requestForm.getQuest_id());
 			if (StringUtils.isNotBlank(json)) {
 				return JsonUtils.jsonToPojo(json, BookDetailVo.class);
 			}
@@ -51,11 +58,15 @@ public class LibraryServiceImpl implements LibraryService {
 		TbLibrary library = libraryMapper.selectByPrimaryKey(Integer.parseInt(requestForm.getQuest_id()));
 		if (null == library)
 			throw null;
+
+		List<String> cateList = cateMapper.selectCateNameByItemIdAndType(library.getId(), RELA_LIB);
+		library.setCname(String.join(",", cateList));
+
 		BookDetailVo book = new BookDetailVo(library);
 
 		try {
-			jedisClient.set(LIBRARY_DETAIL+":"+requestForm.getQuest_id(), JsonUtils.objectToJson(book));
-			jedisClient.expire(LIBRARY_DETAIL+":"+requestForm.getQuest_id(), LIBRARY_EXPIRE);
+			jedisClient.set(LIBRARY_DETAIL + ":" + requestForm.getQuest_id(), JsonUtils.objectToJson(book));
+			jedisClient.expire(LIBRARY_DETAIL + ":" + requestForm.getQuest_id(), LIBRARY_EXPIRE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,9 +90,13 @@ public class LibraryServiceImpl implements LibraryService {
 		List<TbLibrary> books = libraryMapper.selectByExample(tbLibraryExample);
 		if (null == books || books.size() == 0)
 			throw null;
+
+		List<String> cateList;
 		List<BookVo> bookVos = new LinkedList<>();
-		for (TbLibrary tbLibrary : books) {
-			bookVos.add(new BookVo(tbLibrary));
+		for (TbLibrary library : books) {
+			cateList = cateMapper.selectCateNameByItemIdAndType(library.getId(), RELA_LIB);
+			library.setCname(String.join(",", cateList));
+			bookVos.add(new BookVo(library));
 		}
 
 		try {

@@ -54,7 +54,7 @@
         },
         async: {
             enable: true,
-            url: "/item/cat/list?type="+parent.type+"&factor="+parent.factor,
+            url: "/item/cate/list?type="+parent.type+"&factor="+parent.factor,
             type: "GET",
             contentType: "application/json",
             autoParam: ["id"]

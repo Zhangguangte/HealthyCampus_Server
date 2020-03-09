@@ -19,13 +19,13 @@ import com.muyou.front.vo.FoodRecommendVo;
 import com.muyou.front.vo.FoodVo;
 import com.muyou.front.vo.IngredientResultVo;
 import com.muyou.front.vo.RecipesListVo;
+import com.muyou.mapper.TbClassifyMapper;
 import com.muyou.mapper.TbIngredientsMapper;
-import com.muyou.mapper.TbRecipesClassifyMapper;
 import com.muyou.mapper.TbRecipesMapper;
+import com.muyou.pojo.TbClassify;
 import com.muyou.pojo.TbIngredients;
 import com.muyou.pojo.TbIngredientsExample;
 import com.muyou.pojo.TbRecipes;
-import com.muyou.pojo.TbRecipesClassify;
 import com.muyou.pojo.TbRecipesExample;
 
 @Service
@@ -41,7 +41,7 @@ public class RecipesServiceImpl implements RecipesService {
 	private TbIngredientsMapper ingredientsMapper;
 
 	@Autowired
-	private TbRecipesClassifyMapper recipesClassifyMapper;
+	private TbClassifyMapper classifyMapper;
 
 	@Autowired
 	private JedisClient jedisClient;
@@ -60,6 +60,9 @@ public class RecipesServiceImpl implements RecipesService {
 
 	@Value("${RECIPES_LIST}")
 	private String RECIPES_LIST;
+
+	@Value("${RECIPES_COUNT}")
+	private Integer RECIPES_COUNT;
 
 	@Value("${RECIPES_EXPIRE}")
 	private Integer RECIPES_EXPIRE;
@@ -220,7 +223,7 @@ public class RecipesServiceImpl implements RecipesService {
 			e.printStackTrace();
 		}
 
-		TbRecipesClassify reClassify = recipesClassifyMapper.selectByPrimaryKey(requestForm.getType());
+		TbClassify reClassify = classifyMapper.selectByPrimaryKey(requestForm.getType());
 		if (null == reClassify)
 			return null;
 		String[] clas = reClassify.getClassify().split(",");
@@ -255,12 +258,8 @@ public class RecipesServiceImpl implements RecipesService {
 			e.printStackTrace();
 		}
 
-		TbRecipesExample recipesExample = new TbRecipesExample();
-		recipesExample.setRow(row);
-		recipesExample.setSize(15);
-		TbRecipesExample.Criteria criteria = recipesExample.createCriteria();
-		criteria.andClassificationLike("%(" + name + ")%");
-		List<TbRecipes> recipes = recipesMapper.selectByExample(recipesExample);
+		List<TbRecipes> recipes = recipesMapper.selectItemByClassify(row * RECIPES_COUNT, RECIPES_COUNT,
+				"%(" + name + ")%");
 		if (null == recipes || recipes.size() == 0)
 			return null;
 		List<FoodMenuVo> result = new LinkedList<FoodMenuVo>();

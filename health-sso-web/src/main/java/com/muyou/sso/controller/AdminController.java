@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.muyou.common.annotation.SystemControllerLog;
 import com.muyou.common.form.LoginForm;
 import com.muyou.common.pojo.Result;
 import com.muyou.common.util.CookieUtils;
@@ -32,6 +33,7 @@ public class AdminController {
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
+	@SystemControllerLog(description="管理员登录系统")
 	public Result<Object> adminLogin(String username, String password, HttpServletRequest request,
 			HttpServletResponse response) {
 
@@ -50,6 +52,7 @@ public class AdminController {
 
 	@RequestMapping(value = "/logout",method = RequestMethod.GET)
 	@ResponseBody
+	@SystemControllerLog(description="管理员注销系统")
     public Object adminLogout(HttpServletRequest request,HttpServletResponse response, String callback){
 
 		//获得客服端的Cookie
@@ -77,7 +80,6 @@ public class AdminController {
 	@RequestMapping(value = "/unlock",method = RequestMethod.GET)
 	@ResponseBody
     public Object unLock(String username,String password,String token,String callback ) throws UnsupportedEncodingException{
-
 		//转化为中文
 		username = new String(username.getBytes("iso8859-1"), "utf-8");
 		

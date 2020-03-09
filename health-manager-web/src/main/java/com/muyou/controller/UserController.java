@@ -13,7 +13,7 @@ import com.muyou.service.UserService;
 @RequestMapping(value = "/user")
 public class UserController {
 
-	@Autowired
+	@Autowired(required = false)
 	private UserService userService;
 	
 	@RequestMapping(value = "/count",method = RequestMethod.GET)

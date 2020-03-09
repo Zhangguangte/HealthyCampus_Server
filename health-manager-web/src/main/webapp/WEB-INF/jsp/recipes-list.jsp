@@ -20,7 +20,7 @@
     <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
-    <title>疾病列表</title>
+    <title>食谱列表</title>
     <link rel="stylesheet" href="lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
 </head>
 <style>
@@ -31,49 +31,51 @@
 
 <body class="pos-r">
 <div class="pos-a" style="width:200px;left:0;top:0; bottom:0; height:100%; border-right:1px solid #e5e5e5; background-color:#f5f5f5; overflow:auto;">
-    <ul style="margin-top: 15px;margin-left: 20px"><i class="Hui-iconfont Hui-iconfont-fenlei"></i> 疾病分类</ul>
+    <ul style="margin-top: 15px;margin-left: 20px"><i class="Hui-iconfont Hui-iconfont-fenlei"></i> 食谱分类</ul>
     <ul id="treeDemo" style="margin-left: 10px" class="ztree"></ul>
 </div>
 <div style="margin-left:200px;">
-    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 疾病管理 <span class="c-gray en">&gt;</span> 疾病列表 <span class="c-gray en">&gt;</span><span id="category">所有疾病</span> <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 食谱管理 <span class="c-gray en">&gt;</span> 食谱列表 <span class="c-gray en">&gt;</span><span id="category">所有食谱</span> <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
     <form id="form-search" class="page-container">
         <div class="text-c"> 日期范围：
             <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'maxDate\')||\'%y-%M-%d\'}' })" id="minDate" name="minDate" class="input-text Wdate" style="width:120px;">
             <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'minDate\')}',maxDate:'%y-%M-%d' })" id="maxDate" name="maxDate" class="input-text Wdate" style="width:120px;">
-            <input type="text" name="searchKey" id="searchKey" placeholder=" 疾病ID、疾病名称、科室等" style="width:250px" class="input-text">
-            <button name="" id="searchButton" type="submit" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i> 搜疾病</button>
+            <input type="text" name="searchKey" id="searchKey" placeholder=" 食谱ID、食谱名称、食谱口味等" style="width:250px" class="input-text">
+            <button name="" id="searchButton" type="submit" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i> 搜食谱</button>
         </div>
-        <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" onclick="disease_add('添加疾病','disease-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加疾病</a></span> <span class="r">共有数据：<strong id="itemListCount">0</strong> 条</span> </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20"> 
+        	<span class="l">
+        		<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+        			<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
+        		</a> 
+        		<a class="btn btn-primary radius" onclick="recipes_add('添加食谱','recipes-add')" href="javascript:;">
+        			<i class="Hui-iconfont">&#xe600;</i> 添加食谱
+        		</a>
+        	</span>
+        	<span class="r">
+        		共有数据：<strong id="itemListCount">0</strong> 条
+        	</span> 
+        </div>
         <div class="mt-20">
             <div class="mt-20" style="margin-bottom: 70px">
                 <table class="table table-border table-bordered table-bg table-hover table-sort" width="100%">
                     <thead>
                     <tr class="text-c">
-                        <th width="30" rowspan="2"><input name="" type="checkbox" value=""></th>
-                        <th width="50" rowspan="2">ID</th>
-                       	<!-- 基本信息 -->
-                        <th width="100" colspan="4">基本信息</th>
-                        <!-- 疾病知识 -->
-                        <th width="100" colspan="2">疾病知识</th>
-                      	<!-- 治疗知识 -->
-                      	<th width="100" colspan="2">治疗知识</th>
-                       	<!--  操作  -->
-                       	<th width="80" rowspan="2">创建时间</th>
-                        <th width="70" rowspan="2">状态</th>
-                        <th width="70" rowspan="2">操作</th>
-                    </tr>
-                    <tr class="text-c">
-                       	<!--  基本信息 -->
+                        <th width="30"><input name="" type="checkbox" value=""></th>
+                        <th width="50">ID</th>
                         <th width="100">缩略图</th>
                         <th width="100">名称</th>
-                        <th width="60">部位</th>
-                        <th width="60">科室</th>
-                        <!-- 疾病知识 -->
-                        <th width="90">并发症</th>
-                        <th width="90">症状</th>
-                      	<!-- 治疗知识 -->
-                        <th width="80">治疗率</th>
-                        <th width="95">治疗时间</th>
+                        <th width="100">口味</th>
+                      	<th width="100">功效</th>
+                        <th width="30">烹饪</th>
+                        <th width="90">时长</th>
+                        <th width="60">类型</th>
+                        <th width="70">卡路里</br>(100g/kcal)</th>
+                        <th width="70">分类</th>
+                        <th width="70">体质</th>
+                        <th width="95">创建时间</th>
+                        <th width="70">状态</th>
+                        <th width="70">操作</th>
                     </tr>
                     </thead>
                 </table>
@@ -99,20 +101,7 @@
 <script type="text/javascript" src="lib/common.js"></script>
 <script type="text/javascript">
 
-	var CATE_DIS=0;
-
-    function imageShow(data){
-        if(data==""||data==null){
-            return "http://ow2h3ee9w.bkt.clouddn.com/nopic.jpg";
-        }
-        var images= new Array(); //定义一数组
-        images=data.split(","); //字符分割
-        if(images.length>0){
-            return images[0];
-        }else{
-            return data;
-        }
-    }
+	var CATE_REC = 2;
 
     /*datatables配置*/
     $(document).ready(function () {
@@ -120,7 +109,7 @@
             serverSide: true,//开启服务器模式
             "processing": true,//加载显示提示
             "ajax": {
-                url:"/item/disease/list?type="+CATE_DIS+"&factor=0",
+                url:"/item/recipes/list",
                 type: 'GET',
                 dataType: "json",
                 data: {
@@ -136,7 +125,7 @@
                 { "data": "id"},
                 { "data": "url",
                     render: function(data, type, row, meta) {
-                        return '<a href="'+data+'" target="_blank"><img src="'+imageShow(data)+'" style="width: 80px;height: 70px" alt="lose image" />';
+                        return '<a href="'+data+'" target="_blank"><img src="'+data+'" style="width: 80px;height: 70px" alt="lose image" />';
                     }
                 },
                 { "data": "name",
@@ -151,9 +140,43 @@
                         return data;
                     }
                 },
-                { "data": "part"},
-                { "data": "depart"},
-                { "data": "complication",
+                { "data": "flavor",
+                    render: function(data, type, row, meta) {
+                        if (type === 'display') {
+                            if (data.length > 20) {
+                                return '<span title=' + data + '>' + data.substr(0, 20) + '...</span>';
+                            } else {
+                                return '<span title=' + data + '>' + data + '</span>';
+                            }
+                        }
+                        return data;
+                    }
+                },
+                { "data": "functional",
+                    render: function(data, type, row, meta) {
+                        if (type === 'display') {
+                            if (data.length > 20) {
+                                return '<span title=' + data + '>' + data.substr(0, 20) + '...</span>';
+                            } else {
+                                return '<span title=' + data + '>' + data + '</span>';
+                            }
+                        }
+                        return data;
+                    }
+                },
+                { "data": "process",
+                	render: function(data, type, row, meta) {
+                        if (type === 'display') {
+                            if (data.length > 20) {
+                                return '<span title=' + data + '>' + data.substr(0, 20) + '...</span>';
+                            } else {
+                                return '<span title=' + data + '>' + data + '</span>';
+                            }
+                        }
+                        return data;
+                    }			
+                },
+                { "data": "time",
                 	render: function(data, type, row, meta) {
                         if (type === 'display') {
                             if (data.length > 20) {
@@ -165,7 +188,30 @@
                         return data;
                     }		
                 },
-                { "data": "symptoms",
+                { "data": "type",
+                	render : function(data,type, row, meta) {
+                        if(data==0){
+                            return "<span class=\"label label-primary radius td-status\">早餐</span>";
+                        }else if(data==1){
+                            return "<span class=\"label label-secondary radius td-status\">午餐</span>";
+                        }else{
+                            return "<span class=\"label label-warning radius td-status\">晚餐</span>";
+                        }
+                    }
+                },
+                { "data": "calorie",
+                	render: function(data, type, row, meta) {
+                        if (type === 'display') {
+                            if (data.length > 20) {
+                                return '<span title=' + data + '>' + data.substr(0, 20) + '...</span>';
+                            } else {
+                                return '<span title=' + data + '>' + data + '</span>';
+                            }
+                        }
+                        return data;
+                    }		
+                },
+                { "data": "cname",
                 	render: function(data, type, row, meta) {
                         if (type === 'display') {
                             if (data.length > 20) {
@@ -177,19 +223,7 @@
                         return data;
                     }	
                 },
-                { "data": "rate",
-                	render: function(data, type, row, meta) {
-                        if (type === 'display') {
-                            if (data.length > 20) {
-                                return '<span title=' + data + '>' + data.substr(0, 20) + '...</span>';
-                            } else {
-                                return '<span title=' + data + '>' + data + '</span>';
-                            }
-                        }
-                        return data;
-                    }	
-                },
-                { "data": "time",
+                { "data": "physique",
                 	render: function(data, type, row, meta) {
                         if (type === 'display') {
                             if (data.length > 20) {
@@ -221,9 +255,9 @@
                     "data": null,
                     render: function (data, type, row, meta) {
                         if (row.status == 1) {
-                            return "<a style=\"text-decoration:none\" onClick=\"disease_stop(this,"+row.id+")\" href=\"javascript:;\" title=\"下架\"><i class=\"Hui-iconfont\">&#xe6de;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"disease_edit('基本信息编辑','disease-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"disease_del(this,"+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
+                            return "<a style=\"text-decoration:none\" onClick=\"recipes_stop(this,"+row.id+")\" href=\"javascript:;\" title=\"下架\"><i class=\"Hui-iconfont\">&#xe6de;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"recipes_edit('食谱信息编辑','recipes-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"recipes_del(this,"+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
                         } else {
-                            return "<a style=\"text-decoration:none\" onClick=\"disease_start(this,"+row.id+")\" href=\"javascript:;\" title=\"发布\"><i class=\"Hui-iconfont\">&#xe603;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"disease_edit('基本信息编辑','disease-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"disease_del(this,"+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
+                            return "<a style=\"text-decoration:none\" onClick=\"recipes_start(this,"+row.id+")\" href=\"javascript:;\" title=\"发布\"><i class=\"Hui-iconfont\">&#xe603;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"recipes_edit('食谱信息编辑','recipes-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"recipes_del(this,"+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
                         }
                     }
                 }
@@ -231,7 +265,7 @@
             "aaSorting": [[ 1, "desc" ]],//默认第几个排序
             "bStateSave": false,//状态保存
             "aoColumnDefs": [
-                {"orderable":false,"aTargets":[0,2,3,4,5,6,7,8,9,11,12]}// 制定列不参与排序
+                {"orderable":false,"aTargets":[0,2,3,4,5,6,10,13,14]}// 制定列不参与排序
             ],
             language: {
                 url: '/lib/datatables/Chinese.json'
@@ -241,11 +275,11 @@
 
     });
 
-    DiseaseCount();
+    recipesCount();
 
-    function DiseaseCount(){
+    function recipesCount(){
         $.ajax({
-            url:"/item/disease/count",
+            url:"/item/recipes/count",
             type: 'GET',
             success:function (result) {
                 $("#itemListCount").html(result.recordsTotal);
@@ -288,7 +322,7 @@
             };
             var table = $('.table').DataTable();
             table.settings()[0].ajax.data = param;
-            table.ajax.url( '/item/disease/listSearch' ).load();
+            table.ajax.url( '/item/recipes/listSearch').load();
         }
     });
 
@@ -310,7 +344,7 @@
         },
         async: {
             enable: true,
-            url: "/item/cat/list?type="+CATE_DIS+"&factor=0",
+            url: "/item/cate/list?type="+CATE_REC+"&factor=0",
             type: "GET",
             contentType: "application/json",
             autoParam: ["id"],
@@ -323,6 +357,9 @@
                 if (treeNode.isParent) {
                     return false;
                 } else {
+                	$("#searchKey").val("");
+                	$("#maxDate").val("");
+                	$("#minDate").val("");
                 	cid=treeNode.id;
                     $("#category").html(treeNode.name);
                     var param = {
@@ -330,7 +367,7 @@
                     };
                     var table = $('.table').DataTable();
                     table.settings()[0].ajax.data = param;
-                    table.ajax.reload();
+                    table.ajax.url( '/item/recipes/list').load();
                     return true;
                 }
             }
@@ -343,8 +380,8 @@
         var zTree = $.fn.zTree.getZTreeObj("tree");
     });
 
-    /*疾病-添加*/
-    function disease_add(title,url){
+    /*食谱-添加*/
+    function recipes_add(title,url){
         var index = layer.open({
             type: 2,
             title: title,
@@ -352,8 +389,8 @@
         });
         layer.full(index);
     }
-    /*疾病-查看*/
-    function disease_show(title,url,id){
+    /*食谱-查看*/
+    function recipes_show(title,url,id){
         var index = layer.open({
             type: 2,
             title: title,
@@ -362,13 +399,13 @@
         layer.full(index);
     }
 
-    /*疾病-关闭*/
-    function disease_stop(obj,id){
-        layer.confirm('确认要关闭ID为\''+id+'\'的疾病吗？',{icon:0},function(index){
+    /*食谱-关闭*/
+    function recipes_stop(obj,id){
+        layer.confirm('确认要关闭ID为\''+id+'\'的食谱吗？',{icon:0},function(index){
             var index = layer.load(3);
             $.ajax({
                 type: 'PUT',
-                url: '/item/disease/stop/'+id,
+                url: '/item/recipes/stop/'+id,
                 dataType: 'json',
                 success: function(data){
                     layer.close(index);
@@ -388,13 +425,13 @@
         });
     }
 
-    /*疾病-启动*/
-    function disease_start(obj,id){
-        layer.confirm('确认要启动ID为\''+id+'\'的疾病吗？',{icon:3},function(index){
+    /*食谱-启动*/
+    function recipes_start(obj,id){
+        layer.confirm('确认要启动ID为\''+id+'\'的食谱吗？',{icon:3},function(index){
             var index = layer.load(3);
             $.ajax({
                 type: 'PUT',
-                url: '/item/disease/start/'+id,
+                url: '/item/recipes/start/'+id,
                 dataType: 'json',
                 success: function(data){
                     layer.close(index);
@@ -413,8 +450,8 @@
         });
     }
 
-    /*疾病-编辑*/
-    function disease_edit(title,url,id){
+    /*食谱-编辑*/
+    function recipes_edit(title,url,id){
         setId(id);
         var index = layer.open({
             type: 2,
@@ -433,13 +470,13 @@
         return ID;
     }
 
-    /*疾病-删除*/
-    function disease_del(obj,id){
-        layer.confirm('确认要删除ID为\''+id+'\'的疾病吗？',{icon:0},function(index){
+    /*食谱-删除*/
+    function recipes_del(obj,id){
+        layer.confirm('确认要删除ID为\''+id+'\'的食谱吗？',{icon:0},function(index){
             var index = layer.load(3);
             $.ajax({
                 type: 'DELETE',
-                url: '/item/disease/del/'+id,
+                url: '/item/recipes/del/'+id,
                 dataType: 'json',
                 success: function(data){
                     layer.close(index);
@@ -447,7 +484,7 @@
                         layer.alert(data.message,{title: '错误信息',icon: 2});
                         return;
                     }
-                   DiseaseCount();
+                    recipesCount();
                     refresh();
                     layer.msg('已删除!',{icon:1,time:1000});
                 },
@@ -481,7 +518,7 @@
             var index = layer.load(3);
             $.ajax({
                 type: 'DELETE',
-                url: '/item/disease/del/'+ids,
+                url: '/item/recipes/del/'+ids,
                 dataType: 'json',
                 success:function(data){
                     layer.close(index);
@@ -490,7 +527,7 @@
                         return;
                     }
                     layer.msg('已删除!',{icon:1,time:1000});
-                    DiseaseCount();
+                    recipesCount();
                     refresh();
                 },
                 error:function(XMLHttpRequest){

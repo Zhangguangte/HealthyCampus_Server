@@ -14,7 +14,7 @@ import com.muyou.search.service.SearchService;
 @RequestMapping("/search")
 public class SearchController {
 
-	@Autowired
+	@Autowired(required = false)
 	private SearchService searchService;
 
 	@RequestMapping(value = "/getInfo", method = RequestMethod.GET)

@@ -4,12 +4,11 @@
   <resultMap id="BaseResultMap" type="com.muyou.pojo.TbLecture" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="college" property="college" jdbcType="VARCHAR" />
-    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="author" property="author" jdbcType="VARCHAR" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.muyou.pojo.TbLecture" extends="BaseResultMap" >
-    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,27 +69,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, title, college, date, author
+    id, title, content, author, status, created, updated
   </sql>
-  <sql id="Blob_Column_List" >
-    content
-  </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.muyou.pojo.TbLectureExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from tb_lecture
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.muyou.pojo.TbLectureExample" >
     select
     <if test="distinct" >
@@ -104,15 +84,10 @@
     <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
-     <if test="row != 0" >
-      limit ${row} ,15
-    </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from tb_lecture
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -126,13 +101,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.muyou.pojo.TbLecture" >
-    insert into tb_lecture (id, title, college, 
-      date, author, content
-      )
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, 
-      #{date,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
-      )
+  <insert id="insert" parameterType="com.muyou.pojo.TbLecture" useGeneratedKeys="true" keyProperty="id">
+    insert into tb_lecture (id, title, content, 
+      author, status, created, 
+      updated)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{author,jdbcType=VARCHAR}, #{status,jdbcType=BIT}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.muyou.pojo.TbLecture" >
     insert into tb_lecture
@@ -143,17 +118,20 @@
       <if test="title != null" >
         title,
       </if>
-      <if test="college != null" >
-        college,
-      </if>
-      <if test="date != null" >
-        date,
+      <if test="content != null" >
+        content,
       </if>
       <if test="author != null" >
         author,
       </if>
-      <if test="content != null" >
-        content,
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="updated != null" >
+        updated,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -163,17 +141,20 @@
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
       </if>
-      <if test="college != null" >
-        #{college,jdbcType=VARCHAR},
-      </if>
-      <if test="date != null" >
-        #{date,jdbcType=VARCHAR},
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
       </if>
       <if test="author != null" >
         #{author,jdbcType=VARCHAR},
       </if>
-      <if test="content != null" >
-        #{content,jdbcType=LONGVARCHAR},
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        #{updated,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -192,31 +173,22 @@
       <if test="record.title != null" >
         title = #{record.title,jdbcType=VARCHAR},
       </if>
-      <if test="record.college != null" >
-        college = #{record.college,jdbcType=VARCHAR},
-      </if>
-      <if test="record.date != null" >
-        date = #{record.date,jdbcType=VARCHAR},
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
       </if>
       <if test="record.author != null" >
         author = #{record.author,jdbcType=VARCHAR},
       </if>
-      <if test="record.content != null" >
-        content = #{record.content,jdbcType=LONGVARCHAR},
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=BIT},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null" >
+        updated = #{record.updated,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map" >
-    update tb_lecture
-    set id = #{record.id,jdbcType=INTEGER},
-      title = #{record.title,jdbcType=VARCHAR},
-      college = #{record.college,jdbcType=VARCHAR},
-      date = #{record.date,jdbcType=VARCHAR},
-      author = #{record.author,jdbcType=VARCHAR},
-      content = #{record.content,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -225,9 +197,11 @@
     update tb_lecture
     set id = #{record.id,jdbcType=INTEGER},
       title = #{record.title,jdbcType=VARCHAR},
-      college = #{record.college,jdbcType=VARCHAR},
-      date = #{record.date,jdbcType=VARCHAR},
-      author = #{record.author,jdbcType=VARCHAR}
+      content = #{record.content,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=BIT},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -238,36 +212,95 @@
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="college != null" >
-        college = #{college,jdbcType=VARCHAR},
-      </if>
-      <if test="date != null" >
-        date = #{date,jdbcType=VARCHAR},
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
       </if>
       <if test="author != null" >
         author = #{author,jdbcType=VARCHAR},
       </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=LONGVARCHAR},
+      <if test="status != null" >
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        updated = #{updated,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.muyou.pojo.TbLecture" >
-    update tb_lecture
-    set title = #{title,jdbcType=VARCHAR},
-      college = #{college,jdbcType=VARCHAR},
-      date = #{date,jdbcType=VARCHAR},
-      author = #{author,jdbcType=VARCHAR},
-      content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.muyou.pojo.TbLecture" >
     update tb_lecture
     set title = #{title,jdbcType=VARCHAR},
-      college = #{college,jdbcType=VARCHAR},
-      date = #{date,jdbcType=VARCHAR},
-      author = #{author,jdbcType=VARCHAR}
+      content = #{content,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      status = #{status,jdbcType=BIT},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  	<!-- 前台 -->
+  	<select id="selectItemByCollege" resultMap="BaseResultMap">
+	    SELECT 
+			l.*
+		FROM 
+	    	tb_lecture l  ,tb_item_rela_cate r , tb_cate c 
+	    WHERE
+			l.id = r.item_id and r.cate_id = c.id
+		AND  
+			c.name = #{college}
+	    ORDER BY
+	     	created desc
+	    LIMIT
+	    	#{row},15
+  	</select>
+  	
+  	
+  <!-- 后台 -->
+  	<select id="selectItemByCondition" resultMap="BaseResultMap">
+	    SELECT 
+			l.*
+		FROM 
+		<if test="cid == -1">
+	    	tb_lecture l 
+	  	</if>
+	  	<if test="cid != -1">
+	    	tb_lecture l  ,tb_item_rela_cate r , tb_cate c 
+	    WHERE
+			l.id = r.item_id and r.cate_id = c.id
+		AND  c.id = #{cid}
+	  	</if>
+	    ORDER BY
+	    ${orderCol}
+	    ${orderDir}
+  	</select>
+  	
+  	<select id="selectItemByMultiCondition" resultMap="BaseResultMap">
+	    SELECT 
+			l.*
+		FROM 
+		<if test="cid == -1">
+	    	tb_lecture l
+	  	</if>
+	  	<if test="cid != -1">
+	    	tb_lecture l  RIGHT JOIN  tb_item_rela_cate r ON l.id = r.item_id RIGHT JOIN tb_cate c ON	r.cate_id = c.id
+	  	</if>
+	  	WHERE (
+	  		l.id like #{search} 
+	  	OR 	l.title like #{search}
+	  	OR 	l.author like #{search}
+	  	OR	l.content like #{search})
+	  	<if test="cid != -1">
+      		AND c.id = #{cid}
+    	</if>
+	    <if test="minDate != null and minDate != '' and maxDate != null and maxDate != ''">
+      	AND l.created BETWEEN #{minDate} AND #{maxDate}
+    	</if>
+	    ORDER BY
+	    ${orderCol}
+	    ${orderDir}
+  	</select>
+  	
 </mapper>

@@ -1,11 +1,20 @@
 package com.muyou.dto;
 
+import java.util.Arrays;
+
 import com.muyou.common.pojo.ZTreeNode;
 import com.muyou.pojo.TbCate;
 import com.muyou.pojo.TbDisease;
+import com.muyou.pojo.TbLecture;
+import com.muyou.pojo.TbLibrary;
 import com.muyou.pojo.TbMedicine;
+import com.muyou.pojo.TbPanel;
+import com.muyou.pojo.TbRecipes;
 import com.muyou.vo.DiseaseVo;
+import com.muyou.vo.LectureVo;
+import com.muyou.vo.LibraryVo;
 import com.muyou.vo.MedicineVo;
+import com.muyou.vo.RecipesVo;
 
 public class DtoUtil {
 
@@ -103,4 +112,109 @@ public class DtoUtil {
 		return medicine;
 	}
 
+	public static RecipesVo TbRecipes2RecipesVo(TbRecipes recipes) {
+		RecipesVo recipesVo = new RecipesVo();
+		recipesVo.setCalorie(recipes.getCalorie());
+		recipesVo.setFlavor(recipes.getFlavor());
+		recipesVo.setFunctional(recipes.getFunctional());
+		recipesVo.setName(recipes.getName());
+		recipesVo.setPhysique(recipes.getPhysique());
+		recipesVo.setProcess(recipes.getProcess());
+		recipesVo.setTime(recipes.getTime());
+		recipesVo.setComponents(Arrays.asList(recipes.getComponents().split(",")));
+		recipesVo.setType(recipes.getType());
+		recipesVo.setUrl(recipes.getUrl());
+		recipesVo.setIngredients(recipes.getIngredients());
+		recipesVo.setPractice(recipes.getPractice());
+		return recipesVo;
+	}
+
+	public static TbRecipes RecipesVo2TbRecipes(RecipesVo recipesVo) {
+		TbRecipes recipes = new TbRecipes();
+		recipes.setCalorie(recipesVo.getCalorie());
+		recipes.setFlavor(recipesVo.getFlavor());
+		recipes.setFunctional(recipesVo.getFunctional());
+		recipes.setName(recipesVo.getName());
+		recipes.setPhysique(recipesVo.getPhysique());
+		recipes.setProcess(recipesVo.getProcess());
+		recipes.setComponents(String.join(",", recipesVo.getComponents()));
+		recipes.setType(recipesVo.getType());
+		recipes.setTime(recipesVo.getTime());
+		recipes.setUrl(recipesVo.getUrl());
+		recipes.setIngredients(recipesVo.getIngredients());
+		recipes.setPractice(recipesVo.getPractice());
+		return recipes;
+	}
+
+	public static ZTreeNode TbPanel2ZTreeNode(TbPanel panel) {
+		ZTreeNode zTreeNode = new ZTreeNode();
+		zTreeNode.setId(panel.getId());
+		zTreeNode.setIsParent(false);
+		zTreeNode.setpId(0);
+		zTreeNode.setName(panel.getName());
+		zTreeNode.setSortOrder(panel.getSortOrder());
+		zTreeNode.setStatus(panel.getStatus());
+		zTreeNode.setRemark(panel.getRemark());
+		zTreeNode.setLimitNum(panel.getLimitNum());
+		zTreeNode.setType(panel.getType());
+		return zTreeNode;
+	}
+
+	public static LibraryVo TbLibrary2LibraryVo(TbLibrary library) {
+		LibraryVo libraryVo = new LibraryVo();
+		libraryVo.setAuthor(library.getAuthor());
+		libraryVo.setbIndex(library.getbIndex());
+		libraryVo.setCreated(library.getCreated());
+		libraryVo.setUpdated(library.getUpdated());
+		libraryVo.setSum(library.getSum());
+		libraryVo.setRest(library.getRest());
+		libraryVo.setPlace(library.getPlace());
+		libraryVo.setStatus(library.getStatus());
+		libraryVo.setIntroduced(library.getIntroduced());
+		libraryVo.setName(library.getName());
+		libraryVo.setPublish(library.getPublish());
+		libraryVo.setPrice(library.getPrice());
+		libraryVo.setUrl(library.getUrl());
+		return libraryVo;
+	}
+
+	public static TbLibrary LibraryVo2TbLibrary(LibraryVo libraryVo) {
+		TbLibrary library = new TbLibrary();
+		library.setAuthor(libraryVo.getAuthor());
+		library.setbIndex(libraryVo.getbIndex());
+		library.setCreated(libraryVo.getCreated());
+		library.setUpdated(libraryVo.getUpdated());
+		library.setSum(libraryVo.getSum());
+		library.setRest(libraryVo.getRest());
+		library.setPlace(libraryVo.getPlace());
+		library.setStatus(libraryVo.getStatus());
+		library.setIntroduced(libraryVo.getIntroduced());
+		library.setName(libraryVo.getName());
+		library.setPublish(libraryVo.getPublish());
+		library.setPrice(libraryVo.getPrice());
+		library.setUrl(libraryVo.getUrl());
+		return library;
+	}
+
+	public static TbLecture LectureVo2TbLecture(LectureVo lectureVo) {
+		TbLecture lecture = new TbLecture();
+		lecture.setAuthor(lectureVo.getAuthor());
+		lecture.setContent(lectureVo.getContent());
+		lecture.setCreated(lectureVo.getCreated());
+		lecture.setUpdated(lectureVo.getUpdated());
+		lecture.setStatus(lectureVo.getStatus());
+		lecture.setTitle(lectureVo.getTitle());
+		return lecture;
+	}
+
+	public static LectureVo TbLecture2LectureVo(TbLecture lecture) {
+		LectureVo lectureVo = new LectureVo();
+		lectureVo.setAuthor(lecture.getAuthor());
+		lectureVo.setContent(lecture.getContent());
+		lectureVo.setCreated(lecture.getCreated());
+		lectureVo.setUpdated(lecture.getUpdated());
+		lectureVo.setStatus(lecture.getStatus());
+		lectureVo.setTitle(lecture.getTitle());
+		return lectureVo;
+	}
 }

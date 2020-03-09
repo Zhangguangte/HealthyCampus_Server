@@ -27,4 +27,5 @@ public interface TbClassifyMapper {
     int updateByPrimaryKeySelective(TbClassify record);
 
     int updateByPrimaryKey(TbClassify record);
+    
 }

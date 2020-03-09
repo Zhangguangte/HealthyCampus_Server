@@ -101,21 +101,19 @@
 		<div class="menu_dropdown bk_2">
 			<dl id="menu-article">
 				<dt>
-					<i class="Hui-iconfont">&#xe616;</i> 商城管理<i
+					<i class="Hui-iconfont">&#xe687;</i> 内容管理<i
 						class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
 				</dt>
 				<dd>
 					<ul>
-						<li><a data-href="content-header-list" data-title="首页导航栏管理"
-							href="javascript:void(0)">首页导航栏管理</a></li>
-						<li><a data-href="content-panel" data-title="首页板块管理"
-							href="javascript:void(0)">首页板块管理</a></li>
-						<li><a data-href="content-banner-list" data-title="首页轮播图管理"
-							href="javascript:void(0)">首页轮播图管理</a></li>
-						<li><a data-href="content-index-list" data-title="首页板块内容管理"
-							href="javascript:void(0)">首页板块内容管理</a></li>
-						<li><a data-href="content-other-list" data-title="其它板块内容管理"
-							href="javascript:void(0)">其它板块内容管理</a></li>
+						<!-- <li><a data-href="content-header-list" data-title="导航栏管理"
+							href="javascript:void(0)">导航栏管理</a></li> -->
+						<li><a data-href="content-panel" data-title="板块管理"
+							href="javascript:void(0)">板块管理</a></li>
+						<li><a data-href="content-banner-list" data-title="轮播图管理"
+							href="javascript:void(0)">轮播图管理</a></li>
+						<li><a data-href="content-index-list" data-title="板块内容管理"
+							href="javascript:void(0)">板块内容管理</a></li>
 					</ul>
 				</dd>
 			</dl>
@@ -128,7 +126,7 @@
 						<li><a data-href="refresh-system-redis" data-title="系统缓存管理"
 							href="javascript:void(0)">系统缓存管理</a></li>
 						<li><a data-href="refresh-dis-med-rec-redis"
-							data-title="疾、药、食板块缓存管理" href="javascript:void(0)">疾、药、食板块缓存管理</a></li>
+							data-title="疾、药、食板块缓存管理" href="javascript:void(0)">疾、药、食缓存管理</a></li>
 						<li><a data-href="refresh-other-redis" data-title="其它板块缓存管理"
 							href="javascript:void(0)">其它板块缓存管理</a></li>
 					</ul>
@@ -158,7 +156,7 @@
 			</dl>
 			<dl id="recipes-medicine">
 				<dt>
-					<i class="Hui-iconfont">&#xe61f;</i> 食谱管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
+					<i class="Hui-iconfont">&#xe6b5;</i> 食谱管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
 				</dt>
 				<dd>
 					<ul>
@@ -177,6 +175,22 @@
 					<ul>
 						<li><a data-href="order-list" data-title="订单列表"
 							href="javascript:void(0)">订单列表</a></li>
+					</ul>
+				</dd>
+			</dl>
+			<dl id="menu-order">
+				<dt>
+					<i class="Hui-iconfont">&#xe6c0;</i> 服务管理<i
+						class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
+				</dt>
+				<dd>
+					<ul>
+						<li><a data-href="library-list" data-title="图书列表"
+							href="javascript:void(0)">图书列表</a></li>
+						<li><a data-href="lecture-list" data-title="讲座列表"
+							href="javascript:void(0)">讲座列表</a></li>
+							<li><a data-href="timetable-list" data-title="课表列表"
+							href="javascript:void(0)">课表列表</a></li>
 					</ul>
 				</dd>
 			</dl>

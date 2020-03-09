@@ -1,9 +1,12 @@
 package com.muyou.pojo;
 
-public class TbRecipes {
+import java.io.Serializable;
+import java.util.Date;
+
+public class TbRecipes implements Serializable{
     private Integer id;
 
-    private String dishName;
+    private String name;
 
     private String functional;
 
@@ -11,26 +14,32 @@ public class TbRecipes {
 
     private String ingredients;
 
-    private String mainProcess;
+    private String process;
 
-    private String productionTime;
+    private String time;
 
     private String practice;
 
-    private String pictureUrl;
+    private String url;
 
-    private String type;
+    private Integer type;
 
     private String calorie;
 
     private String components;
 
-    private String classification;
-
     private String weeks;
 
     private String physique;
 
+    private Date created;
+
+    private Date updated;
+
+    private Boolean status;
+
+    private String cname;
+    
     public Integer getId() {
         return id;
     }
@@ -39,12 +48,12 @@ public class TbRecipes {
         this.id = id;
     }
 
-    public String getDishName() {
-        return dishName;
+    public String getName() {
+        return name;
     }
 
-    public void setDishName(String dishName) {
-        this.dishName = dishName == null ? null : dishName.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public String getFunctional() {
@@ -71,20 +80,20 @@ public class TbRecipes {
         this.ingredients = ingredients == null ? null : ingredients.trim();
     }
 
-    public String getMainProcess() {
-        return mainProcess;
+    public String getProcess() {
+        return process;
     }
 
-    public void setMainProcess(String mainProcess) {
-        this.mainProcess = mainProcess == null ? null : mainProcess.trim();
+    public void setProcess(String process) {
+        this.process = process == null ? null : process.trim();
     }
 
-    public String getProductionTime() {
-        return productionTime;
+    public String getTime() {
+        return time;
     }
 
-    public void setProductionTime(String productionTime) {
-        this.productionTime = productionTime == null ? null : productionTime.trim();
+    public void setTime(String time) {
+        this.time = time == null ? null : time.trim();
     }
 
     public String getPractice() {
@@ -95,20 +104,20 @@ public class TbRecipes {
         this.practice = practice == null ? null : practice.trim();
     }
 
-    public String getPictureUrl() {
-        return pictureUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl == null ? null : pictureUrl.trim();
+    public void setUrl(String url) {
+        this.url = url == null ? null : url.trim();
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getCalorie() {
@@ -127,14 +136,6 @@ public class TbRecipes {
         this.components = components == null ? null : components.trim();
     }
 
-    public String getClassification() {
-        return classification;
-    }
-
-    public void setClassification(String classification) {
-        this.classification = classification == null ? null : classification.trim();
-    }
-
     public String getWeeks() {
         return weeks;
     }
@@ -150,4 +151,37 @@ public class TbRecipes {
     public void setPhysique(String physique) {
         this.physique = physique == null ? null : physique.trim();
     }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+	public String getCname() {
+		return cname;
+	}
+
+	public void setCname(String cname) {
+		this.cname = cname;
+	}
+    
 }

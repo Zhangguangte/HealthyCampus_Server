@@ -5,6 +5,7 @@ import java.util.List;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.pojo.Result;
 import com.muyou.pojo.TbBase;
+import com.muyou.pojo.TbLog;
 import com.muyou.pojo.TbShiroFilter;
 
 public interface SystemService {
@@ -76,12 +77,11 @@ public interface SystemService {
 	 * @param draw
 	 * @param start
 	 * @param length
-	 * @param search
 	 * @param orderCol
 	 * @param orderDir
 	 * @return
 	 */
-	DataTablesResult getLogList(int draw, int start, int length, String search, String orderCol, String orderDir);
+	DataTablesResult getLogList(int draw, int start, int length, String orderCol, String orderDir);
 
 	/**
 	 * 统计日志数量
@@ -89,13 +89,20 @@ public interface SystemService {
 	 * @return
 	 */
 	int countLog();
-	
-	 /**
-     * 删除日志
-     * @param id
-     * @return
-     */
-    int deleteLog(int id);
-    
-    
+
+	/**
+	 * 删除日志
+	 * 
+	 * @param id
+	 * @return
+	 */
+	int deleteLog(int id);
+
+	/**
+	 * 添加日志
+	 * 
+	 * @param tbLog
+	 * @return
+	 */
+	int addLog(TbLog tbLog);
 }

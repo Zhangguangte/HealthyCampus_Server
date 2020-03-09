@@ -5,30 +5,38 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-
+	xmlns:aop="http://www.springframework.org/schema/aop" 
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
          http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+        >
+
+	<!-- 启动对@AspectJ注解的支持 -->
+	<aop:aspectj-autoproxy />
 
 	<!-- 加载配置文件 -->
-	<context:property-placeholder location="classpath:conf/resource.properties" ignore-unresolvable="true"/>
+	<context:property-placeholder
+		location="classpath:conf/resource.properties"
+		ignore-unresolvable="true" />
 
-	<context:component-scan
-		base-package="com.muyou.controller" />
+	<context:component-scan base-package="com.muyou" />
 
 	<!-- 注解驱动 -->
 	<mvc:annotation-driven />
-	
-	<!--SpringMVC视图解析器-->
+
+	<!--SpringMVC视图解析器 -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
 
+	<!-- 启动对@AspectJ注解的支持 -->
+	<!-- <aop:aspectj-autoproxy/> -->
+
 	<!-- 异常处理器 -->
-	<bean class="com.muyou.exception.ServiceExceptionResolver"/>
+	<!-- <bean class="com.muyou.exception.ServiceExceptionResolver" /> -->
 
 	<!-- 定义文件上传解析器 -->
 	<bean id="multipartResolver"
@@ -38,28 +46,52 @@
 		<!-- 设定文件上传的最大值5MB，5*1024*1024 -->
 		<property name="maxUploadSize" value="5242880"></property>
 	</bean>
-	
+
 	<!-- 配置资源映射 -->
-	<mvc:resources mapping="/lib/**" location="/lib/"/>
-    <mvc:resources mapping="/static/**" location="/static/"/>
-    <mvc:resources mapping="/temp/**" location="/temp/"/>
-    <mvc:resources mapping="/icon/**" location="/icon/"/>
-    <mvc:resources mapping="/upload/**" location="/upload/"/>
-	
+	<mvc:resources mapping="/lib/**" location="/lib/" />
+	<mvc:resources mapping="/static/**" location="/static/" />
+	<mvc:resources mapping="/temp/**" location="/temp/" />
+	<mvc:resources mapping="/icon/**" location="/icon/" />
+	<mvc:resources mapping="/upload/**" location="/upload/" />
+
 	<!-- 引用dubbo服务 -->
 	<dubbo:application name="health-manager-web" />
 	<dubbo:registry protocol="zookeeper"
 		address="192.168.2.120:2181" />
-	<dubbo:reference interface="com.muyou.service.LoginService" id="loginService" />
-	<dubbo:reference interface="com.muyou.service.SystemService" id="systemService" />
-	<dubbo:reference interface="com.muyou.service.AdminService" id="adminService" />
-	<dubbo:reference interface="com.muyou.service.UserService" id="userService" />
-	<dubbo:reference interface="com.muyou.service.RedisService" id="redisService" />
-	<dubbo:reference interface="com.muyou.search.service.SearchService" id="searchService" />
-	<dubbo:reference interface="com.muyou.service.DictService" id="dictService" />
-	<dubbo:reference interface="com.muyou.service.ItemCateService" id="itemCateService" />
-	<dubbo:reference interface="com.muyou.service.ItemDisService" id="itemDisService" />
-	<dubbo:reference interface="com.muyou.service.ItemMedService" id="itemMedService" />
-		
-		
+	<dubbo:reference
+		interface="com.muyou.service.LoginService" id="loginService" />
+	<dubbo:reference
+		interface="com.muyou.service.SystemService" id="systemService" />
+	<dubbo:reference
+		interface="com.muyou.service.AdminService" id="adminService" />
+	<dubbo:reference
+		interface="com.muyou.service.UserService" id="userService" />
+	<dubbo:reference
+		interface="com.muyou.service.RedisService" id="redisService" />
+	<!-- <dubbo:reference interface="com.muyou.search.service.SearchService" 
+		id="searchService" /> -->
+	<dubbo:reference
+		interface="com.muyou.service.DictService" id="dictService" />
+	<dubbo:reference
+		interface="com.muyou.service.ItemCateService" id="itemCateService" />
+	<dubbo:reference
+		interface="com.muyou.service.ItemDisService" id="itemDisService" />
+	<dubbo:reference
+		interface="com.muyou.service.ItemMedService" id="itemMedService" />
+	<dubbo:reference
+		interface="com.muyou.service.ItemRecService" id="itemRecService" />
+	<dubbo:reference
+		interface="com.muyou.service.ContentService" id="contentService" />
+	<dubbo:reference
+		interface="com.muyou.service.PanelService" id="panelService" />
+	<dubbo:reference
+		interface="com.muyou.service.ArticleService" id="articleService" />
+	<dubbo:reference
+		interface="com.muyou.service.ItemLibService" id="itemLibService" />
+	<dubbo:reference
+		interface="com.muyou.service.ItemLecService" id="itemLecService" />
+	<dubbo:reference
+		interface="com.muyou.service.ItemTimService" id="itemTimService" />
+
+
 </beans>

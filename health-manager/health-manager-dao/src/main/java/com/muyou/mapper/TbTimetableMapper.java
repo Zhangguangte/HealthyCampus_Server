@@ -27,4 +27,8 @@ public interface TbTimetableMapper {
     int updateByPrimaryKeySelective(TbTimetable record);
 
     int updateByPrimaryKey(TbTimetable record);
+    
+    // ǰ̨
+ 	List<TbTimetable> selectItemByClass(@Param("cls") String cls);
+
 }

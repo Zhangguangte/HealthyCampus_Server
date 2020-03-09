@@ -40,6 +40,7 @@
 			<value>spring-queue</value>
 		</constructor-arg>
 	</bean>
+	
 	<!--这个是主题目的地，一对多的 -->
 	<bean id="topicDestination"
 		class="org.apache.activemq.command.ActiveMQTopic">

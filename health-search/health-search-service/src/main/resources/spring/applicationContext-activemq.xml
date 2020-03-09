@@ -50,26 +50,15 @@
 
 	<!-- 接收消息 -->
 	<!-- 配置监听器 -->
-	<bean id="itemMedicineListener"
-		class="com.muyou.search.message.ItemMedicineListener" />
+	<bean id="itemListener"
+		class="com.muyou.search.message.ItemListener" />
 	<!-- 消息监听容器 -->
 	<bean
 		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="connectionFactory" />
 		<property name="destination" ref="topicDestination" />
-		<property name="messageListener" ref="itemMedicineListener" />
+		<property name="messageListener" ref="itemListener" />
 	</bean>
 
-	<!-- 接收消息 -->
-	<!-- 配置监听器 -->
-	<bean id="itemDiseaseListener"
-		class="com.muyou.search.message.ItemDiseaseListener" />
-	<!-- 消息监听容器 -->
-	<bean
-		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-		<property name="connectionFactory" ref="connectionFactory" />
-		<property name="destination" ref="topicDestination" />
-		<property name="messageListener" ref="itemDiseaseListener" />
-	</bean>
 
 </beans>

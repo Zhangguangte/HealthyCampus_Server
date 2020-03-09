@@ -3,14 +3,16 @@
 <mapper namespace="com.muyou.mapper.TbTimetableMapper" >
   <resultMap id="BaseResultMap" type="com.muyou.pojo.TbTimetable" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="t_id" property="tId" jdbcType="INTEGER" />
     <result column="descr" property="descr" jdbcType="VARCHAR" />
-    <result column="semester" property="semester" jdbcType="VARCHAR" />
+    <result column="semester" property="semester" jdbcType="INTEGER" />
     <result column="weeks" property="weeks" jdbcType="INTEGER" />
     <result column="c_start" property="cStart" jdbcType="INTEGER" />
     <result column="period" property="period" jdbcType="INTEGER" />
-    <result column="c_year" property="cYear" jdbcType="VARCHAR" />
-    <result column="major" property="major" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="c_year" property="cYear" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="BIT" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -71,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, descr, semester, weeks, c_start, period, c_year, major, state
+    id, t_id, descr, semester, weeks, c_start, period, c_year, state, created, updated
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.muyou.pojo.TbTimetableExample" >
     select
@@ -103,21 +105,24 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.muyou.pojo.TbTimetable" >
-    insert into tb_timetable (id, descr, semester, 
-      weeks, c_start, period, 
-      c_year, major, state
-      )
-    values (#{id,jdbcType=INTEGER}, #{descr,jdbcType=VARCHAR}, #{semester,jdbcType=VARCHAR}, 
-      #{weeks,jdbcType=INTEGER}, #{cStart,jdbcType=INTEGER}, #{period,jdbcType=INTEGER}, 
-      #{cYear,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}
-      )
+  <insert id="insert" parameterType="com.muyou.pojo.TbTimetable"  useGeneratedKeys="true" keyProperty="id">
+    insert into tb_timetable (id, t_id, descr, 
+      semester, weeks, c_start, 
+      period, c_year, state, created, 
+      updated)
+    values (#{id,jdbcType=INTEGER}, #{tId,jdbcType=INTEGER}, ${descr}, 
+      #{semester,jdbcType=INTEGER}, #{weeks,jdbcType=INTEGER}, #{cStart,jdbcType=INTEGER}, 
+      #{period,jdbcType=INTEGER}, #{cYear,jdbcType=INTEGER}, #{state,jdbcType=BIT}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.muyou.pojo.TbTimetable" >
     insert into tb_timetable
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="tId != null" >
+        t_id,
       </if>
       <if test="descr != null" >
         descr,
@@ -137,22 +142,28 @@
       <if test="cYear != null" >
         c_year,
       </if>
-      <if test="major != null" >
-        major,
-      </if>
       <if test="state != null" >
         state,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="updated != null" >
+        updated,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="tId != null" >
+        #{tId,jdbcType=INTEGER},
+      </if>
       <if test="descr != null" >
         #{descr,jdbcType=VARCHAR},
       </if>
       <if test="semester != null" >
-        #{semester,jdbcType=VARCHAR},
+        #{semester,jdbcType=INTEGER},
       </if>
       <if test="weeks != null" >
         #{weeks,jdbcType=INTEGER},
@@ -164,13 +175,16 @@
         #{period,jdbcType=INTEGER},
       </if>
       <if test="cYear != null" >
-        #{cYear,jdbcType=VARCHAR},
-      </if>
-      <if test="major != null" >
-        #{major,jdbcType=VARCHAR},
+        #{cYear,jdbcType=INTEGER},
       </if>
       <if test="state != null" >
-        #{state,jdbcType=VARCHAR},
+        #{state,jdbcType=BIT},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        #{updated,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -186,11 +200,14 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.tId != null" >
+        t_id = #{record.tId,jdbcType=INTEGER},
+      </if>
       <if test="record.descr != null" >
         descr = #{record.descr,jdbcType=VARCHAR},
       </if>
       <if test="record.semester != null" >
-        semester = #{record.semester,jdbcType=VARCHAR},
+        semester = #{record.semester,jdbcType=INTEGER},
       </if>
       <if test="record.weeks != null" >
         weeks = #{record.weeks,jdbcType=INTEGER},
@@ -202,13 +219,16 @@
         period = #{record.period,jdbcType=INTEGER},
       </if>
       <if test="record.cYear != null" >
-        c_year = #{record.cYear,jdbcType=VARCHAR},
-      </if>
-      <if test="record.major != null" >
-        major = #{record.major,jdbcType=VARCHAR},
+        c_year = #{record.cYear,jdbcType=INTEGER},
       </if>
       <if test="record.state != null" >
-        state = #{record.state,jdbcType=VARCHAR},
+        state = #{record.state,jdbcType=BIT},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null" >
+        updated = #{record.updated,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -218,14 +238,16 @@
   <update id="updateByExample" parameterType="map" >
     update tb_timetable
     set id = #{record.id,jdbcType=INTEGER},
+      t_id = #{record.tId,jdbcType=INTEGER},
       descr = #{record.descr,jdbcType=VARCHAR},
-      semester = #{record.semester,jdbcType=VARCHAR},
+      semester = #{record.semester,jdbcType=INTEGER},
       weeks = #{record.weeks,jdbcType=INTEGER},
       c_start = #{record.cStart,jdbcType=INTEGER},
       period = #{record.period,jdbcType=INTEGER},
-      c_year = #{record.cYear,jdbcType=VARCHAR},
-      major = #{record.major,jdbcType=VARCHAR},
-      state = #{record.state,jdbcType=VARCHAR}
+      c_year = #{record.cYear,jdbcType=INTEGER},
+      state = #{record.state,jdbcType=BIT},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -233,11 +255,14 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.muyou.pojo.TbTimetable" >
     update tb_timetable
     <set >
+      <if test="tId != null" >
+        t_id = #{tId,jdbcType=INTEGER},
+      </if>
       <if test="descr != null" >
         descr = #{descr,jdbcType=VARCHAR},
       </if>
       <if test="semester != null" >
-        semester = #{semester,jdbcType=VARCHAR},
+        semester = #{semester,jdbcType=INTEGER},
       </if>
       <if test="weeks != null" >
         weeks = #{weeks,jdbcType=INTEGER},
@@ -249,27 +274,46 @@
         period = #{period,jdbcType=INTEGER},
       </if>
       <if test="cYear != null" >
-        c_year = #{cYear,jdbcType=VARCHAR},
-      </if>
-      <if test="major != null" >
-        major = #{major,jdbcType=VARCHAR},
+        c_year = #{cYear,jdbcType=INTEGER},
       </if>
       <if test="state != null" >
-        state = #{state,jdbcType=VARCHAR},
+        state = #{state,jdbcType=BIT},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        updated = #{updated,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.muyou.pojo.TbTimetable" >
     update tb_timetable
-    set descr = #{descr,jdbcType=VARCHAR},
-      semester = #{semester,jdbcType=VARCHAR},
+    set t_id = #{tId,jdbcType=INTEGER},
+      descr = #{descr,jdbcType=VARCHAR},
+      semester = #{semester,jdbcType=INTEGER},
       weeks = #{weeks,jdbcType=INTEGER},
       c_start = #{cStart,jdbcType=INTEGER},
       period = #{period,jdbcType=INTEGER},
-      c_year = #{cYear,jdbcType=VARCHAR},
-      major = #{major,jdbcType=VARCHAR},
-      state = #{state,jdbcType=VARCHAR}
+      c_year = #{cYear,jdbcType=INTEGER},
+      state = #{state,jdbcType=BIT},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 前台 -->
+  	<select id="selectItemByClass" resultMap="BaseResultMap">
+	    SELECT 
+			l.*
+		FROM 
+	    	tb_lecture l  ,tb_item_rela_cate r , tb_cate c 
+	    WHERE
+			l.id = r.item_id and r.cate_id = c.id
+		AND  
+			c.name = #{cls}
+	    LIMIT
+	    	#{row},15
+  	</select>
 </mapper>

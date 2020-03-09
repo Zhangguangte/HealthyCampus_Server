@@ -10,16 +10,19 @@ public class FoodMenuVo implements Serializable {
 	public String dishName;
 	public String calorie;
 	public String type;
-	public int mold;	//-1代表标题;-2代表菜肴项
-
-	public FoodMenuVo() {}
+	public int mold; // -1代表标题;-2代表菜肴项
 	
+	private static String[] title = { "breakfast", "lunch", "dinner" };
+
+	public FoodMenuVo() {
+	}
+
 	public FoodMenuVo(TbRecipes recipes) {
-		this.id = recipes.getId()+"";
-		this.pictureUrl = recipes.getPictureUrl();
-		this.dishName = recipes.getDishName();
+		this.id = recipes.getId() + "";
+		this.pictureUrl = recipes.getUrl();
+		this.dishName = recipes.getName();
 		this.calorie = recipes.getCalorie();
-		this.type = recipes.getType();
+		this.type = title[recipes.getType()];
 		this.mold = -2;
 	}
 
@@ -71,5 +74,4 @@ public class FoodMenuVo implements Serializable {
 		this.mold = mold;
 	}
 
-	
 }

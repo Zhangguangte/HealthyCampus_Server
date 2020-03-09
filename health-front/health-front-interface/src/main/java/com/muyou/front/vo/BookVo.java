@@ -19,7 +19,7 @@ public class BookVo implements Serializable {
 		this.bookName = library.getName();
 		this.author = library.getAuthor();
 		this.publish = library.getPublish();
-		this.classify = library.getClassify();
+		this.classify = library.getCname();
 		this.rest = library.getRest();
 	}
 

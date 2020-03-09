@@ -53,4 +53,21 @@ public interface ItemCateService {
 	 */
 	void deleteZTree(int id, int type);
 
+	/**
+	 * 添加食堂食谱
+	 * @param id
+	 * @param parentId
+	 * @param name
+	 * @return
+	 */
+    int addCanteenItemCate(int id,int parentId,String name);
+    
+    /**
+     * 删除食堂食谱
+     * @param id
+     * @param parentId
+     * @return
+     */
+    int delCanteenItemCate(int id,int parentId);
+    
 }

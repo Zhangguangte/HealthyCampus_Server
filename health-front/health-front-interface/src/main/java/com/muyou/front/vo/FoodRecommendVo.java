@@ -16,8 +16,8 @@ public class FoodRecommendVo implements Serializable {
 	
 	public FoodRecommendVo(TbRecipes recipes) {
 		this.id = recipes.getId()+"";
-		this.picture = recipes.getPictureUrl();
-		this.title = recipes.getDishName();
+		this.picture = recipes.getUrl();
+		this.title = recipes.getName();
 		this.mold = 0;
 	}
 

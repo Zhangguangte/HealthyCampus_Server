@@ -8,7 +8,7 @@ import java.util.List;
 public class MedicineVo implements Serializable{
 
 	private Integer id;
-
+	
 	private String goodsName;
 
 	private String spell;
@@ -33,13 +33,7 @@ public class MedicineVo implements Serializable{
 
 	private Boolean otc;
 
-	private Boolean status;
-
-	private Date created;
-
 	private BigDecimal price;
-
-	private Date updated;
 
 	private List<String> cid;
 
@@ -52,7 +46,7 @@ public class MedicineVo implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
+	
 	public String getGoodsName() {
 		return goodsName;
 	}
@@ -149,36 +143,12 @@ public class MedicineVo implements Serializable{
 		this.otc = otc;
 	}
 
-	public Boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
-
-	public Date getCreated() {
-		return created;
-	}
-
-	public void setCreated(Date created) {
-		this.created = created;
-	}
-
 	public BigDecimal getPrice() {
 		return price;
 	}
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
-	}
-
-	public Date getUpdated() {
-		return updated;
-	}
-
-	public void setUpdated(Date updated) {
-		this.updated = updated;
 	}
 
 	public List<String> getCid() {

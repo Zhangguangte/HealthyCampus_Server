@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.muyou.common.exception.GlobalException;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.pojo.Result;
 import com.muyou.common.redis.JedisClient;
@@ -52,11 +53,11 @@ public class SystemServiceImpl implements SystemService {
 	@Value("${PAGE_BROWSE}")
 	private String PAGE_BROWSE;
 
-	@Value("${SYTEM_PRE}")
-	private String SYTEM_PRE;
+	@Value("${SYS_PRE}")
+	private String SYS_PRE;
 
-	@Value("${SYTEM_BASE_ID}")
-	private int SYTEM_BASE_ID;
+	@Value("${SYS_BASE_ID}")
+	private int SYS_BASE_ID;
 
 	@Value("${SHIRO_COUNT}")
 	private String SHIRO_COUNT;
@@ -66,9 +67,6 @@ public class SystemServiceImpl implements SystemService {
 
 	@Value("${LOG_COUNT}")
 	private String LOG_COUNT;
-
-	@Value("${LOG_LIST}")
-	private String LOG_LIST;
 
 	@Override
 	public List<TbShiroFilter> getShiroFilter() {
@@ -160,8 +158,8 @@ public class SystemServiceImpl implements SystemService {
 
 	@Override
 	public DataTablesResult getBrowseCount(boolean isIncr) {
-		//以下部分,可以去找个网站计数的插件、API这些，更加方便
-		
+		// 以下部分,可以去找个网站计数的插件、API这些，更加方便
+
 		DataTablesResult result = new DataTablesResult();
 		result.setSuccess(true);
 
@@ -259,17 +257,17 @@ public class SystemServiceImpl implements SystemService {
 				result.setRecordsTotal(datas.get(0).getNum() + 1);
 			} else
 				result.setRecordsTotal(datas.get(0).getNum());
-			
-			//如果redis正常,且无数据
+
+			// 如果redis正常,且无数据
 			try {
 				jedisClient.set(PAGE_BROWSE + ":" + year, JsonUtils.objectToJson(list));
 				jedisClient.incr(PAGE_BROWSE + ":" + year + "NUM");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-			//至于redis异常
-			//不进行mysql插入,因为这只有在redis报废的情况下,这样的redis已经异常,访问量+1过于频繁,会增加mysql的压力,所以,还不如不添加。个人理解。
+
+			// 至于redis异常
+			// 不进行mysql插入,因为这只有在redis报废的情况下,这样的redis已经异常,访问量+1过于频繁,会增加mysql的压力,所以,还不如不添加。个人理解。
 			break;
 		}
 
@@ -280,19 +278,19 @@ public class SystemServiceImpl implements SystemService {
 	@Override
 	public Result<TbBase> getBase() {
 		try {
-			String json = jedisClient.get(SYTEM_PRE + SYTEM_BASE_ID);
+			String json = jedisClient.get(SYS_PRE + SYS_BASE_ID);
 			if (StringUtils.isNotBlank(json))
 				return new ResultUtil<TbBase>().setData(JsonUtils.jsonToPojo(json, TbBase.class));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		TbBase base = tbBaseMapper.selectByPrimaryKey(SYTEM_BASE_ID);
+		TbBase base = tbBaseMapper.selectByPrimaryKey(SYS_BASE_ID);
 		if (null == base)
 			return null;
 
 		try {
-			jedisClient.set(SYTEM_PRE + SYTEM_BASE_ID, JsonUtils.objectToJson(base));
+			jedisClient.set(SYS_PRE + SYS_BASE_ID, JsonUtils.objectToJson(base));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -304,7 +302,7 @@ public class SystemServiceImpl implements SystemService {
 		int result = tbBaseMapper.updateByPrimaryKey(tbBase);
 		if (result == 1)
 			try {
-				jedisClient.del(SYTEM_PRE + SYTEM_BASE_ID);
+				jedisClient.del(SYS_PRE + SYS_BASE_ID);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -333,33 +331,22 @@ public class SystemServiceImpl implements SystemService {
 	}
 
 	@Override
-	public DataTablesResult getLogList(int draw, int start, int length, String search, String orderCol,
-			String orderDir) {
-		try {
-			String json = jedisClient.get(LOG_LIST);
-			if (StringUtils.isNotBlank(json))
-				return JsonUtils.jsonToPojo(json, DataTablesResult.class);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+	public DataTablesResult getLogList(int draw, int start, int length, String orderCol, String orderDir) {
 		DataTablesResult result = new DataTablesResult();
 		// 分页
 		PageHelper.startPage(start / length + 1, length);
-		List<TbLog> list = tbLogMapper.selectByMulti("%" + search + "%", orderCol, orderDir);
+		TbLogExample example = new TbLogExample();
+		example.setOrderByClause(orderCol + " " + orderDir);
+		List<TbLog> list = tbLogMapper.selectByExample(example);
 		PageInfo<TbLog> pageInfo = new PageInfo<>(list);
 
+		System.out.println(orderCol + " " + orderDir);
+		
 		result.setRecordsFiltered((int) pageInfo.getTotal());
 		result.setRecordsTotal(Math.toIntExact(countLog()));
 
 		result.setDraw(draw);
 		result.setData(list);
-
-		try {
-			jedisClient.set(LOG_LIST, JsonUtils.objectToJson(result));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		return result;
 	}
@@ -369,11 +356,24 @@ public class SystemServiceImpl implements SystemService {
 		int result = tbLogMapper.deleteByPrimaryKey(id);
 		if (result == 1)
 			try {
-				jedisClient.del(LOG_LIST);
+				jedisClient.del(LOG_COUNT);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		return result;
+	}
+
+	@Override
+	public int addLog(TbLog tbLog) {
+		if (tbLogMapper.insert(tbLog) != 1) {
+			throw new GlobalException("保存日志失败");
+		}
+		try {
+			jedisClient.del(LOG_COUNT);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 1;
 	}
 
 }

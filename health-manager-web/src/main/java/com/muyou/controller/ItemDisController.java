@@ -36,8 +36,17 @@ public class ItemDisController {
 
 		// 获取客户端需要排序的列
 		String[] cols = { "d.created", "d.id" };
-		if (10 == orderCol) {
+
+		switch (orderCol) {
+		case 10:
 			orderCol = 0;
+			break;
+		case 1:
+			orderCol = 1;
+			break;
+		default:
+			orderCol = 0;
+			break;
 		}
 		String orderColumn = cols[orderCol];
 		if (orderColumn == null) {
@@ -60,10 +69,17 @@ public class ItemDisController {
 		// 获取客户端需要排序的列
 		String[] cols = { "d.created", "d.id" };
 
-		if (10 == orderCol) {
+		switch (orderCol) {
+		case 10:
 			orderCol = 0;
+			break;
+		case 1:
+			orderCol = 1;
+			break;
+		default:
+			orderCol = 0;
+			break;
 		}
-
 		// 默认排序列
 		String orderColumn = cols[orderCol];
 		if (orderColumn == null) {
@@ -79,18 +95,18 @@ public class ItemDisController {
 
 		System.out.println(searchKey);
 
-		DataTablesResult result = itemDisService.getItemSearchList(draw, start, length, cid, searchKey, minDate, maxDate,
-				orderColumn, orderDir);
+		DataTablesResult result = itemDisService.getItemSearchList(draw, start, length, cid, searchKey, minDate,
+				maxDate, orderColumn, orderDir);
 		return result;
 	}
 
-	@RequestMapping(value = "/update/{id}",method = RequestMethod.POST)
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
 	@ResponseBody
-    public Result<Object> updateItem(@PathVariable Integer id, DiseaseVo diseaseVo){
-		itemDisService.updateItem(id,diseaseVo);
-        return new ResultUtil<Object>().setData(null);
-    }
-	
+	public Result<Object> updateItem(@PathVariable Integer id, DiseaseVo diseaseVo) {
+		itemDisService.updateItem(id, diseaseVo);
+		return new ResultUtil<Object>().setData(null);
+	}
+
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	@ResponseBody
 	public DataTablesResult getAllItemCount() {
@@ -119,11 +135,11 @@ public class ItemDisController {
 		}
 		return new ResultUtil<Object>().setData(null);
 	}
-	
-	@RequestMapping(value = "/add",method = RequestMethod.POST)
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
-    public Result<Object> addItem(DiseaseVo diseaseVo){
-        itemDisService.addItem(diseaseVo);
-        return new ResultUtil<Object>().setData(null);
-    }
+	public Result<Object> addItem(DiseaseVo diseaseVo) {
+		itemDisService.addItem(diseaseVo);
+		return new ResultUtil<Object>().setData(null);
+	}
 }

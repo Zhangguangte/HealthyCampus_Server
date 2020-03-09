@@ -23,8 +23,8 @@ public class BookDetailVo implements Serializable {
 	
 	public BookDetailVo(TbLibrary library) {
 		this.id = library.getId() + "";
-		this.classify = library.getClassify();
 		this.name = library.getName();
+		this.classify = library.getCname();
 		this.author = library.getAuthor();
 		this.price = library.getPrice() + "";
 		this.publish = library.getPublish();

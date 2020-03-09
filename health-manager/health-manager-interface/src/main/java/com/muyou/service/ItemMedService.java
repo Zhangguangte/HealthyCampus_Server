@@ -63,7 +63,7 @@ public interface ItemMedService {
 	/**
      * 更新药品
      * @param id
-     * @param diseaseVo
+     * @param medicineVo
      * @return
      */
     int updateItem(Integer id,MedicineVo medicineVo);
@@ -87,7 +87,7 @@ public interface ItemMedService {
 
 	/**
      * 添加药品
-     * @param diseaseVo
+     * @param medicineVo
      * @return
      */
     int addItem(MedicineVo medicineVo);
