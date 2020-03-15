@@ -2,7 +2,9 @@ com\muyou\service\impl\ItemRecServiceImpl$1.class
 com\muyou\service\impl\SystemServiceImpl.class
 com\muyou\service\impl\UserServiceImpl.class
 com\muyou\service\impl\ItemMedServiceImpl$1.class
+com\muyou\service\impl\LoginServiceImpl.class
 com\muyou\service\impl\ItemLibServiceImpl.class
+com\muyou\service\impl\ItemTeaServiceImpl.class
 com\muyou\service\impl\ContentServiceImpl.class
 com\muyou\service\impl\ItemTimServiceImpl.class
 com\muyou\service\impl\RedisServiceImpl.class

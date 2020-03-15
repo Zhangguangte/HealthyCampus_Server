@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,9 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 
+	@Value("${TOKEN_KEY}")
+	private String TOKEN_KEY;
+	
 	@RequestMapping(value = "/adminList", method = RequestMethod.GET)
 	@ResponseBody
 	public DataTablesResult getAdminList() {
@@ -41,8 +45,8 @@ public class AdminController {
 
 	@RequestMapping(value = "/delAdmin/{ids}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public Result<Object> delAdmin(@PathVariable Long[] ids) {
-		for (Long id : ids) {
+	public Result<Object> delAdmin(@PathVariable Integer[] ids) {
+		for (Integer id : ids) {
 			adminService.deleteAdmin(id);
 		}
 		return new ResultUtil<Object>().setData(null);
@@ -57,14 +61,14 @@ public class AdminController {
 
 	@RequestMapping(value = "/stop/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<Object> stopAdmin(@PathVariable Long id) {
+	public Result<Object> stopAdmin(@PathVariable Integer id) {
 		adminService.changeAdminState(id, 0);
 		return new ResultUtil<Object>().setData(null);
 	}
 
 	@RequestMapping(value = "/start/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public Result<Object> startAdmin(@PathVariable Long id) {
+	public Result<Object> startAdmin(@PathVariable Integer id) {
 		adminService.changeAdminState(id, 1);
 		return new ResultUtil<Object>().setData(null);
 	}
@@ -103,20 +107,20 @@ public class AdminController {
 
 	@RequestMapping(value = "/edit/username/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public boolean getAdminByEditName(@PathVariable Long id, @RequestParam("name") String username)
+	public boolean getAdminByEditName(@PathVariable Integer id, @RequestParam("name") String username)
 			throws UnsupportedEncodingException {
 		return adminService.getAdminByEditName(id, new String(username.getBytes("iso8859-1"), "utf-8"));
 	}
 
 	@RequestMapping(value = "/edit/phone/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public boolean getAdminByEditPhone(@PathVariable Long id, String phone) {
+	public boolean getAdminByEditPhone(@PathVariable Integer id, String phone) {
 		return adminService.getAdminByEditPhone(id, phone);
 	}
 
 	@RequestMapping(value = "/edit/email/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public boolean getAdminByEditEmail(@PathVariable Long id, String email) {
+	public boolean getAdminByEditEmail(@PathVariable Integer id, String email) {
 		return adminService.getAdminByEditEmail(id, email);
 	}
 

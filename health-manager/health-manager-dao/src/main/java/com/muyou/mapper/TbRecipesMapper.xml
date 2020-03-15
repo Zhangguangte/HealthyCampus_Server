@@ -398,6 +398,11 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
+	<!-- 前台 -->
+  <select id="getRecipesByThreeMeals" resultMap="BaseResultMap">
+  	SELECT * from tb_recipes limit 0,15
+  </select>
+  
  <!-- 后台 -->
 	<select id="selectItemByCondition" resultMap="BaseResultMap">
     SELECT 

@@ -56,8 +56,7 @@
 										class="Hui-iconfont">&#xe60d;</i> 用户</a></li>
 							</ul>
 						<li class="navbar-levelone current"><a href="javascript:;">平台</a></li>
-						<li class="navbar-levelone"><a href="javascript:;">财务</a></li>
-						<li><a href="http://xpay.exrick.cn" target="_blank">XPay支付系统</a></li>
+						<li class="navbar-levelone"><a href="javascript:;">教师</a></li>
 						<li><a href="#" target="_blank">软件下载界面</a></li>
 						</li>
 					</ul>
@@ -106,8 +105,6 @@
 				</dt>
 				<dd>
 					<ul>
-						<!-- <li><a data-href="content-header-list" data-title="导航栏管理"
-							href="javascript:void(0)">导航栏管理</a></li> -->
 						<li><a data-href="content-panel" data-title="板块管理"
 							href="javascript:void(0)">板块管理</a></li>
 						<li><a data-href="content-banner-list" data-title="轮播图管理"
@@ -222,31 +219,38 @@
 			</dl>
 			<dl id="menu-member">
 				<dt>
-					<i class="Hui-iconfont">&#xe60d;</i> 学生管理<i
-						class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
+					<i 	class="Hui-iconfont">&#xe60d;</i> 学生管理
+					<i	class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
 				</dt>
 				<dd>
 					<ul>
-						<li><a data-href="member-list" data-title="学生列表"
-							href="javascript:;">会员列表</a></li>
-						<li><a data-href="member-del" data-title="删除的会员"
-							href="javascript:;">删除的会员</a></li>
+						<li>
+							<a data-href="member-list" data-title="学生列表"	href="javascript:;">会员列表</a>
+						</li>
+						<li>
+							<a data-href="member-del" data-title="删除的会员"	href="javascript:;">删除的会员</a>
+						</li>
 					</ul>
 				</dd>
 			</dl>
 			<dl id="menu-admin">
 				<dt>
-					<i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i
-						class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
+					<i class="Hui-iconfont">&#xe62d;</i> 管理员管理
+					<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
 				</dt>
 				<dd>
 					<ul>
-						<li><a data-href="admin-role" data-title="角色管理"
-							href="javascript:void(0)">角色管理</a></li>
-						<li><a data-href="admin-permission" data-title="权限管理"
-							href="javascript:void(0)">权限管理</a></li>
-						<li><a data-href="admin-list" data-title="管理员列表"
-							href="javascript:void(0)">管理员列表</a></li>
+						<li>
+							<a data-href="admin-role" data-title="角色管理"	href="javascript:void(0)">角色管理</a>
+						</li>
+						<li><a data-href="admin-permission" data-title="权限管理"	href="javascript:void(0)">权限管理</a>
+						</li>
+						<li>
+							<a data-href="admin-list" data-title="管理员列表"	href="javascript:void(0)">管理员列表</a>
+						</li>
+						<li>
+							<a data-href="teacher-list" data-title="教师列表"	href="javascript:void(0)">教师列表</a>
+						</li>
 					</ul>
 				</dd>
 			</dl>
@@ -283,13 +287,17 @@
 		<div class="menu_dropdown bk_2" style="display: none">
 			<dl id="menu-thank">
 				<dt>
-					<i class="Hui-iconfont">&#xe6b7;</i> 捐赠管理<i
+					<i class="Hui-iconfont">&#xe6b7;</i> 教师管理<i
 						class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
 				</dt>
 				<dd>
 					<ul>
-						<li><a data-href="/thanks-list" data-title="捐赠列表"
-							href="javascript:void(0)">捐赠列表</a></li>
+						<li><a data-href="/teacher-timetable-list" data-title="课表列表"
+							href="javascript:void(0)">课表列表</a></li>
+					</ul>
+					<ul>
+						<li><a data-href="/teacher-attend-list" data-title="考勤列表"
+							href="javascript:void(0)">考勤列表</a></li>
 					</ul>
 				</dd>
 			</dl>
@@ -421,12 +429,12 @@
 				},
 				error : function(XMLHttpRequest) {
 					layer.alert('数据处理失败! 错误码:' + XMLHttpRequest.status
-							+ ' 错误信息:'
-							+ JSON.parse(XMLHttpRequest.responseText).message,
-							{
-								title : '错误信息',
-								icon : 2
-							});
+						+ ' 错误信息:'
+						+ JSON.parse(XMLHttpRequest.responseText).message,
+						{
+							title : '错误信息',
+							icon : 2
+						});
 				}
 			});
 		}

@@ -12,4 +12,6 @@ G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\ContentServiceImpl.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\RedisServiceImpl.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\ItemRecServiceImpl.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\ItemTeaServiceImpl.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\LoginServiceImpl.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-service\src\main\java\com\muyou\service\impl\SystemServiceImpl.java

@@ -1,6 +1,9 @@
+import java.util.Date;
+
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
+import com.muyou.common.util.DateUtil;
 import com.muyou.common.util.HttpUtil;
 import com.muyou.common.util.StringUtil;
 import com.muyou.common.util.WeatherUtils;
@@ -34,6 +37,18 @@ public class testSpell {
 			// 请求IP
 			System.out.println(jsonIp.substring(jsonIp.lastIndexOf(":") + 3, jsonIp.indexOf("}") - 1));
 		}
+	}
+
+	@Test
+	public void testDate() {
+
+		long dateStr = Long.valueOf("1584098617000");
+		Date date = new Date(dateStr);
+		String stringDate = DateUtil.getStringDate(date);
+		
+		
+		System.out.println(stringDate);
+
 	}
 
 }

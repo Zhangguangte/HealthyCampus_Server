@@ -340,7 +340,7 @@
            $("#physique").val(data.result.physique);
 
            if("" == data.result.url)
-           		data.result.url = "http://192.168.2.134/group1/M00/00/00/wKgChl5ZWnyARQUhAAA5gdvkdZk034.jpg";
+           		data.result.url = "http://192.168.2.134/group1/M00/00/00/wKgChl5nsVWAUD4gAAAmv_RDmEc593.jpg";
          
            $("#url").val(data.result.url);
            $("#imageShow").attr("src",data.result.url);

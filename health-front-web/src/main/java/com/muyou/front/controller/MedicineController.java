@@ -18,6 +18,7 @@ import com.muyou.common.util.StringUtil;
 import com.muyou.front.service.MedicineService;
 import com.muyou.front.vo.MedicineDetailVo;
 import com.muyou.front.vo.MedicineVo;
+import com.muyou.search.service.SearchResultService;
 import com.muyou.sso.service.CollectService;
 
 @Controller
@@ -30,11 +31,11 @@ public class MedicineController {
 	@Autowired
 	private CollectService collectService;
 
-//	@Autowired
-//	private SearchResultService searchResultService;
+	@Autowired(required = false)
+	private SearchResultService searchResultService;
 	
-	@Value("${MEDICINE_SEARCH_COUNT}")
-	private Integer MEDICINE_SEARCH_COUNT;
+	/*@Value("${MEDICINE_SEARCH_COUNT}")
+	private Integer MEDICINE_SEARCH_COUNT;*/
 	
 	// 获得所有的分类
 	@RequestMapping("/getClassify")

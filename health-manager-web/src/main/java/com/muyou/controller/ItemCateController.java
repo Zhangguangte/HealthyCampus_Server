@@ -35,7 +35,6 @@ public class ItemCateController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
-	@SystemControllerLog(description = "登录系统")
 	public List<ZTreeNode> getItemCateList(@RequestParam(name = "id", required = false) Integer parentId,
 			@RequestParam("type") int type, @RequestParam(name = "factor", required = false) Integer factor) {
 

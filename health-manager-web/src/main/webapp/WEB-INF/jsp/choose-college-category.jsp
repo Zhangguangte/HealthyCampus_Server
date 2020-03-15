@@ -41,7 +41,7 @@
 
 	var CATE_COL = 6;
 	
-	var CATE_TAB = 7;
+	var CATE_TEA = 7;
 	
 	var CATE_CLA = 8;
 	
@@ -52,9 +52,11 @@
         	isFirst = false;
         	return "/item/cate/list?type="+CATE_COL+"&factor=0";
     	}else if(parent.cls == 0){
-	    	return "/item/cate/list?type="+CATE_TAB+"&factor=0";
+	    	return "/item/cate/list?type="+CATE_TEA+"&factor=0";
 		}else if(parent.cls == 1)
 	    	return "/item/cate/list?type="+CATE_CLA+"&factor=0"; 
+		else if(parent.cls == -1)
+	    	return "/item/cate/list?type="+CATE_COL+"&factor=0"; 
 	};
 
 	var setting = {
@@ -81,7 +83,13 @@
         callback: {
             beforeClick: function(treeId, treeNode) {
                 if (treeNode.isParent) {
-                    return false;
+                	if(parent.cls == -1){
+                		 parent.giveCid(treeNode.id);
+                         parent.giveCName(treeNode.name);
+                         var index = parent.layer.getFrameIndex(window.name);
+                         parent.layer.close(index);
+                	}else
+                    	return false;
                 } else {
                     var cid=treeNode.id;
                     var cname=treeNode.name;

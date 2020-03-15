@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,15 @@ import com.muyou.common.redis.JedisClient;
 import com.muyou.common.util.JsonUtils;
 import com.muyou.dto.RoleDto;
 import com.muyou.mapper.TbAdminMapper;
+import com.muyou.mapper.TbCateMapper;
 import com.muyou.mapper.TbPermissionMapper;
 import com.muyou.mapper.TbRoleMapper;
 import com.muyou.mapper.TbRolePermMapper;
 import com.muyou.pojo.TbAdmin;
 import com.muyou.pojo.TbAdminExample;
+import com.muyou.pojo.TbCate;
+import com.muyou.pojo.TbCateExample;
+import com.muyou.pojo.TbCateExample.Criteria;
 import com.muyou.pojo.TbPermission;
 import com.muyou.pojo.TbPermissionExample;
 import com.muyou.pojo.TbRole;
@@ -47,7 +52,16 @@ public class AdminServiceImpl implements AdminService {
 	private TbRolePermMapper rolePermMapper;
 
 	@Autowired
+	private TbCateMapper cateMapper;
+
+	@Autowired
 	private JedisClient jedisClient;
+
+	@Value("${ROLE_TEA}")
+	private Integer ROLE_TEA;
+
+	@Value("${ITEM_TEACHER}")
+	private Integer ITEM_TEACHER;
 
 	@Value("${ADMIN}")
 	private String ADMIN;
@@ -73,6 +87,9 @@ public class AdminServiceImpl implements AdminService {
 	@Value("${ADMIN_EXPIRE}")
 	private Integer ADMIN_EXPIRE;
 
+	@Value("${ITEM_CATE_LIST}")
+	private String ITEM_CATE_LIST;
+
 	@Override
 	public DataTablesResult getAdminList() {
 		try {
@@ -87,7 +104,7 @@ public class AdminServiceImpl implements AdminService {
 		TbAdminExample example = new TbAdminExample();
 		List<TbAdmin> list = adminMapper.selectByExample(example);
 		if (list == null) {
-			throw new GlobalException("获取用户列表失败");
+			throw new GlobalException("获取管理员列表失败");
 		}
 		for (TbAdmin admin : list) {
 			String names = "";
@@ -122,7 +139,7 @@ public class AdminServiceImpl implements AdminService {
 		TbAdminExample example = new TbAdminExample();
 		int result = adminMapper.countByExample(example);
 		if (-1 == result) {
-			throw new GlobalException("统计用户数失败");
+			throw new GlobalException("统计管理员数失败");
 		}
 
 		try {
@@ -135,9 +152,9 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public int deleteAdmin(Long adminId) {
+	public int deleteAdmin(Integer adminId) {
 		if (adminMapper.deleteByPrimaryKey(adminId.intValue()) != 1) {
-			throw new GlobalException("删除用户失败");
+			throw new GlobalException("删除管理员失败");
 		}
 
 		try {
@@ -154,7 +171,7 @@ public class AdminServiceImpl implements AdminService {
 	public int addAdmin(TbAdmin admin) {
 
 		if (!getAdminByName(admin.getName())) {
-			throw new GlobalException("用户名已存在");
+			throw new GlobalException("管理员名已存在");
 		}
 		if (!getAdminByPhone(admin.getPhone())) {
 			throw new GlobalException("手机号已存在");
@@ -167,8 +184,10 @@ public class AdminServiceImpl implements AdminService {
 		admin.setState(1);
 		admin.setCreateTime(new Date());
 		admin.setUpdateTime(new Date());
+		admin.setAddress("");
+		admin.setLogo("");
 		if (adminMapper.insert(admin) != 1) {
-			throw new GlobalException("添加用户失败");
+			throw new GlobalException("添加管理员失败");
 		}
 
 		try {
@@ -182,12 +201,125 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public int changeAdminState(Long id, int state) {
+	public int addTeacher(Integer cid, TbAdmin admin) {
+		// 校验数据
+		if (!getAdminByPhone(admin.getPhone())) {
+			throw new GlobalException("手机号已存在");
+		}
+		if (!getAdminByEmail(admin.getEmail())) {
+			throw new GlobalException("邮箱已存在");
+		}
+		// 插入数据
+		String md5Pass = DigestUtils.md5DigestAsHex(admin.getPassword().getBytes());
+		admin.setPassword(md5Pass);
+		admin.setState(1);
+		admin.setCreateTime(new Date());
+		admin.setUpdateTime(new Date());
+		admin.setRoleid(ROLE_TEA);
+		admin.setLogo("");
+		String no = UUID.randomUUID().toString().substring(0, 15);
+		admin.setNo(no);
+		if (adminMapper.insert(admin) != 1) {
+			throw new GlobalException("添加教师失败");
+		}
+
+		// 获得插入数据ID
+		TbAdminExample example = new TbAdminExample();
+		TbAdminExample.Criteria criteria = example.createCriteria();
+		criteria.andNoEqualTo(no);
+		List<TbAdmin> list = adminMapper.selectByExample(example);
+		if (null == list || list.size() < 0)
+			throw new GlobalException("查询教师失败");
+		// Cate目录表中插入数据
+		TbCate cate = new TbCate();
+		cate.setCreated(new Date());
+		cate.setUpdated(new Date());
+		cate.setIsParent(false);
+		cate.setName(admin.getName());
+		cate.setParentId(cid);
+		cate.setRemark("" + list.get(0).getId());
+		cate.setSortOrder(1);
+		cate.setStatus(1);
+		cate.setType(ITEM_TEACHER);
+		cateMapper.insert(cate);
+
+		try {
+			jedisClient.hdel(ADMIN, LIST);
+			jedisClient.hdel(ADMIN, COUNT);
+			jedisClient.del(ITEM_CATE_LIST + ":" + ITEM_TEACHER);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 1;
+	}
+
+	@Override
+	public int deleteTeacher(Integer id) {
+		if (adminMapper.deleteByPrimaryKey(id) != 1) {
+			throw new GlobalException("删除教师失败");
+		}
+
+		TbCateExample example = new TbCateExample();
+		TbCateExample.Criteria criteria = example.createCriteria();
+		criteria.andRemarkEqualTo(id + "");
+		if (cateMapper.deleteByExample(example) < 0) {
+			throw new GlobalException("删除教师失败");
+		}
+		try {
+			jedisClient.hdel(ADMIN, LIST);
+			jedisClient.hdel(ADMIN, COUNT);
+			jedisClient.del(ITEM_CATE_LIST + ":" + ITEM_TEACHER);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 1;
+	}
+
+	@Override
+	public int updateTeacher(Integer id, TbAdmin admin) {
+		// 更新管理员表
+		TbAdmin oldAdmin = adminMapper.selectByPrimaryKey(id);
+		oldAdmin.setName(admin.getName());
+		oldAdmin.setSex(admin.getSex());
+		oldAdmin.setPhone(admin.getPhone());
+		oldAdmin.setEmail(admin.getEmail());
+		oldAdmin.setAddress(admin.getAddress());
+		oldAdmin.setDescription(admin.getDescription());
+		adminMapper.updateByPrimaryKey(oldAdmin);
+		// 更新目录表
+		TbCateExample example = new TbCateExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andRemarkEqualTo(id + "");
+		List<TbCate> list = cateMapper.selectByExample(example);
+		if (null == list || list.size() < 0)
+			throw new GlobalException("更新教师失败");
+		TbCate cate = list.get(0);
+		cate.setParentId(admin.getCid());
+		cate.setName(admin.getName());
+		cateMapper.updateByPrimaryKey(cate);
+		try {
+			jedisClient.hdel(ADMIN, LIST);
+			jedisClient.hdel(ADMIN, COUNT);
+			jedisClient.del(ITEM_CATE_LIST + ":" + ITEM_TEACHER);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 1;
+	}
+
+	@Override
+	public int changeAdminState(Integer id, int state) {
 		TbAdmin admin = adminMapper.selectByPrimaryKey(id.intValue());
 		admin.setState(state);
 		admin.setUpdateTime(new Date());
 		if (adminMapper.updateByPrimaryKey(admin) != 1) {
-			throw new GlobalException("更新用户状态失败");
+			throw new GlobalException("更新管理员状态失败");
 		}
 
 		try {
@@ -206,7 +338,7 @@ public class AdminServiceImpl implements AdminService {
 		admin.setCreateTime(old.getCreateTime());
 		admin.setUpdateTime(new Date());
 		if (adminMapper.updateByPrimaryKey(admin) != 1) {
-			throw new GlobalException("更新用户失败");
+			throw new GlobalException("更新管理员失败");
 		}
 		try {
 			jedisClient.hdel(ADMIN, LIST);
@@ -223,7 +355,7 @@ public class AdminServiceImpl implements AdminService {
 		String md5Pass = DigestUtils.md5DigestAsHex(admin.getPassword().getBytes());
 		old.setPassword(md5Pass);
 		if (adminMapper.updateByPrimaryKey(old) != 1) {
-			throw new GlobalException("修改用户密码失败");
+			throw new GlobalException("修改管理员密码失败");
 		}
 		try {
 			jedisClient.hdel(ADMIN, LIST);
@@ -234,14 +366,46 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public TbAdmin getAdminById(Long id) {
+	public TbAdmin getAdminByUsername(String username) {
+		List<TbAdmin> list;
+		TbAdminExample example = new TbAdminExample();
+		TbAdminExample.Criteria criteria = example.createCriteria();
+		criteria.andAccountEqualTo(username);
+		criteria.andStateEqualTo(1);
+		list = adminMapper.selectByExample(example);
+		if (null != list && !list.isEmpty()) {
+			return list.get(0);
+		} else
+			throw new GlobalException("通过ID获取用户信息失败");
+	}
 
-		TbAdmin result = adminMapper.selectByPrimaryKey(id.intValue());
+	@Override
+	public TbAdmin getAdminById(Integer id) {
+		TbAdmin result = adminMapper.selectByPrimaryKey(id);
 		if (result == null) {
-			throw new GlobalException("通过ID获取用户失败");
+			throw new GlobalException("通过ID获取管理员失败");
 		}
-
 		result.setPassword("");
+		return result;
+	}
+
+	@Override
+	public TbAdmin getTeacherById(Integer id) {
+		TbAdmin result = getAdminById(id);
+		TbCateExample example = new TbCateExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andRemarkEqualTo(id + "");
+		criteria.andTypeEqualTo(ITEM_TEACHER);
+		List<TbCate> list = cateMapper.selectByExample(example);
+		if (null == list || list.size() < 0)
+			throw new GlobalException("教师查询失败");
+
+		System.out.println(list.get(0));
+		System.out.println(list.get(0).getParentId());
+
+		TbCate cate = cateMapper.selectByPrimaryKey(list.get(0).getParentId());
+		result.setCid(cate.getId());
+		result.setCname(cate.getName());
 
 		return result;
 	}
@@ -292,7 +456,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public boolean getAdminByEditName(Long id, String username) {
+	public boolean getAdminByEditName(Integer id, String username) {
 		TbAdmin admin = getAdminById(id);
 		boolean result = true;
 		if (admin.getName() == null || !admin.getName().equals(username)) {
@@ -302,7 +466,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public boolean getAdminByEditPhone(Long id, String phone) {
+	public boolean getAdminByEditPhone(Integer id, String phone) {
 		TbAdmin admin = getAdminById(id);
 		boolean result = true;
 		if (admin.getPhone() == null || !admin.getPhone().equals(phone)) {
@@ -312,7 +476,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public boolean getAdminByEditEmail(Long id, String email) {
+	public boolean getAdminByEditEmail(Integer id, String email) {
 		TbAdmin admin = getAdminById(id);
 		boolean result = true;
 		if (admin.getEmail() == null || !admin.getEmail().equals(email)) {
@@ -380,7 +544,7 @@ public class AdminServiceImpl implements AdminService {
 
 		List<String> list = roleMapper.getAdminRoles(id);
 		if (list == null) {
-			throw new GlobalException("查询用户角色失败");
+			throw new GlobalException("查询管理员角色失败");
 		}
 		if (list.size() > 0) {
 			return 0;
@@ -702,6 +866,11 @@ public class AdminServiceImpl implements AdminService {
 			}
 		}
 		return 1;
+	}
+
+	@Override
+	public Set<String> getPermissions(String username) {
+		return adminMapper.getPermissions(username);
 	}
 
 }

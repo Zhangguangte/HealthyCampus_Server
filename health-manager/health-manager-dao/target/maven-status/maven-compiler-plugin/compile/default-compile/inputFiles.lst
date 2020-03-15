@@ -14,6 +14,7 @@ G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbRoleMapper.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbDataMapper.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbShiroFilterMapper.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbTimeAttendMapper.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbLibraryMapper.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbDiseaseMapper.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbCateMapper.java
@@ -29,5 +30,6 @@ G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbRolePermMapper.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbArticleMapper.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbFriendshipMapper.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbAttendMapper.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbIngredientsMapper.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-dao\src\main\java\com\muyou\mapper\TbCollectMapper.java

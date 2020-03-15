@@ -840,25 +840,6 @@
         }
     });
 
-    //本周热门商品
-    $.ajax({
-        url:"/sys/weekHot",
-        type: 'GET',
-        data: "json",
-        success:function (data) {
-            $("#hot-title").html(data.result.title);
-            $("#hot-num").html(data.result.total);
-            if(data.result.picPath!=""&&data.result.picPath!=null){
-                $("#hot-img").attr("src", data.result.picPath);
-            }
-        },
-        error:function(XMLHttpRequest){
-            if(XMLHttpRequest.status!=200){
-                layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
-            }
-        }
-    });
-
     if($("#hot-title").text().length > 18){
         $("#hot-title").text($("#hot-title").text().substring(0,18) +"...");
 

@@ -107,19 +107,6 @@
 
 	var CATE_CANTEEN = 3;
 	var oper = true;
-	
-    function imageShow(data){
-        if(data==""||data==null){
-            return "http://ow2h3ee9w.bkt.clouddn.com/nopic.jpg";
-        }
-        var images= new Array(); //定义一数组
-        images=data.split(","); //字符分割
-        if(images.length>0){
-            return images[0];
-        }else{
-            return data;
-        }
-    }
 
     /*datatables配置*/
     $(document).ready(function () {
@@ -143,7 +130,7 @@
                 { "data": "id"},
                 { "data": "url",
                     render: function(data, type, row, meta) {
-                        return '<a href="'+data+'" target="_blank"><img src="'+imageShow(data)+'" style="width: 80px;height: 70px" alt="lose image" />';
+                        return '<a href="'+data+'" target="_blank"><img src="'+data+'" style="width: 80px;height: 70px" alt="lose image" />';
                     }
                 },
                 { "data": "name",

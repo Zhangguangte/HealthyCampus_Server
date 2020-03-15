@@ -31,10 +31,34 @@ public class TbAdmin implements Serializable{
     private String address;
 
     private String logo;
-    
+
+    private String no;
+
+    //角色
     private String roleNames;
 
-    public String getRoleNames() {
+    //分类
+    private String cname;
+    
+    private Integer cid;
+    
+    public String getCname() {
+		return cname;
+	}
+
+	public void setCname(String cname) {
+		this.cname = cname;
+	}
+
+	public Integer getCid() {
+		return cid;
+	}
+
+	public void setCid(Integer cid) {
+		this.cid = cid;
+	}
+
+	public String getRoleNames() {
         return roleNames;
     }
 
@@ -152,5 +176,13 @@ public class TbAdmin implements Serializable{
 
     public void setLogo(String logo) {
         this.logo = logo == null ? null : logo.trim();
+    }
+
+    public String getNo() {
+        return no;
+    }
+
+    public void setNo(String no) {
+        this.no = no == null ? null : no.trim();
     }
 }

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.muyou.mapper.TbTimeAttendMapper" >
+  <resultMap id="BaseResultMap" type="com.muyou.pojo.TbTimeAttend" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="t_id" property="tId" jdbcType="INTEGER" />
+    <result column="a_no" property="aNo" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, t_id, a_no, created, end_time, updated, status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.muyou.pojo.TbTimeAttendExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_time_attend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_time_attend
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_time_attend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.muyou.pojo.TbTimeAttendExample" >
+    delete from tb_time_attend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.muyou.pojo.TbTimeAttend" >
+    insert into tb_time_attend (id, t_id, a_no, 
+      created, end_time, updated, 
+      status)
+    values (#{id,jdbcType=INTEGER}, #{tId,jdbcType=INTEGER}, #{aNo,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.muyou.pojo.TbTimeAttend" >
+    insert into tb_time_attend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tId != null" >
+        t_id,
+      </if>
+      <if test="aNo != null" >
+        a_no,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="updated != null" >
+        updated,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tId != null" >
+        #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="aNo != null" >
+        #{aNo,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.muyou.pojo.TbTimeAttendExample" resultType="java.lang.Integer" >
+    select count(*) from tb_time_attend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_time_attend
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.tId != null" >
+        t_id = #{record.tId,jdbcType=INTEGER},
+      </if>
+      <if test="record.aNo != null" >
+        a_no = #{record.aNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null" >
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_time_attend
+    set id = #{record.id,jdbcType=INTEGER},
+      t_id = #{record.tId,jdbcType=INTEGER},
+      a_no = #{record.aNo,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.muyou.pojo.TbTimeAttend" >
+    update tb_time_attend
+    <set >
+      <if test="tId != null" >
+        t_id = #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="aNo != null" >
+        a_no = #{aNo,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.muyou.pojo.TbTimeAttend" >
+    update tb_time_attend
+    set t_id = #{tId,jdbcType=INTEGER},
+      a_no = #{aNo,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectAttendListByTid" parameterType="Integer" resultType="com.muyou.vo.AttendVo" >
+    	SELECT 
+    		u.nickname name,
+    		u.avatar avator,
+    		a.created time
+    	FROM  
+    		tb_time_attend ta 
+    		RIGHT JOIN tb_attend a on ta.a_no = a.no 
+    		RIGHT JOIN tb_student s on s.id = a.s_id 
+    		RIGHT JOIN tb_user u on u.no = s.u_id
+		WHERE 
+			ta.t_id = #{id} 
+		and 
+			ta.`status` = 1
+  </select>
+  
+  <select id="selectDateListByTid" parameterType="Integer" resultType="com.muyou.vo.AttendDateVo" >
+    	SELECT 
+    		created time,
+    		a_no no
+    	FROM 
+    		tb_time_attend
+    	WHERE 
+    		t_id = #{id} 
+    	ORDER BY 
+    		created DESC
+  </select>
+  
+  <select id="attendListByDate" resultType="com.muyou.vo.AttendListVo" >
+     	SELECT
+     		s.id id,
+			s.name sname,
+			u.avatar avator,
+			a.type status,
+			a.created time,
+			s.cname cname,
+			s.sex sex
+		FROM
+			( tb_time_attend ta
+			RIGHT JOIN tb_attend a ON a.no = ta.a_no
+			RIGHT JOIN tb_student s ON s.id = a.s_id
+			RIGHT JOIN tb_user u ON u.no = s.u_id
+			)
+		WHERE
+			ta.t_id = #{tid}
+		AND
+			ta.created = #{date}
+  </select>
+  
+  <select id="getAttendIds" resultType="String" >
+     	SELECT
+			CONCAT(s.id,'')
+		FROM
+			( tb_time_attend ta
+			RIGHT JOIN tb_attend a ON a.no = ta.a_no
+			RIGHT JOIN tb_student s ON s.id = a.s_id
+			RIGHT JOIN tb_user u ON u.no = s.u_id
+			)
+		WHERE
+			ta.t_id = #{tid}
+		AND
+			ta.created = #{date}
+  </select>
+  
+  <select id="getAttendCls" resultType="String" >
+      SELECT
+			CONCAT(c.id,'')
+	  from 
+			tb_timetable t
+			RIGHT JOIN tb_item_rela_cate r ON r.item_id = t.id
+			RIGHT JOIN tb_cate c ON c.id = r.cate_id
+		where
+			t.id = #{tid}
+		AND
+			c.type = #{type}
+  </select>
+  
+  <select id="attendAbsenceByTid" parameterType="String" resultType="com.muyou.vo.AttendListVo" >
+     select 
+     	s.id id,
+     	u.avatar avator,
+		4 status,
+	  	s.name sname,
+		s.cname cname,
+		s.sex sex
+	  from 
+			tb_user u RIGHT JOIN tb_student s ON s.u_id = u.no
+	 where
+			s.id not in ${ids}
+		and
+			s.classid in ${cls}
+  </select>
+  
+</mapper>

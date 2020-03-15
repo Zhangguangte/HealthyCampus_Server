@@ -43,7 +43,12 @@
             <input type="text" name="searchKey" id="searchKey" placeholder=" 疾病ID、疾病名称、科室等" style="width:250px" class="input-text">
             <button name="" id="searchButton" type="submit" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i> 搜疾病</button>
         </div>
-        <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" onclick="disease_add('添加疾病','disease-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加疾病</a></span> <span class="r">共有数据：<strong id="itemListCount">0</strong> 条</span> </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20"> 
+        	<span class="l">
+        		<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+        			<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
+        		</a> 
+        		<a class="btn btn-primary radius" onclick="disease_add('添加疾病','disease-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加疾病</a></span> <span class="r">共有数据：<strong id="itemListCount">0</strong> 条</span> </div>
         <div class="mt-20">
             <div class="mt-20" style="margin-bottom: 70px">
                 <table class="table table-border table-bordered table-bg table-hover table-sort" width="100%">
@@ -101,19 +106,6 @@
 
 	var CATE_DIS=0;
 
-    function imageShow(data){
-        if(data==""||data==null){
-            return "http://ow2h3ee9w.bkt.clouddn.com/nopic.jpg";
-        }
-        var images= new Array(); //定义一数组
-        images=data.split(","); //字符分割
-        if(images.length>0){
-            return images[0];
-        }else{
-            return data;
-        }
-    }
-
     /*datatables配置*/
     $(document).ready(function () {
         $('.table').DataTable({
@@ -136,7 +128,7 @@
                 { "data": "id"},
                 { "data": "url",
                     render: function(data, type, row, meta) {
-                        return '<a href="'+data+'" target="_blank"><img src="'+imageShow(data)+'" style="width: 80px;height: 70px" alt="lose image" />';
+                        return '<a href="'+data+'" target="_blank"><img src="'+data+'" style="width: 80px;height: 70px" alt="lose image" />';
                     }
                 },
                 { "data": "name",

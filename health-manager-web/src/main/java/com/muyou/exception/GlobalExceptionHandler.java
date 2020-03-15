@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
 	public Result<Object> handleException(Exception e) {
 
 		System.out.println("1" + e);
-
+		e.printStackTrace();
 		String errorMsg = "Exception: ";
 		if (e != null) {
 			log.warn(e.getMessage());

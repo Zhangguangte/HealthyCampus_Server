@@ -12,6 +12,7 @@ G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbDisease.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbData.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbRolePermExample.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\vo\AttendVo.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbFriendship.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbFriendshipExample.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbRole.java
@@ -24,6 +25,7 @@ G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\vo\RecipesVo.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\vo\MedicineVo.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbUserExample.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\vo\AttendDateVo.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbRecipes.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbRecipesExample.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbTimetable.java
@@ -44,10 +46,12 @@ G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbConsultExample.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\vo\TimeTableVo.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\dto\DtoUtil.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbAttendExample.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbFeedback.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbMessage.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbPanelContent.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbDataExample.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbTimeAttendExample.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\vo\DiseaseVo.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbLog.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbPanelContentExample.java
@@ -55,15 +59,18 @@ G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbLibrary.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbNewsUserExample.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbIngredientsExample.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\vo\AttendListVo.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\vo\LibraryVo.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbAdmin.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbRolePerm.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbLogExample.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbPermission.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbCollectExample.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbAttend.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbClassify.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbCollect.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbRequestExample.java
+G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbTimeAttend.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\vo\LectureVo.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbConsultUser.java
 G:\eclipse\eclipse\SSM_Shop\Health_Server\health-manager\health-manager-pojo\src\main\java\com\muyou\pojo\TbBaseExample.java

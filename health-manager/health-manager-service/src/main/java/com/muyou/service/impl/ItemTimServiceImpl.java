@@ -3,25 +3,38 @@ package com.muyou.service.impl;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageInfo;
 import com.muyou.common.exception.GlobalException;
+import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.redis.JedisClient;
 import com.muyou.common.util.JsonUtils;
+import com.muyou.mapper.TbAttendMapper;
 import com.muyou.mapper.TbCateMapper;
 import com.muyou.mapper.TbItemRelaCateMapper;
+import com.muyou.mapper.TbTimeAttendMapper;
 import com.muyou.mapper.TbTimetableMapper;
+import com.muyou.pojo.TbAdminExample;
+import com.muyou.pojo.TbAttend;
+import com.muyou.pojo.TbAttendExample;
 import com.muyou.pojo.TbCate;
 import com.muyou.pojo.TbItemRelaCate;
 import com.muyou.pojo.TbItemRelaCateExample;
+import com.muyou.pojo.TbTimeAttend;
+import com.muyou.pojo.TbTimeAttendExample;
 import com.muyou.pojo.TbTimetable;
 import com.muyou.pojo.TbTimetableExample;
 import com.muyou.pojo.TbTimetableExample.Criteria;
 import com.muyou.service.ItemTimService;
+import com.muyou.vo.AttendDateVo;
+import com.muyou.vo.AttendListVo;
+import com.muyou.vo.AttendVo;
 import com.muyou.vo.TimeTableVo;
 
 @Service
@@ -29,6 +42,12 @@ public class ItemTimServiceImpl implements ItemTimService {
 
 	@Autowired
 	private TbCateMapper cateMapper;
+
+	@Autowired
+	private TbTimeAttendMapper timeAttendMapper;
+
+	@Autowired
+	private TbAttendMapper attendMapper;
 
 	@Autowired
 	private TbTimetableMapper timetableMapper;
@@ -45,12 +64,21 @@ public class ItemTimServiceImpl implements ItemTimService {
 	@Value("${TIMETABLE}")
 	private String TIMETABLE;
 
+	@Value("${ATTEND_LIST}")
+	private String ATTEND_LIST;
+
+	@Value("${ATTEND_DATE}")
+	private String ATTEND_DATE;
+
 	@Value("${RELA_TIM}")
 	private Integer RELA_TIM;
 
+	@Value("${ITEM_CLASS}")
+	private Integer ITEM_CLASS;
+
 	@Value("${ITEM_EXPIRE}")
 	private Integer ITEM_EXPIRE;
-	
+
 	@Override
 	public TimeTableVo getItemList(Integer cid, Integer year, Integer semester) {
 
@@ -214,6 +242,150 @@ public class ItemTimServiceImpl implements ItemTimService {
 		result.setCname(cateList);
 
 		return result;
+	}
+
+	@Override
+	public int beginAttend(Integer id) {
+		String no = UUID.randomUUID().toString();
+		TbTimeAttend timeAttend = new TbTimeAttend();
+		timeAttend.setCreated(new Date());
+		timeAttend.setUpdated(new Date());
+		timeAttend.setStatus(true);
+		timeAttend.setaNo(no);
+		timeAttend.settId(id);
+		timeAttendMapper.insert(timeAttend);
+		return 1;
+	}
+
+	@Override
+	public int finishAttend(Integer id) {
+		TbTimeAttendExample example = new TbTimeAttendExample();
+		TbTimeAttendExample.Criteria criteria = example.createCriteria();
+		criteria.andStatusEqualTo(true);
+		criteria.andTIdEqualTo(id);
+		List<TbTimeAttend> list = timeAttendMapper.selectByExample(example);
+		if (null == list || list.size() < 0)
+			throw new GlobalException("结束考勤失败");
+
+		TbTimeAttend timeAttend = list.get(0);
+		timeAttend.setEndTime(new Date());
+		timeAttend.setStatus(false);
+		timeAttendMapper.updateByPrimaryKey(timeAttend);
+		try {
+			jedisClient.del(ATTEND_LIST + ":" + id);
+			jedisClient.del(ATTEND_DATE + ":" + id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 1;
+	}
+
+	@Override
+	public AttendVo beforeAttend(Integer id) {
+		TbTimeAttendExample example = new TbTimeAttendExample();
+		TbTimeAttendExample.Criteria criteria = example.createCriteria();
+		criteria.andStatusEqualTo(true);
+		criteria.andTIdEqualTo(id);
+		List<TbTimeAttend> list = timeAttendMapper.selectByExample(example);
+		AttendVo result = new AttendVo();
+		if (null != list && list.size() > 0) {
+			result.setIsFinsh(true);
+			result.setTime(list.get(0).getCreated());
+		} else
+			result.setIsFinsh(false);
+		return result;
+	}
+
+	@Override
+	public List<AttendVo> attendList(Integer id) {
+		try {
+			String json = jedisClient.get(ATTEND_LIST + ":" + id);
+			if (StringUtils.isNotBlank(json))
+				return JsonUtils.jsonToList(json, AttendVo.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		List<AttendVo> result = timeAttendMapper.selectAttendListByTid(id);
+		try {
+			jedisClient.set(ATTEND_LIST + ":" + id, JsonUtils.objectToJson(result));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public List<AttendDateVo> attendDate(Integer tid) {
+		try {
+			String json = jedisClient.get(ATTEND_DATE + ":" + tid);
+			if (StringUtils.isNotBlank(json))
+				return JsonUtils.jsonToList(json, AttendDateVo.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		List<AttendDateVo> result = timeAttendMapper.selectDateListByTid(tid);
+
+		try {
+			jedisClient.set(ATTEND_DATE + ":" + tid, JsonUtils.objectToJson(result));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public DataTablesResult attendListByDate(String date, Integer tid) {
+
+		List<AttendListVo> list = new LinkedList<AttendListVo>();
+
+		// 获得已签到ID
+		List<String> ids = timeAttendMapper.getAttendIds(date, tid);
+
+		// 获得签到班级
+		List<String> cls = timeAttendMapper.getAttendCls(tid, ITEM_CLASS);
+
+		// 获得未签到数据
+		List<AttendListVo> ablist = timeAttendMapper.attendAbsenceByTid("(" + String.join(",", ids) + ")",
+				"(" + String.join(",", cls) + ")");
+		if (null != ablist && ablist.size() > 0)
+			list.addAll(ablist);
+		
+		// 获得已签到数据
+		List<AttendListVo> dolist = timeAttendMapper.attendListByDate(date, tid);
+		if (null != dolist && dolist.size() > 0)
+			list.addAll(dolist);
+
+		DataTablesResult result = new DataTablesResult();
+		PageInfo<AttendListVo> pageInfo = new PageInfo<>(list);
+		result.setRecordsFiltered((int) pageInfo.getTotal());
+		result.setRecordsTotal(list.size());
+		result.setData(list);
+		return result;
+	}
+
+	@Override
+	public int updateAttend(Integer id, String no, Integer type) {
+		TbAttendExample example = new TbAttendExample();
+		TbAttendExample.Criteria criteria = example.createCriteria();
+		criteria.andNoEqualTo(no);
+		criteria.andSIdEqualTo(id);
+		List<TbAttend> list = attendMapper.selectByExample(example);
+		if (null != list && list.size() > 0) {
+			TbAttend attend = list.get(0);
+			attend.setType(type);
+			attendMapper.updateByPrimaryKey(attend);
+		} else {
+			TbAttend attend = new TbAttend();
+			attend.setCreated(new Date());
+			attend.setNo(no);
+			attend.setsId(id);
+			attend.setType(type);
+			attendMapper.insert(attend);
+		}
+
+		return 1;
 	}
 
 }
