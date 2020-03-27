@@ -306,14 +306,17 @@
   <!-- 前台 -->
   	<select id="selectItemByClass" resultMap="BaseResultMap">
 	    SELECT 
-			l.*
-		FROM 
-	    	tb_lecture l  ,tb_item_rela_cate r , tb_cate c 
-	    WHERE
-			l.id = r.item_id and r.cate_id = c.id
-		AND  
-			c.name = #{cls}
-	    LIMIT
-	    	#{row},15
+	    	* 
+	    from 
+	    	tb_timetable 
+	    where 
+	    	id in 
+	    (SELECT 
+	    	item_id 
+	    from 
+	    	tb_item_rela_cate 
+	    where 
+	    	type = #{type} and cate_id = #{id}) 
+	    and c_year = #{year} and semester = #{semester}
   	</select>
 </mapper>

@@ -1,4 +1,4 @@
-package com.muyou.sso.aop;
+package com.muyou.sso.controller.aop;
 
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -21,6 +21,8 @@ import org.springframework.stereotype.Component;
 
 import com.muyou.common.annotation.SystemControllerLog;
 import com.muyou.common.annotation.SystemServiceLog;
+import com.muyou.common.constant.HealthConstant;
+import com.muyou.common.util.CookieUtils;
 import com.muyou.common.util.HttpUtil;
 import com.muyou.common.util.ThreadPoolUtil;
 import com.muyou.common.util.WeatherUtils;
@@ -72,7 +74,6 @@ public class SystemLogAspect {
 	 */
 	@Before("controllerAspect()")
 	public void doBefore(JoinPoint joinPoint) throws InterruptedException {
-		System.out.println("99999999999999");
 		// 线程绑定变量（该数据只有当前请求的线程可见）
 		Date beginTime = new Date();
 		beginTimeThreadLocal.set(beginTime);

@@ -26,4 +26,11 @@ public interface LoginService {
 	 * @return
 	 */
 	Result<Object> unLock(String username,String password,String token);
+	
+	/**
+	 * 获得用户数据
+	 * @param token
+	 * @return
+	 */
+	Result<Object> getAdminByToken(String token);
 }

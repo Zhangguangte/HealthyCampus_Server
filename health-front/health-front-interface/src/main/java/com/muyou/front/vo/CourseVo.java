@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.muyou.pojo.TbTimetable;
 
 public class CourseVo  implements Serializable{
+	public int id;
 	public int start;
 	public int week;
 	public String describe;
@@ -13,10 +14,19 @@ public class CourseVo  implements Serializable{
 	public CourseVo() {}
 	
 	public CourseVo(TbTimetable timetable) {
+		this.id = timetable.getId();
 		this.start = timetable.getcStart();
 	    this.week = timetable.getWeeks();
 	    this.describe= timetable.getDescr();
 	    this.period= timetable.getPeriod();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getStart() {

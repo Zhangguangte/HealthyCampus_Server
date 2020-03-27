@@ -23,6 +23,7 @@ public class ServiceExceptionResolver implements HandlerExceptionResolver{
 			Exception ex) {
 		ModelAndView model = new ModelAndView();
 		ServiceException serviceException ;
+		ex.printStackTrace();
 		if (ex instanceof ServiceException) {
 			serviceException = (ServiceException)ex;
 		}else

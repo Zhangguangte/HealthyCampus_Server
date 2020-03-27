@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.muyou.mapper.TbStudentMapper" >
+  <resultMap id="BaseResultMap" type="com.muyou.pojo.TbStudent" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="no" property="no" jdbcType="VARCHAR" />
+    <result column="classId" property="classid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="BIT" />
+    <result column="u_id" property="uId" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="cname" property="cname" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+    <result column="avator" property="avator" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, no, classId, name, birthday, telephone, state, u_id, sex, cname, year, created, 
+    updated, avator
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.muyou.pojo.TbStudentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_student
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_student
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_student
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.muyou.pojo.TbStudentExample" >
+    delete from tb_student
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.muyou.pojo.TbStudent" >
+    insert into tb_student (id, no, classId, 
+      name, birthday, telephone, 
+      state, u_id, sex, cname, 
+      year, created, updated, 
+      avator)
+    values (#{id,jdbcType=INTEGER}, #{no,jdbcType=VARCHAR}, #{classid,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{telephone,jdbcType=VARCHAR}, 
+      #{state,jdbcType=BIT}, #{uId,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{cname,jdbcType=VARCHAR}, 
+      #{year,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}, 
+      #{avator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.muyou.pojo.TbStudent" >
+    insert into tb_student
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="no != null" >
+        no,
+      </if>
+      <if test="classid != null" >
+        classId,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="uId != null" >
+        u_id,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="cname != null" >
+        cname,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="updated != null" >
+        updated,
+      </if>
+      <if test="avator != null" >
+        avator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="no != null" >
+        #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="classid != null" >
+        #{classid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=BIT},
+      </if>
+      <if test="uId != null" >
+        #{uId,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="cname != null" >
+        #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="avator != null" >
+        #{avator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.muyou.pojo.TbStudentExample" resultType="java.lang.Integer" >
+    select count(*) from tb_student
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_student
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.no != null" >
+        no = #{record.no,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classid != null" >
+        classId = #{record.classid,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.telephone != null" >
+        telephone = #{record.telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=BIT},
+      </if>
+      <if test="record.uId != null" >
+        u_id = #{record.uId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=INTEGER},
+      </if>
+      <if test="record.cname != null" >
+        cname = #{record.cname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.year != null" >
+        year = #{record.year,jdbcType=INTEGER},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null" >
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.avator != null" >
+        avator = #{record.avator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_student
+    set id = #{record.id,jdbcType=INTEGER},
+      no = #{record.no,jdbcType=VARCHAR},
+      classId = #{record.classid,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=DATE},
+      telephone = #{record.telephone,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=BIT},
+      u_id = #{record.uId,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=INTEGER},
+      cname = #{record.cname,jdbcType=VARCHAR},
+      year = #{record.year,jdbcType=INTEGER},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP},
+      avator = #{record.avator,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.muyou.pojo.TbStudent" >
+    update tb_student
+    <set >
+      <if test="no != null" >
+        no = #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="classid != null" >
+        classId = #{classid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=BIT},
+      </if>
+      <if test="uId != null" >
+        u_id = #{uId,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="cname != null" >
+        cname = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="avator != null" >
+        avator = #{avator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.muyou.pojo.TbStudent" >
+    update tb_student
+    set no = #{no,jdbcType=VARCHAR},
+      classId = #{classid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      state = #{state,jdbcType=BIT},
+      u_id = #{uId,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      cname = #{cname,jdbcType=VARCHAR},
+      year = #{year,jdbcType=INTEGER},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP},
+      avator = #{avator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectItemByMultiCondition" resultMap="BaseResultMap">
+    SELECT 
+    	*
+    FROM
+    	tb_student 
+   	WHERE (
+	   	name LIKE #{search}
+	   	OR	telephone LIKE #{search} 		 
+	   	OR	no LIKE #{search} 	)
+    <if test="minDate != null and minDate != '' and maxDate != null and maxDate != ''">
+      AND created BETWEEN #{minDate} AND #{maxDate}
+    </if>
+      AND classId = #{cid}
+    ORDER BY
+	    ${orderCol}
+	    ${orderDir}
+  </select>
+  
+</mapper>

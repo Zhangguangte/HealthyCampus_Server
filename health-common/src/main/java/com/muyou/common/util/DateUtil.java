@@ -45,4 +45,33 @@ public class DateUtil {
 		}
 		return dateTime;
 	}
+
+	/**
+	 * 
+	 * @param currentTime
+	 * @param format
+	 * @return
+	 */
+	public static Date getDateByString(String currentTime,String format) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+		Date dateTime = null;
+		try {
+			dateTime = simpleDateFormat.parse(currentTime);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dateTime;
+	}
+
+	/**
+	 * 自定义格式化时间 String->Date
+	 * @param currentTime
+	 * @param format
+	 * @return
+	 */
+	public static String getStringDate(Date currentTime,String format) {
+		SimpleDateFormat formatter = new SimpleDateFormat(format);
+		String dateString = formatter.format(currentTime);
+		return dateString;
+	}
 }

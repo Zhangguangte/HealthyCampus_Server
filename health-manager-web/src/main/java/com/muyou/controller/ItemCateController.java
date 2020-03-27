@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.muyou.common.annotation.SystemControllerLog;
 import com.muyou.common.pojo.Result;
 import com.muyou.common.pojo.ZTreeNode;
 import com.muyou.common.util.ResultUtil;
@@ -64,9 +63,14 @@ public class ItemCateController {
 				parentId = 0;
 				break;
 			}
-
 		return itemCateService.getItemCateList(parentId, type);
+	}
 
+	@RequestMapping(value = "/cls", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ZTreeNode> getClsCate(@RequestParam(name = "id", required = false) Integer parentId,
+			@RequestParam(name = "year", required = false) Integer year) {
+		return itemCateService.getClsCate(parentId, year);
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -83,9 +87,9 @@ public class ItemCateController {
 		return new ResultUtil<Object>().setData(null);
 	}
 
-	@RequestMapping(value = "/del/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/del/{id}/{type}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public Result<Object> deleteItemCategory(@PathVariable int id, @RequestParam("type") int type) {
+	public Result<Object> deleteItemCategory(@PathVariable int id, @PathVariable int type) {
 		itemCateService.deleteItemCate(id, type);
 		return new ResultUtil<Object>().setData(null);
 	}

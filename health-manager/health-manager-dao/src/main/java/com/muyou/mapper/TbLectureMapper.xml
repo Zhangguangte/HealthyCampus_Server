@@ -242,19 +242,19 @@
   </update>
   
   	<!-- 前台 -->
-  	<select id="selectItemByCollege" resultMap="BaseResultMap">
+  	<select id="selectItemByClassify" resultMap="BaseResultMap">
 	    SELECT 
-			l.*
-		FROM 
-	    	tb_lecture l  ,tb_item_rela_cate r , tb_cate c 
-	    WHERE
-			l.id = r.item_id and r.cate_id = c.id
-		AND  
-			c.name = #{college}
+	    	l.*
+	    FROM 
+	    	(tb_lecture l RIGHT JOIN tb_item_rela_cate r on l.id = r.item_id ) RIGHT JOIN tb_cate c on r.cate_id = c.id
+	    WHERE 
+	      c.id = #{cid}
+	    AND
+	    	l.status = 1
 	    ORDER BY
-	     	created desc
-	    LIMIT
-	    	#{row},15
+		  l.created desc
+		LIMIT 
+			#{page},#{row}
   	</select>
   	
   	

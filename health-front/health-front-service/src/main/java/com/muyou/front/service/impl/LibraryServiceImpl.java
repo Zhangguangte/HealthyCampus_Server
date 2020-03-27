@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.muyou.common.constant.ItemConstant;
 import com.muyou.common.form.RequestForm;
 import com.muyou.common.redis.JedisClient;
 import com.muyou.common.util.JsonUtils;
@@ -34,9 +35,6 @@ public class LibraryServiceImpl implements LibraryService {
 	@Value("${LIBRARY_EXPIRE}")
 	private Integer LIBRARY_EXPIRE;
 
-	@Value("${RELA_LIB}")
-	private Integer RELA_LIB;
-
 	@Autowired
 	private TbCateMapper cateMapper;
 
@@ -59,7 +57,7 @@ public class LibraryServiceImpl implements LibraryService {
 		if (null == library)
 			throw null;
 
-		List<String> cateList = cateMapper.selectCateNameByItemIdAndType(library.getId(), RELA_LIB);
+		List<String> cateList = cateMapper.selectCateNameByItemIdAndType(library.getId(), ItemConstant.RELA_LIB);
 		library.setCname(String.join(",", cateList));
 
 		BookDetailVo book = new BookDetailVo(library);
@@ -94,7 +92,7 @@ public class LibraryServiceImpl implements LibraryService {
 		List<String> cateList;
 		List<BookVo> bookVos = new LinkedList<>();
 		for (TbLibrary library : books) {
-			cateList = cateMapper.selectCateNameByItemIdAndType(library.getId(), RELA_LIB);
+			cateList = cateMapper.selectCateNameByItemIdAndType(library.getId(), ItemConstant.RELA_LIB);
 			library.setCname(String.join(",", cateList));
 			bookVos.add(new BookVo(library));
 		}

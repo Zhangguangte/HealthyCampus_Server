@@ -29,7 +29,7 @@
     <span class="l">
         <a href="javascript:;" onclick="category_del()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除所选分类</a>
         <a class="btn btn-primary radius" onclick="categoryAdd('添加子级分类','item-category-add')" href="javascript:void();"><i class="Hui-iconfont">&#xe600;</i> 添加子级分类</a>
-        <a class="btn btn-primary radius" onclick="categoryRootAdd('添加根节点分类','item-category-add')" href="javascript:void();"><i class="Hui-iconfont">&#xe600;</i> 添加根节点分类</a>
+        <a class="btn btn-primary radius" id="cateRoot" onclick="categoryRootAdd('添加根节点分类','item-category-add')" href="javascript:void();"><i class="Hui-iconfont">&#xe600;</i> 添加根节点分类</a>
     </span>
 </div>
 <table class="table">
@@ -110,7 +110,10 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
 
-	var cate_type="";
+	var cate_type;
+	
+	var remark = "";
+	
 	(function ($) {
 	    $.getUrlParam = function (name) {
 	        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -128,7 +131,10 @@
 			$("#subTitle").text("药品分类");
 	})
 
-
+	if(0 == cate_type || 2 == cate_type)
+		$("#cateRoot").hide();
+		
+		
     /*文本输入限制*/
     $(".textarea").Huitextarealength({
         minlength:0,
@@ -185,7 +191,6 @@
                 changeSwitch2(treeNode.status);
                 id=treeNode.id;
                 name=treeNode.name;
-
                 if (treeNode.isParent) {
                     isParent=true;
                     changeSwitch1(1);
@@ -305,11 +310,15 @@
             layer.alert('请点击选择要删除的分类! ', {title: '错误信息',icon: 0});
             return;
         }
+        if("科室" == name || "部位" == name || "人群膳食" == name || "疾病调理" == name || "功能调理" == name || "脏腑调理" == name){
+            layer.alert('禁止删除该分类! ', {title: '错误信息',icon: 0});
+            return;
+        }
         layer.confirm('确认要删除所选的\''+name+'\'分类吗？',{icon:0},function(index){
             var index = layer.load(3);
             $.ajax({
                 type: 'DELETE',
-                url: '/item/cate/del/' +id+"&type="+cate_type,
+                url: '/item/cate/del/' +id+"/"+cate_type,
                 dataType: 'json',
                 success: function(data) {
                     layer.close(index);

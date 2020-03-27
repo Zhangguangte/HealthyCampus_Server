@@ -48,7 +48,8 @@
         		<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
         			<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
         		</a> 
-        		<a class="btn btn-primary radius" onclick="disease_add('添加疾病','disease-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加疾病</a></span> <span class="r">共有数据：<strong id="itemListCount">0</strong> 条</span> </div>
+        		<a class="btn btn-primary radius" onclick="disease_add('添加疾病','disease-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加疾病</a></span> <span class="r">共有数据：<strong id="itemListCount">0</strong> 条</span> 
+        </div>
         <div class="mt-20">
             <div class="mt-20" style="margin-bottom: 70px">
                 <table class="table table-border table-bordered table-bg table-hover table-sort" width="100%">

@@ -243,14 +243,13 @@
   
   <select id="selectAttendListByTid" parameterType="Integer" resultType="com.muyou.vo.AttendVo" >
     	SELECT 
-    		u.nickname name,
-    		u.avatar avator,
+    		s.name name,
+    		s.avator avator,
     		a.created time
     	FROM  
     		tb_time_attend ta 
     		RIGHT JOIN tb_attend a on ta.a_no = a.no 
     		RIGHT JOIN tb_student s on s.id = a.s_id 
-    		RIGHT JOIN tb_user u on u.no = s.u_id
 		WHERE 
 			ta.t_id = #{id} 
 		and 
@@ -273,7 +272,7 @@
      	SELECT
      		s.id id,
 			s.name sname,
-			u.avatar avator,
+			s.avator avator,
 			a.type status,
 			a.created time,
 			s.cname cname,
@@ -282,12 +281,13 @@
 			( tb_time_attend ta
 			RIGHT JOIN tb_attend a ON a.no = ta.a_no
 			RIGHT JOIN tb_student s ON s.id = a.s_id
-			RIGHT JOIN tb_user u ON u.no = s.u_id
 			)
 		WHERE
 			ta.t_id = #{tid}
 		AND
 			ta.created = #{date}
+		Order by
+			a.created desc
   </select>
   
   <select id="getAttendIds" resultType="String" >
@@ -297,7 +297,6 @@
 			( tb_time_attend ta
 			RIGHT JOIN tb_attend a ON a.no = ta.a_no
 			RIGHT JOIN tb_student s ON s.id = a.s_id
-			RIGHT JOIN tb_user u ON u.no = s.u_id
 			)
 		WHERE
 			ta.t_id = #{tid}
@@ -319,16 +318,16 @@
   </select>
   
   <select id="attendAbsenceByTid" parameterType="String" resultType="com.muyou.vo.AttendListVo" >
-     select 
-     	s.id id,
-     	u.avatar avator,
-		4 status,
-	  	s.name sname,
-		s.cname cname,
-		s.sex sex
-	  from 
-			tb_user u RIGHT JOIN tb_student s ON s.u_id = u.no
-	 where
+	    select 
+	     	s.id id,
+	     	s.avator avator,
+			4 status,
+		  	s.name sname,
+			s.cname cname,
+			s.sex sex
+		from 
+			tb_student s
+		where
 			s.id not in ${ids}
 		and
 			s.classid in ${cls}

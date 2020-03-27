@@ -14,10 +14,11 @@ public class DiseaseSortListVo implements Serializable {
 	public DiseaseSortListVo() {
 	}
 
-	public DiseaseSortListVo(TbClassify classify) {
-		this.title = classify.getTitle();
-		subName = Arrays.asList(classify.getClassify().split(","));
+	public DiseaseSortListVo(String title,List<String> classify) {
+		this.title = title;
+		this.subName = classify;
 	}
+	
 
 	public String getTitle() {
 		return title;

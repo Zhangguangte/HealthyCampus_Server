@@ -141,7 +141,8 @@
         $('.table tbody').on( 'click', 'tr', function () {
             var id = table.row( this ).data().id;
             var title = table.row( this ).data().title;
-            parent.setIdAndTitle(id,title);
+            var picUrl =  table.row( this ).data().picUrl;
+            parent.setIdAndTitle(id,title,picUrl);
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);
         });

@@ -98,22 +98,25 @@
     	}
     }
     
-    var index = layer.load(3);
-    
+    var index1 = layer.load(3);
+    var index;
     //确认是否已经存在签到数据
     $.ajax({
         url:"/item/timetable/before/"+parent.getId(),
         type: 'POST',
         dataType: "json",
         success:function (data) {
-            if(data.result.isFinsh==true){
+            layer.close(index1);
+        	if(data.success != true){
+            	layer.alert(data.message, {title: '错误信息', icon: 2});
+            }else if(data.result.isFinsh==true){
             	attend_list();
             	 //开始计时器
                 startInterval();
-            }else
-            	layer.close(index);
+            }
         },
         error:function(XMLHttpRequest){
+        	layer.close(index1);
             if(XMLHttpRequest.status!=200){
                 layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status,{title: '错误信息',icon: 2});
             }

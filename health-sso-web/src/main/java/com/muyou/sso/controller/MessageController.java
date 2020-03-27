@@ -31,6 +31,7 @@ public class MessageController {
 	@ResponseBody
 	public List<MessageListVo> lastMessage(HttpServletRequest request) throws ServiceException {
 		String user = (String) request.getAttribute("USER");
+		System.out.println(user);
 		if (StringUtil.isEmpty(user))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		List<MessageListVo> result = messageService.lastMessage(user);
@@ -47,6 +48,7 @@ public class MessageController {
 		if (StringUtil.isEmpty(user))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		List<MessageListVo> result = messageService.getDoctorRoom(user);
+		System.out.println(result.size());
 		if (null == result)
 			throw new ServiceException(ResponseBuilder.ERROR_ROOM_NOT_FOUND);
 		return result;
@@ -90,6 +92,17 @@ public class MessageController {
 		return result;
 	}
 
+	// 获取最新消息消息根据房间号
+	@RequestMapping("/lastestMessage")
+	@ResponseBody
+	public List<MessageListVo> lastestMessage(@RequestBody RequestForm form, HttpServletRequest request)
+			throws ServiceException {
+		String user = (String) request.getAttribute("USER");
+		if (StringUtil.isEmpty(user) || StringUtil.isEmpty(form.getQuest_id()))
+			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
+		return messageService.lastestMessage(form, user);
+	}
+		
 	// 所有消息根据两个用户ID
 	@RequestMapping("/allChatByUid")
 	@ResponseBody

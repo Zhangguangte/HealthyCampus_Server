@@ -165,76 +165,6 @@ public class TbArticleExample {
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNull() {
-            addCriterion("name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameIsNotNull() {
-            addCriterion("name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameEqualTo(String value) {
-            addCriterion("name =", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameNotEqualTo(String value) {
-            addCriterion("name <>", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameGreaterThan(String value) {
-            addCriterion("name >", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            addCriterion("name >=", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameLessThan(String value) {
-            addCriterion("name <", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            addCriterion("name <=", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameLike(String value) {
-            addCriterion("name like", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameNotLike(String value) {
-            addCriterion("name not like", value, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameIn(List<String> values) {
-            addCriterion("name in", values, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameNotIn(List<String> values) {
-            addCriterion("name not in", values, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameBetween(String value1, String value2) {
-            addCriterion("name between", value1, value2, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameNotBetween(String value1, String value2) {
-            addCriterion("name not between", value1, value2, "name");
-            return (Criteria) this;
-        }
-
         public Criteria andTitleIsNull() {
             addCriterion("title is null");
             return (Criteria) this;
@@ -302,76 +232,6 @@ public class TbArticleExample {
 
         public Criteria andTitleNotBetween(String value1, String value2) {
             addCriterion("title not between", value1, value2, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleIsNull() {
-            addCriterion("sub_title is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleIsNotNull() {
-            addCriterion("sub_title is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleEqualTo(String value) {
-            addCriterion("sub_title =", value, "subTitle");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleNotEqualTo(String value) {
-            addCriterion("sub_title <>", value, "subTitle");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleGreaterThan(String value) {
-            addCriterion("sub_title >", value, "subTitle");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleGreaterThanOrEqualTo(String value) {
-            addCriterion("sub_title >=", value, "subTitle");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleLessThan(String value) {
-            addCriterion("sub_title <", value, "subTitle");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleLessThanOrEqualTo(String value) {
-            addCriterion("sub_title <=", value, "subTitle");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleLike(String value) {
-            addCriterion("sub_title like", value, "subTitle");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleNotLike(String value) {
-            addCriterion("sub_title not like", value, "subTitle");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleIn(List<String> values) {
-            addCriterion("sub_title in", values, "subTitle");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleNotIn(List<String> values) {
-            addCriterion("sub_title not in", values, "subTitle");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleBetween(String value1, String value2) {
-            addCriterion("sub_title between", value1, value2, "subTitle");
-            return (Criteria) this;
-        }
-
-        public Criteria andSubTitleNotBetween(String value1, String value2) {
-            addCriterion("sub_title not between", value1, value2, "subTitle");
             return (Criteria) this;
         }
 
@@ -595,62 +455,52 @@ public class TbArticleExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(String value) {
+        public Criteria andStatusEqualTo(Boolean value) {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(String value) {
+        public Criteria andStatusNotEqualTo(Boolean value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(String value) {
+        public Criteria andStatusGreaterThan(Boolean value) {
             addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(String value) {
+        public Criteria andStatusGreaterThanOrEqualTo(Boolean value) {
             addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(String value) {
+        public Criteria andStatusLessThan(Boolean value) {
             addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(String value) {
+        public Criteria andStatusLessThanOrEqualTo(Boolean value) {
             addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLike(String value) {
-            addCriterion("status like", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotLike(String value) {
-            addCriterion("status not like", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIn(List<String> values) {
+        public Criteria andStatusIn(List<Boolean> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<String> values) {
+        public Criteria andStatusNotIn(List<Boolean> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(String value1, String value2) {
+        public Criteria andStatusBetween(Boolean value1, Boolean value2) {
             addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(String value1, String value2) {
+        public Criteria andStatusNotBetween(Boolean value1, Boolean value2) {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }

@@ -80,8 +80,8 @@
 				}
 
 				$.ajax({
-					url : "http://localhost:8086/admin/token/" + _ticket,
-					dataType : "jsonp",
+					url : "/admin/token/" + _ticket,
+					dataType : "json",
 					type : "GET",
 					success : function(data) {
 
@@ -99,7 +99,7 @@
 								$("#avatar").attr("src", data.result.file);
 							}
 						} else {
-							location.href = "http://localhost:8086/login";
+							location.href = "/login";
 						}
 					},
 					error : function(XMLHttpRequest) {

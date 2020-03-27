@@ -32,10 +32,10 @@ public class MyShiroFilterFactoryBean extends ShiroFilterFactoryBean {
 	 */
 	@Override
 	public void setFilterChainDefinitions(String definitions) {
-		System.out.println(6666);
-		StringBuilder sBuilder = new StringBuilder();
-		sBuilder.append(definitions);
-		
+		System.out.println("MyShiroFilterFactoryBean:setFilterChainDefinitions");
+		StringBuilder sBuilder = new StringBuilder("");
+		sBuilder.append(definitions + "\n");
+
 		MyShiroFilterFactoryBean.definitions = definitions;
 
 		// 数据库动态权限
@@ -47,7 +47,7 @@ public class MyShiroFilterFactoryBean extends ShiroFilterFactoryBean {
 
 		definitions = sBuilder.toString();
 		log.info(definitions);
-		System.out.println(definitions);
+		// System.out.println(definitions);
 		// 从配置文件加载权限配置
 		Ini ini = new Ini();
 		ini.load(definitions);

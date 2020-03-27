@@ -18,10 +18,9 @@ public class TokenController {
 	@Autowired
 	private TokenService tokenService;
 
-	@RequestMapping(value="/admin/token/{token}",method = RequestMethod.GET)
+	@RequestMapping(value="/admin/token/{token}",method = RequestMethod.GET,produces="text/html;charset=utf-8")
 	@ResponseBody
 	public Object getUserByToken(@PathVariable String token, String callback) {
-		
 		if (StringUtils.isNotBlank(callback)) {
 			MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(tokenService.getAdminByToken(token));
 			mappingJacksonValue.setJsonpFunction(callback);

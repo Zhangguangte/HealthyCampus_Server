@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageInfo;
+import com.muyou.common.constant.ItemConstant;
 import com.muyou.common.exception.GlobalException;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.redis.JedisClient;
@@ -20,7 +21,6 @@ import com.muyou.mapper.TbCateMapper;
 import com.muyou.mapper.TbItemRelaCateMapper;
 import com.muyou.mapper.TbTimeAttendMapper;
 import com.muyou.mapper.TbTimetableMapper;
-import com.muyou.pojo.TbAdminExample;
 import com.muyou.pojo.TbAttend;
 import com.muyou.pojo.TbAttendExample;
 import com.muyou.pojo.TbCate;
@@ -58,6 +58,9 @@ public class ItemTimServiceImpl implements ItemTimService {
 	@Autowired
 	private JedisClient jedisClient;
 
+	@Value("${ITEM_ID}")
+	private String ITEM_ID;
+
 	@Value("${ITEM_DETAIL_ID}")
 	private String ITEM_DETAIL_ID;
 
@@ -70,25 +73,36 @@ public class ItemTimServiceImpl implements ItemTimService {
 	@Value("${ATTEND_DATE}")
 	private String ATTEND_DATE;
 
-	@Value("${RELA_TIM}")
-	private Integer RELA_TIM;
+	@Value("${ATTEND_DATE_LIST}")
+	private String ATTEND_DATE_LIST;
 
-	@Value("${ITEM_CLASS}")
-	private Integer ITEM_CLASS;
+	@Value("${TIMETABLE_LIST}")
+	private String TIMETABLE_LIST;
+
+	@Value("${ITEM_TEACHER}")
+	private Integer ITEM_TEACHER;
 
 	@Value("${ITEM_EXPIRE}")
 	private Integer ITEM_EXPIRE;
 
 	@Override
-	public TimeTableVo getItemList(Integer cid, Integer year, Integer semester) {
+	public TimeTableVo getItemList(Integer id, Integer year, Integer semester) {
+		if (null == id) // 用于数据观看所用
+			id = 17;
+		try {
+			String json = jedisClient.hget(TIMETABLE_LIST, year + ":" + id + ":" + semester);
+			if (StringUtils.isNotBlank(json))
+				return JsonUtils.jsonToPojo(json, TimeTableVo.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		TbCate cate = cateMapper.selectByPrimaryKey(cid);
-		String tid = cate.getRemark();
 		TbTimetableExample example = new TbTimetableExample();
 		Criteria criteria = example.createCriteria();
-		criteria.andTIdEqualTo(Integer.valueOf(tid));
+		criteria.andTIdEqualTo(Integer.valueOf(id));
 		criteria.andCYearEqualTo(year);
 		criteria.andSemesterEqualTo(semester);
+
 		List<TbTimetable> list = timetableMapper.selectByExample(example);
 
 		String descs[][] = { { "", "", "", "", "", "", "", "", "", "", "", "" },
@@ -104,13 +118,13 @@ public class ItemTimServiceImpl implements ItemTimService {
 				{ "", "", "", "", "", "", "", "", "", "", "", "" }, };
 
 		List<String> cateList;
-		StringBuffer sbBuffer = new StringBuffer();
+		StringBuilder sBuilder = new StringBuilder();
 		for (TbTimetable timetable : list) {
-			sbBuffer.setLength(0);
+			sBuilder.setLength(0);
 			// 分类数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(timetable.getId(), RELA_TIM);
+			cateList = cateMapper.selectCateNameByItemIdAndType(timetable.getId(), ItemConstant.RELA_TIM);
 			timetable.setDescr(
-					sbBuffer.append(timetable.getDescr()).append("\r\n").append(String.join(",", cateList)).toString());
+					sBuilder.append(timetable.getDescr()).append("\r\n").append(String.join(",", cateList)).toString());
 			for (int i = timetable.getcStart(), j = 0; j < timetable.getPeriod(); i++, j++) {
 				descs[timetable.getWeeks() - 1][i - 1] = timetable.getDescr();
 				ids[timetable.getWeeks() - 1][i - 1] = "" + timetable.getId();
@@ -120,6 +134,13 @@ public class ItemTimServiceImpl implements ItemTimService {
 		TimeTableVo result = new TimeTableVo();
 		result.setIds(ids);
 		result.setDescs(descs);
+
+		try {
+			jedisClient.hset(TIMETABLE_LIST, year + ":" + id + ":" + semester, JsonUtils.objectToJson(result));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return result;
 	}
 
@@ -132,7 +153,11 @@ public class ItemTimServiceImpl implements ItemTimService {
 		criteria.andItemIdEqualTo(id);
 		if (itemRelaCateMapper.deleteByExample(example) < 1)
 			throw new GlobalException("删除课表异常");
-
+		try {
+			jedisClient.del(TIMETABLE_LIST);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return 1;
 	}
 
@@ -162,13 +187,20 @@ public class ItemTimServiceImpl implements ItemTimService {
 		// 分类数据
 		TbItemRelaCate itemRelaCate = new TbItemRelaCate();
 		itemRelaCate.setItemId(timetable.getId());
-		itemRelaCate.setType(RELA_TIM);
+		itemRelaCate.setType(ItemConstant.RELA_TIM);
 		for (String cid : timetable.getCid()) {
 			if (StringUtils.isBlank(cid))
 				continue;
 			itemRelaCate.setCateId(Integer.valueOf(cid));
 			itemRelaCateMapper.insert(itemRelaCate);
 		}
+
+		try {
+			jedisClient.del(TIMETABLE_LIST);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return 1;
 	}
 
@@ -194,13 +226,20 @@ public class ItemTimServiceImpl implements ItemTimService {
 		TbItemRelaCate itemRelaCate = new TbItemRelaCate();
 		// 分类数据
 		itemRelaCate.setItemId(id);
-		itemRelaCate.setType(RELA_TIM);
+		itemRelaCate.setType(ItemConstant.RELA_TIM);
 		for (String did : timetable.getCid()) {
 			if (StringUtils.isBlank(did))
 				continue;
 			itemRelaCate.setCateId(Integer.valueOf(did));
 			itemRelaCateMapper.insert(itemRelaCate);
 		}
+
+		try {
+			jedisClient.del(TIMETABLE_LIST);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return 1;
 	}
 
@@ -228,18 +267,30 @@ public class ItemTimServiceImpl implements ItemTimService {
 
 	@Override
 	public TbTimetable getItemById(Integer id) {
-
+		try {
+			String json = jedisClient.get(ITEM_ID + ":" + TIMETABLE + ":" + id);
+			if (StringUtils.isNotBlank(json))
+				return JsonUtils.jsonToPojo(json, TbTimetable.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		TbTimetable result = getNormalItemById(id);
 		// 获得分类数据
 		List<String> cateList = new LinkedList<String>();
 		List<String> cidList = new LinkedList<String>();
-		List<TbCate> list = cateMapper.selectItemCate(id, RELA_TIM);
+		List<TbCate> list = cateMapper.selectItemCate(id, ItemConstant.RELA_TIM);
 		for (TbCate tbCate : list) {
 			cateList.add(tbCate.getName());
 			cidList.add(tbCate.getId() + "");
 		}
 		result.setCid(cidList);
 		result.setCname(cateList);
+		try {
+			jedisClient.set(ITEM_ID + ":" + TIMETABLE + ":" + id, JsonUtils.objectToJson(result));
+			jedisClient.expire(ITEM_ID + ":" + TIMETABLE + ":" + id, ITEM_EXPIRE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return result;
 	}
@@ -274,6 +325,7 @@ public class ItemTimServiceImpl implements ItemTimService {
 		try {
 			jedisClient.del(ATTEND_LIST + ":" + id);
 			jedisClient.del(ATTEND_DATE + ":" + id);
+			jedisClient.del(ItemConstant.ATTEND);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -338,20 +390,29 @@ public class ItemTimServiceImpl implements ItemTimService {
 	@Override
 	public DataTablesResult attendListByDate(String date, Integer tid) {
 
+		try {
+			String json = jedisClient.hget(ATTEND_DATE_LIST, date + ":" + tid);
+			if (StringUtils.isNotBlank(json))
+				return JsonUtils.jsonToPojo(json, DataTablesResult.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		List<AttendListVo> list = new LinkedList<AttendListVo>();
 
 		// 获得已签到ID
 		List<String> ids = timeAttendMapper.getAttendIds(date, tid);
 
 		// 获得签到班级
-		List<String> cls = timeAttendMapper.getAttendCls(tid, ITEM_CLASS);
+		List<String> cls = timeAttendMapper.getAttendCls(tid, ItemConstant.CATE_CLASS);
 
 		// 获得未签到数据
-		List<AttendListVo> ablist = timeAttendMapper.attendAbsenceByTid("(" + String.join(",", ids) + ")",
-				"(" + String.join(",", cls) + ")");
+		List<AttendListVo> ablist = timeAttendMapper.attendAbsenceByTid(
+				ids.size() > 0 ? "(" + String.join(",", ids) + ")" : "('')",
+				cls.size() > 0 ? "(" + String.join(",", cls) + ")" : "('')");
 		if (null != ablist && ablist.size() > 0)
 			list.addAll(ablist);
-		
+
 		// 获得已签到数据
 		List<AttendListVo> dolist = timeAttendMapper.attendListByDate(date, tid);
 		if (null != dolist && dolist.size() > 0)
@@ -362,6 +423,11 @@ public class ItemTimServiceImpl implements ItemTimService {
 		result.setRecordsFiltered((int) pageInfo.getTotal());
 		result.setRecordsTotal(list.size());
 		result.setData(list);
+		try {
+			jedisClient.hset(ATTEND_DATE_LIST, date + ":" + tid, JsonUtils.objectToJson(result));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return result;
 	}
 
@@ -383,6 +449,12 @@ public class ItemTimServiceImpl implements ItemTimService {
 			attend.setsId(id);
 			attend.setType(type);
 			attendMapper.insert(attend);
+		}
+
+		try {
+			jedisClient.del(ATTEND_DATE_LIST);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return 1;

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.muyou.common.constant.ItemConstant;
 import com.muyou.common.exception.GlobalException;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.redis.JedisClient;
@@ -48,9 +49,6 @@ public class ItemLecServiceImpl implements ItemLecService {
 	@Value("${ITEM_ID}")
 	private String ITEM_ID;
 
-	@Value("${RELA_LEC}")
-	private Integer RELA_LEC;
-
 	@Value("${ITEM_EXPIRE}")
 	private Integer ITEM_EXPIRE;
 
@@ -83,7 +81,7 @@ public class ItemLecServiceImpl implements ItemLecService {
 		List<String> cidList = new LinkedList<String>();
 
 		// 获得分类数据
-		List<TbCate> list = cateMapper.selectItemCate(id, RELA_LEC);
+		List<TbCate> list = cateMapper.selectItemCate(id, ItemConstant.RELA_LEC);
 		for (TbCate tbCate : list) {
 			cateList.add(tbCate.getName());
 			cidList.add(tbCate.getId() + "");
@@ -157,15 +155,12 @@ public class ItemLecServiceImpl implements ItemLecService {
 
 		// 分页执行查询返回结果
 		PageHelper.startPage(start / length + 1, length);
-
-		
-		
 		List<TbLecture> list = lectureMapper.selectItemByCondition(cid, orderCol, orderDir);
 
 		List<String> cateList;
 		for (TbLecture lecture : list) {
 			// 获得分类数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(lecture.getId(), RELA_LEC);
+			cateList = cateMapper.selectCateNameByItemIdAndType(lecture.getId(), ItemConstant.RELA_LEC);
 			lecture.setCname(String.join(",", cateList));
 		}
 
@@ -193,7 +188,7 @@ public class ItemLecServiceImpl implements ItemLecService {
 		List<String> cateList;
 		for (TbLecture lecture : list) {
 			// 获得分类数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(lecture.getId(), RELA_LEC);
+			cateList = cateMapper.selectCateNameByItemIdAndType(lecture.getId(), ItemConstant.RELA_LEC);
 			lecture.setCname(String.join(",", cateList));
 		}
 
@@ -222,11 +217,8 @@ public class ItemLecServiceImpl implements ItemLecService {
 
 		// 分类数据
 		itemRelaCate.setItemId(lecture.getId());
-		itemRelaCate.setType(RELA_LEC);
+		itemRelaCate.setType(ItemConstant.RELA_LEC);
 		for (String cid : lectureVo.getCid()) {
-
-			System.out.println(cid);
-
 			if (StringUtils.isBlank(cid))
 				continue;
 			itemRelaCate.setCateId(Integer.valueOf(cid));
@@ -235,6 +227,8 @@ public class ItemLecServiceImpl implements ItemLecService {
 
 		try {
 			jedisClient.del(ITEM_COUNT + ":" + LECTURE);
+			//客户端
+			jedisClient.del(ItemConstant.LECTURE_LIST);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -256,6 +250,9 @@ public class ItemLecServiceImpl implements ItemLecService {
 			jedisClient.del(ITEM_ID + ":" + LECTURE + ":" + id);
 			jedisClient.del(ITEM_DETAIL_ID + ":" + LECTURE + ":" + id);
 			jedisClient.del(ITEM_COUNT + ":" + LECTURE);
+			//客户端
+			jedisClient.del(ItemConstant.LECTURE_LIST);
+			jedisClient.del(ItemConstant.LECTURE_DETAIL);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -277,6 +274,9 @@ public class ItemLecServiceImpl implements ItemLecService {
 		try {
 			jedisClient.del(ITEM_ID + ":" + LECTURE + ":" + id);
 			jedisClient.del(ITEM_DETAIL_ID + ":" + LECTURE + ":" + id);
+			//客户端
+			jedisClient.del(ItemConstant.LECTURE_LIST);
+			jedisClient.del(ItemConstant.LECTURE_DETAIL);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -308,7 +308,7 @@ public class ItemLecServiceImpl implements ItemLecService {
 
 		// 分类数据
 		itemRelaCate.setItemId(id);
-		itemRelaCate.setType(RELA_LEC);
+		itemRelaCate.setType(ItemConstant.RELA_LEC);
 		for (String did : lectureVo.getCid()) {
 			if (StringUtils.isBlank(did))
 				continue;
@@ -320,6 +320,9 @@ public class ItemLecServiceImpl implements ItemLecService {
 		try {
 			jedisClient.del(ITEM_ID + ":" + LECTURE + ":" + id);
 			jedisClient.del(ITEM_DETAIL_ID + ":" + LECTURE + ":" + id);
+			//客户端
+			jedisClient.del(ItemConstant.LECTURE_LIST);
+			jedisClient.del(ItemConstant.LECTURE_DETAIL);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

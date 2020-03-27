@@ -24,7 +24,16 @@ public interface TbMessageListMapper {
 
 	List<TbMessageList> selectByExample(TbMessageListExample example);
 
-	// ***********************************
+	TbMessageList selectByPrimaryKey(Integer id);
+
+	int updateByExampleSelective(@Param("record") TbMessageList record, @Param("example") TbMessageListExample example);
+
+	int updateByExample(@Param("record") TbMessageList record, @Param("example") TbMessageListExample example);
+
+	int updateByPrimaryKeySelective(TbMessageList record);
+
+	int updateByPrimaryKey(TbMessageList record);
+
 	// 创建房间号
 	List<TbMessageList> getDoctorRoom(@Param("user_id") String user_id);
 
@@ -40,23 +49,14 @@ public interface TbMessageListMapper {
 	// 未读
 	public void addUnread(@Param("roomid") String roomid, @Param("user_id") String id);
 
-	//消息列表
+	// 消息列表
 	public void addMessageList(@Param("nickname") String nickname, @Param("roomid") String roomid,
 			@Param("userId") String userId);
 
 	// 创建房间号
 	void addDoctorMessageList(@Param("nickname") String nickname, @Param("roomid") String roomid,
 			@Param("userId") String userId);
-	
-	// ***********************************
 
-	TbMessageList selectByPrimaryKey(Integer id);
-
-	int updateByExampleSelective(@Param("record") TbMessageList record, @Param("example") TbMessageListExample example);
-
-	int updateByExample(@Param("record") TbMessageList record, @Param("example") TbMessageListExample example);
-
-	int updateByPrimaryKeySelective(TbMessageList record);
-
-	int updateByPrimaryKey(TbMessageList record);
+	// 用户房间号ID
+	List<String> selectIdsByName(@Param("userId") String userId);
 }

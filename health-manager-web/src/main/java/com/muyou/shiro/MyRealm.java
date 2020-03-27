@@ -24,16 +24,15 @@ public class MyRealm extends AuthorizingRealm {
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principal) {
-
-		System.out.println("MyRealm" + 4444);
-		// 获取用户名
-		String username = principal.getPrimaryPrincipal().toString();
-		System.out.println(adminService);
+		System.out.println("MyRealm:AuthorizationInfo");
+		// 获取用户账号
+		String account = principal.getPrimaryPrincipal().toString();
+		
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 		// 获得授权角色
-		authorizationInfo.setRoles(adminService.getRoles(username));
+		authorizationInfo.setRoles(adminService.getRoles(account));
 		// 获得授权权限
-		authorizationInfo.setStringPermissions(adminService.getPermissions(username));
+		authorizationInfo.setStringPermissions(adminService.getPermissions(account));
 		return authorizationInfo;
 	}
 
@@ -46,13 +45,13 @@ public class MyRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		System.out.println("MyRealm" + 5555);
+		System.out.println("MyRealm:doGetAuthenticationInfo");
 		// 获取用户名密码
-		String username = token.getPrincipal().toString();
-		TbAdmin admin = adminService.getAdminByUsername(username);
+		String account = token.getPrincipal().toString();
+		TbAdmin admin = adminService.getAdminByUsername(account);
 		if (admin != null) {
-			// 得到用户账号和密码存放到authenticationInfo中用于Controller层的权限判断 第三个参数随意不能为null
-			AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(admin.getName(), admin.getPassword(),
+			// 得到用户账号和密码存放到authenticationInfo中用于Controller层的权限判断
+			AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(admin.getAccount(), admin.getPassword(),
 					admin.getName());
 			return authenticationInfo;
 		} else {

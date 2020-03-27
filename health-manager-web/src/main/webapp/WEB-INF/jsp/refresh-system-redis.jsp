@@ -28,7 +28,6 @@
 <div style="margin-left: 1vw;margin-right: 1vw" class="cl pd-5 bg-1 bk-gray mt-20">
     <span class="l">
         <a class="btn btn-primary radius" onclick="refreshShiroRedis()" href="javascript:;"><i class="Hui-iconfont">&#xe6bd;</i> 刷新权限缓存</a>
-        <a class="btn btn-primary radius" onclick="refreshLogRedis()" href="javascript:;"><i class="Hui-iconfont">&#xe6bd;</i> 刷新日志缓存</a>
     </span>
 </div>
 <table class="table">
@@ -43,12 +42,6 @@
                     <textarea name="shiro" id="shiro" class="textarea"  placeholder="当前权限缓存已是最新" style="height: 350px"></textarea>
                 </div>
                 
-            </div>
-            <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-1">日志缓存内容：</label>
-                <div class="formControls col-xs-6 col-sm-6">
-                    <textarea name="log" id="log" class="textarea"  placeholder="当前日志缓存已是最新" style="height: 350px"></textarea>
-                </div>
             </div>
         </form>
     </div>
@@ -118,58 +111,6 @@
         });
     }
 
-    getLogRedisData();
-    function getLogRedisData() {
-        var index = layer.load(3);
-        $.ajax({
-            type: 'GET',
-            url: '/redis/log/list',
-            dataType: 'json',
-            success: function(data) {
-                layer.close(index);
-                if(data.success==true){
-                    $("#log").val(data.result);
-                }else{
-                    layer.alert('读取缓存数据失败! '+data.message, {title: '错误信息',icon: 2});
-                }
-            },
-            error: function (XMLHttpRequest) {
-                layer.close(index);
-                layer.alert('数据处理失败! 错误码:' + XMLHttpRequest.status , {
-                    title: '错误信息',
-                    icon: 2
-                });
-            }
-        });
-    }
-
-    function refreshLogRedis() {
-        layer.confirm('确认要刷新日志缓存吗？',{icon:0},function(index){
-            var index = layer.load(3);
-            $.ajax({
-                type: 'GET',
-                url: '/redis/log/update',
-                dataType: 'json',
-                success: function(data) {
-                    layer.close(index);
-                    if(data.success==true){
-                    	getLogRedisData();
-                        msgSuccess("刷新成功!重新打开日志板块即可重新存入新缓存");
-                    }else{
-                        layer.alert('刷新失败! '+data.message, {title: '错误信息',icon: 2});
-                    }
-                },
-                error: function (XMLHttpRequest) {
-                    layer.close(index);
-                    layer.alert('数据处理失败! 错误码:' + XMLHttpRequest.status , {
-                        title: '错误信息',
-                        icon: 2
-                    });
-                }
-            });
-        });
-    }
-    
     function msgSuccess(content){
         layer.alert(content,{icon: 1});
     }

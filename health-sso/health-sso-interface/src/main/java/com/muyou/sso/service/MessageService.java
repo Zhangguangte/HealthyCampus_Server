@@ -23,6 +23,9 @@ public interface MessageService {
 
 	// 所有消息根据房间号
 	public List<MessageListVo> allChatByRoomId(RequestForm requestForm, String userId);
+	
+	// 所有消息根据房间号
+	public List<MessageListVo> lastestMessage(RequestForm requestForm, String userId);
 
 	// 所有消息根据两个用户ID
 	public List<MessageListVo> allChatByUid(RequestForm requestForm, String userId) throws ServiceException;

@@ -508,6 +508,23 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
+	<!--   前台 -->
+  <select id="selectItemByClassify" resultMap="BaseResultMap">
+    SELECT 
+    	DISTINCT(d.id),url,d.name,d.introduce
+    FROM 
+    	(tb_disease d RIGHT JOIN tb_item_rela_cate r on d.id = r.item_id ) RIGHT JOIN tb_cate c on r.cate_id = c.id
+    WHERE 
+      c.id = #{cid}
+    AND
+    	d.status = 1
+    ORDER BY
+	  d.id desc
+	LIMIT 
+		#{page},#{row}
+  </select>
+  
+	<!--   后台 -->
   <select id="selectItemByCondition" resultMap="BaseResultMap">
     SELECT 
     	DISTINCT(d.id),url,d.name,complication,symptoms,rate,time,d.status,d.created

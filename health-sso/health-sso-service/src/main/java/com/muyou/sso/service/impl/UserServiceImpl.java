@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import com.muyou.common.exception.GlobalException;
 import com.muyou.common.exception.ServiceException;
 import com.muyou.common.form.LoginForm;
 import com.muyou.common.form.RequestForm;
@@ -17,7 +18,11 @@ import com.muyou.common.redis.JedisClient;
 import com.muyou.common.util.DateUtil;
 import com.muyou.common.util.JsonUtils;
 import com.muyou.mapper.TbFriendshipMapper;
+import com.muyou.mapper.TbMessageListMapper;
+import com.muyou.mapper.TbStudentMapper;
 import com.muyou.mapper.TbUserMapper;
+import com.muyou.pojo.TbStudent;
+import com.muyou.pojo.TbStudentExample;
 import com.muyou.pojo.TbUser;
 import com.muyou.pojo.TbUserExample;
 import com.muyou.pojo.TbUserExample.Criteria;
@@ -30,6 +35,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private TbUserMapper userMapper;
+
+	@Autowired
+	private TbStudentMapper studentMapper;
+
+	@Autowired
+	private TbMessageListMapper messageListMapper;
 
 	@Autowired
 	private TbFriendshipMapper friendshipMapper;
@@ -63,7 +74,7 @@ public class UserServiceImpl implements UserService {
 		user.setNickname(UUID.randomUUID().toString().substring(8).replace("-", "0"));
 		user.setPhone(dataForm.getPhone());
 		user.setInitials(user.getNickname().charAt(0) + "");
-
+		user.setId("u_" + UUID.randomUUID().toString().substring(8));
 		// 4、把用户信息插入到数据库中。
 		userMapper.insert(user);
 		return new UserVo(user);
@@ -85,29 +96,45 @@ public class UserServiceImpl implements UserService {
 
 		// 如果已经登陆，删除原有的令牌
 		try {
-			jedisClient.del(USESSION + user.getId());
+			jedisClient.del(USESSION + ":" + user.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// 用户登录成功，设置令牌
-		String token = UUID.randomUUID().toString();
-		UserVo uservo = new UserVo(user);
-		uservo.setToken(token);
+		String token = UUID.randomUUID().toString().substring(0, 8);
+		UserVo result = new UserVo(user);
+		result.setToken(token);
+
+		// 学生信息
+		TbStudentExample example = new TbStudentExample();
+		TbStudentExample.Criteria criteria = example.createCriteria();
+		criteria.andUIdEqualTo(user.getId());
+		List<TbStudent> list = studentMapper.selectByExample(example);
+		if (null != list && list.size() == 1) {
+			result.setAuth(true);
+			result.setNo(list.get(0).getNo());
+			result.setSid("" + list.get(0).getId());
+			result.setSname(list.get(0).getName());
+			result.setMajor(list.get(0).getCname());
+			result.setYear("" + list.get(0).getYear());
+		} else {
+			result.setAuth(false);
+		}
 
 		// redis存储用户数据
 		try {
-			jedisClient.hset(USESSION + uservo.getId(), token, JsonUtils.objectToJson(uservo));
+			jedisClient.hset(USESSION + ":" + result.getId(), token, JsonUtils.objectToJson(result));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return uservo;
+		return result;
 	}
 
 	@Override
 	public int userLogout(String id) {
 		try {
-			jedisClient.del(USESSION + id);
+			jedisClient.del(USESSION + ":" + id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -120,7 +147,7 @@ public class UserServiceImpl implements UserService {
 	public UserVo getUserInformation(String account) {
 
 		try {
-			String json = jedisClient.hget(USER_INFORMATION + ":" + account, account);
+			String json = jedisClient.get(USER_INFORMATION + ":" + account);
 			if (StringUtils.isNotBlank(json)) {
 				return JsonUtils.jsonToPojo(json, UserVo.class);
 			}
@@ -238,6 +265,74 @@ public class UserServiceImpl implements UserService {
 
 		return result;
 
+	}
+
+	@Override
+	public int updateUser(String id, UserVo userVo) throws ServiceException {
+		TbUserExample example = new TbUserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andIdEqualTo(id);
+
+		List<TbUser> list = userMapper.selectByExample(example);
+		if (null == list || list.size() < 1)
+			throw new ServiceException(new ResponseBuilder(400, 99, "用户不存在"));
+		TbUser tbUser = list.get(0);
+		tbUser.setNickname(userVo.getNickname());
+		tbUser.setDescription(userVo.getDescription());
+		tbUser.setLocation(userVo.getLocation());
+		tbUser.setSex(userVo.getSex());
+		tbUser.setBirthday(userVo.getCreateTime());
+		if (userMapper.updateByPrimaryKey(tbUser) < 1)
+			throw new ServiceException(new ResponseBuilder(400, 99, "更新用户失败"));
+		List<String> ids = messageListMapper.selectIdsByName(id);
+		userMapper.updateUsername(ids != null && ids.size() > 0 ? "(" + String.join(",", ids) + ")" : "('')",
+				userVo.getNickname());
+		return 1;
+	}
+
+	@Override
+	public int updateStudent(String id, RequestForm form) throws ServiceException {
+
+		TbStudentExample example = new TbStudentExample();
+		TbStudentExample.Criteria criteria = example.createCriteria();
+		criteria.andNoEqualTo(form.getMap().get("no"));
+		criteria.andNameEqualTo(form.getMap().get("name"));
+		criteria.andYearEqualTo(Integer.valueOf(form.getMap().get("year")));
+
+		List<TbStudent> list = studentMapper.selectByExample(example);
+
+		if (null == list || list.size() < 1)
+			throw new ServiceException(new ResponseBuilder(400, 99, "无该学生信息"));
+
+		if (null != list.get(0).getuId())
+			throw new ServiceException(new ResponseBuilder(400, 99, "学生已被认证"));
+
+		TbStudent student = list.get(0);
+		student.setuId(id);
+
+		if (studentMapper.updateByPrimaryKey(student) < 1)
+			throw new ServiceException(new ResponseBuilder(400, 99, "认证失败"));
+
+		return student.getId();
+	}
+
+	@Override
+	public int updateUser(String id, String url) throws ServiceException {
+		TbUserExample example = new TbUserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andIdEqualTo(id);
+		List<TbUser> list = userMapper.selectByExample(example);
+
+		if (null == list || list.size() < 1)
+			throw new ServiceException(ResponseBuilder.ERROR_USER_NOT_FOUND);
+
+		TbUser tbUser = list.get(0);
+		tbUser.setAvatar(url);
+		
+		if (userMapper.updateByPrimaryKey(tbUser) < 1)
+				throw new ServiceException(new ResponseBuilder(400,99,"更新头像失败"));
+
+		return 1;
 	}
 
 }

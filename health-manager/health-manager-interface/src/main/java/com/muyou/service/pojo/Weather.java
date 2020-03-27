@@ -82,5 +82,11 @@ public class Weather {
 	public void setTemp1(String temp1) {
 		this.temp1 = temp1;
 	}
+	@Override
+	public String toString() {
+		return "Weather [updateTime=" + updateTime + ", city=" + city + ", pm=" + pm + ", temp=" + temp + ", wd=" + wd
+				+ ", ws=" + ws + ", pm_level=" + pm_level + ", sd=" + sd + ", weather1=" + weather1 + ", week=" + week
+				+ ", temp1=" + temp1 + "]";
+	}
 	
 }

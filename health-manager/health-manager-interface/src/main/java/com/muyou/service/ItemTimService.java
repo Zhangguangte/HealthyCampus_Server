@@ -21,12 +21,12 @@ public interface ItemTimService {
 	/**
 	 * 获得教师课表
 	 * 
-	 * @param cid
+	 * @param id
 	 * @param year
 	 * @param semester
 	 * @return
 	 */
-	TimeTableVo getItemList(Integer cid, Integer year, Integer semester);
+	TimeTableVo getItemList(Integer id, Integer year, Integer semester);
 
 	/**
 	 * 删除教师课表

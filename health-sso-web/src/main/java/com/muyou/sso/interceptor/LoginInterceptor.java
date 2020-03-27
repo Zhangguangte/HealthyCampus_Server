@@ -33,18 +33,22 @@ public class LoginInterceptor implements HandlerInterceptor {
 
 		// 分割数据,获得账号和令牌
 		String[] tempArray = authCode.split(" ");
+		
 		if (tempArray.length != 3) {
 			return false;
 		}
 
 		// 解析，获得用户ID
 		authCode = new String(Base64.decode(tempArray[1].getBytes()));
-
+		
 		// 根据用户ID和令牌获得用户数据
 		UserVo user = tokenService.getUserByToken(authCode, tempArray[2]);
+		
 		if (null == user)
 			return false;
 		
+//		System.out.println(user.getId());
+//		System.out.println(tempArray[2]);
 		request.setAttribute("USER", user.getId());
 		request.setAttribute("TOKEN", tempArray[2]);
 		

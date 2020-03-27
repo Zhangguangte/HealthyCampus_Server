@@ -28,6 +28,10 @@ public interface TbDiseaseMapper {
 
 	int updateByPrimaryKey(TbDisease record);
 
+	/*前台*/
+	List<TbDisease> selectItemByClassify(@Param("cid") int cid, @Param("page") int page, @Param("row") int row);
+	
+	/*后台*/
 	List<TbDisease> selectItemByCondition(@Param("cid") int cid, @Param("search") String search,
 			@Param("orderCol") String orderCol, @Param("orderDir") String orderDir);
 

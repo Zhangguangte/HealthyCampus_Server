@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.muyou.common.constant.HealthConstant;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.pojo.Result;
 import com.muyou.common.util.CookieUtils;
@@ -25,7 +26,6 @@ import com.muyou.common.util.HttpUtil;
 import com.muyou.common.util.ResultUtil;
 import com.muyou.common.util.WeatherUtils;
 import com.muyou.pojo.TbBase;
-import com.muyou.pojo.TbLog;
 import com.muyou.pojo.TbShiroFilter;
 import com.muyou.pojo.TbUser;
 import com.muyou.service.SystemService;
@@ -37,9 +37,6 @@ public class SystemController {
 
 	@Value("${PAGE_EXPIRE}")
 	private int PAGE_EXPIRE;
-
-	@Value("${PAGE_BROWSE}")
-	private String PAGE_BROWSE;
 
 	@Autowired
 	private SystemService systemService;
@@ -97,7 +94,7 @@ public class SystemController {
 	@ResponseBody
 	public DataTablesResult getBrowseCount(HttpServletRequest request, HttpServletResponse response) {
 
-		String cookie = CookieUtils.getCookieValue(request, PAGE_BROWSE);
+		String cookie = CookieUtils.getCookieValue(request, HealthConstant.PAGE_BROWSE);
 
 		DataTablesResult result = null;
 		if (StringUtils.isNotBlank(cookie))
@@ -105,7 +102,7 @@ public class SystemController {
 		else
 			result = systemService.getBrowseCount(true);
 
-		CookieUtils.setCookie(request, response, PAGE_BROWSE, "1", PAGE_EXPIRE);
+		CookieUtils.setCookie(request, response, HealthConstant.PAGE_BROWSE, "1", PAGE_EXPIRE);
 
 		return result;
 	}
@@ -139,21 +136,23 @@ public class SystemController {
 	public Result<Object> getWeather(HttpServletRequest request) {
 
 		try {
-			// 获得用户所属的ip地址
 			String jsonIp = HttpUtil.sendGet(WeatherUtils.LOC_URL);
-			String ip = jsonIp.substring(jsonIp.indexOf(":") + 3, jsonIp.indexOf(",") - 1);
-			// System.out.println(ip);
+//			String ip = jsonIp.substring(jsonIp.indexOf(":") + 3, jsonIp.indexOf(",") - 1);
+//			System.out.println(ip);
+
+			String cityName = jsonIp.substring(jsonIp.indexOf("省") + 1, jsonIp.indexOf("市"));
+//			System.out.println(cityName);
 			// 根据用户ip地址，获得城市名称
-			String jsonCity = HttpUtil.sendGet(WeatherUtils.CITY_URL + ip);
-			JSONObject jsonStr = JSONObject.parseObject(jsonCity);
-			String cityName = (String) jsonStr.getJSONObject("data").get("city");
+			// String jsonCity = HttpUtil.sendGet(WeatherUtils.CITY_URL1 + ip);
+			// JSONObject jsonStr = JSONObject.parseObject(jsonCity);
+			// String cityName = (String) jsonStr.getJSONObject("data").get("city");
 			// System.out.println(cityName);
 			// 根据城市名称，获得对应城市编码，获得天气信息
 			String jsonWeather = HttpUtil.sendGet(WeatherUtils.WEA_URL + WeatherUtils.CITY_MAP.get(cityName) + ".html");
 			jsonWeather = jsonWeather.substring(jsonWeather.indexOf("(") + 1, jsonWeather.indexOf(")"));
 
 			JSONObject root = JSONObject.parseObject(jsonWeather);
-			jsonStr = (JSONObject) root.get("weatherinfo");
+			JSONObject jsonStr = (JSONObject) root.get("weatherinfo");
 			Weather weather = new Weather();
 			weather.setCity(jsonStr.getString("city"));
 			weather.setUpdateTime(root.getString("update_time"));

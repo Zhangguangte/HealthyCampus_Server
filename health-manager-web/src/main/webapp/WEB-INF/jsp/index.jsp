@@ -44,19 +44,9 @@
 					href="javascript:;">&#xe667;</a>
 				<nav class="nav navbar-nav">
 					<ul class="cl">
-						<li class="dropDown dropDown_hover"><a href="javascript:;"
-							class="dropDown_A"><i class="Hui-iconfont">&#xe600;</i> 新增 <i
-								class="Hui-iconfont">&#xe6d5;</i></a>
-							<ul class="dropDown-menu menu radius box-shadow">
-								<li><a href="javascript:;"
-									onclick="product_add('添加商品','product-add')"><i
-										class="Hui-iconfont">&#xe620;</i> 商品</a></li>
-								<li><a href="javascript:;"
-									onclick="member_add('添加用户','member-add','','630')"><i
-										class="Hui-iconfont">&#xe60d;</i> 用户</a></li>
-							</ul>
 						<li class="navbar-levelone current"><a href="javascript:;">平台</a></li>
 						<li class="navbar-levelone"><a href="javascript:;">教师</a></li>
+						<li class="navbar-levelone"><a href="javascript:;">医生</a></li>
 						<li><a href="#" target="_blank">软件下载界面</a></li>
 						</li>
 					</ul>
@@ -105,12 +95,14 @@
 				</dt>
 				<dd>
 					<ul>
-						<li><a data-href="content-panel" data-title="板块管理"
-							href="javascript:void(0)">板块管理</a></li>
+						<!-- <li><a data-href="content-panel" data-title="板块管理"
+							href="javascript:void(0)">板块管理</a></li> -->
 						<li><a data-href="content-banner-list" data-title="轮播图管理"
 							href="javascript:void(0)">轮播图管理</a></li>
-						<li><a data-href="content-index-list" data-title="板块内容管理"
-							href="javascript:void(0)">板块内容管理</a></li>
+						<li><a data-href="article-list" data-title="文章管理"
+							href="javascript:void(0)">文章管理</a></li>
+						<!-- <li><a data-href="content-index-list" data-title="板块内容管理"
+							href="javascript:void(0)">板块内容管理</a></li> -->
 					</ul>
 				</dd>
 			</dl>
@@ -163,19 +155,7 @@
 					</ul>
 				</dd>
 			</dl>
-			<dl id="menu-order">
-				<dt>
-					<i class="Hui-iconfont">&#xe627;</i> 订单管理<i
-						class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
-				</dt>
-				<dd>
-					<ul>
-						<li><a data-href="order-list" data-title="订单列表"
-							href="javascript:void(0)">订单列表</a></li>
-					</ul>
-				</dd>
-			</dl>
-			<dl id="menu-order">
+			<dl id="menu-service">
 				<dt>
 					<i class="Hui-iconfont">&#xe6c0;</i> 服务管理<i
 						class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
@@ -205,18 +185,6 @@
 					</ul>
 				</dd>
 			</dl>
-			<dl id="menu-comments">
-				<dt>
-					<i class="Hui-iconfont">&#xe622;</i> 评论管理<i
-						class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
-				</dt>
-				<dd>
-					<ul>
-						<li><a data-href="http://changyan.kuaizhan.com/"
-							data-title="畅言评论管理" href="javascript:void(0)">畅言评论管理</a></li>
-					</ul>
-				</dd>
-			</dl>
 			<dl id="menu-member">
 				<dt>
 					<i 	class="Hui-iconfont">&#xe60d;</i> 学生管理
@@ -225,10 +193,8 @@
 				<dd>
 					<ul>
 						<li>
-							<a data-href="member-list" data-title="学生列表"	href="javascript:;">会员列表</a>
-						</li>
-						<li>
-							<a data-href="member-del" data-title="删除的会员"	href="javascript:;">删除的会员</a>
+							<a data-href="class-list" data-title="班级列表"	href="javascript:;">班级列表</a>
+							<a data-href="student-list" data-title="学生列表"	href="javascript:;">学生列表</a>
 						</li>
 					</ul>
 				</dd>
@@ -254,18 +220,6 @@
 					</ul>
 				</dd>
 			</dl>
-			<dl id="menu-chart">
-				<dt>
-					<i class="Hui-iconfont">&#xe61e;</i> 统计报表<i
-						class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
-				</dt>
-				<dd>
-					<ul>
-						<li><a data-href="chart-order" data-title="订单销量统计"
-							href="javascript:void(0)">订单销量统计</a></li>
-					</ul>
-				</dd>
-			</dl>
 			<dl id="menu-system">
 				<dt>
 					<i class="Hui-iconfont">&#xe62e;</i> 系统管理<i
@@ -285,7 +239,7 @@
 		</div>
 
 		<div class="menu_dropdown bk_2" style="display: none">
-			<dl id="menu-thank">
+			<dl id="menu-teacher">
 				<dt>
 					<i class="Hui-iconfont">&#xe6b7;</i> 教师管理<i
 						class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
@@ -298,6 +252,46 @@
 					<ul>
 						<li><a data-href="/teacher-attend-list" data-title="考勤列表"
 							href="javascript:void(0)">考勤列表</a></li>
+					</ul>
+				</dd>
+			</dl>
+		</div>
+		
+		<div class="menu_dropdown bk_3" style="display: none">
+			<dl id="menu-medicine">
+				<dt>
+					<i class="Hui-iconfont">&#xe61f;</i> 药品管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
+				</dt>
+				<dd>
+					<ul>
+						<li><a data-href="item-categorys?type=1" data-title="药品分类" href="javascript:void(0)">药品分类</a></li>
+						<li><a data-href="medicine-list" data-title="药品列表" href="javascript:void(0)">药品列表</a></li>
+					</ul>
+				</dd>
+			</dl>
+			<dl id="menu-disease">
+				<dt>
+					<i class="Hui-iconfont">&#xe627;</i> 疾病管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
+				</dt>
+				<dd>
+					<ul>
+						<li><a data-href="item-categorys?type=0" data-title="疾病分类" href="javascript:void(0)">疾病分类</a></li>
+						<li><a data-href="disease-list" data-title="疾病列表" href="javascript:void(0)">疾病列表</a></li>
+					</ul>
+				</dd>
+			</dl>
+			<dl id="menu-consult">
+				<dt>
+					<i class="Hui-iconfont">&#xe692;</i> 咨询管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
+				</dt>
+				<dd>
+					<ul>
+						<li>
+							<a data-href="https://app.meiqia.com/signin" data-title="健康咨询" href="javascript:void(0)">健康咨询</a>
+						</li>
+						<li>
+							<a data-href="consult-list" data-title="图文解答" href="javascript:void(0)">图文解答</a>
+						</li>
 					</ul>
 				</dd>
 			</dl>
@@ -362,13 +356,12 @@
 			userInfo : function() {
 				var _ticket = $.cookie("HEALTH_TOKEN");
 				if (!_ticket) {
-					location.href = "http://localhost:8086/login";
+					location.href = "/login";
 				}
 				$.ajax({
 					type : 'GET',
-					dataType : "jsonp",
-					url : "http://localhost:8086/admin/token/"
-							+ _ticket,
+					dataType : "json",
+					url : "admin/token/"+ _ticket,
 					success : function(data) {
 						if (data.success == true) {
 							$("#role").html(data.result.description);
@@ -384,7 +377,7 @@
 
 						} else {
 							/* layer.alert(data.message,{title: '错误信息',icon: 2}); */
-							location.href = "http://localhost:8086/login";
+							location.href = "/login";
 						}
 					},
 					error : function(XMLHttpRequest) {
@@ -393,7 +386,7 @@
 							title : '错误信息',
 							icon : 2
 						});
-						location.href = "http://localhost:8086/login";
+						location.href = "/login";
 					}
 				});
 			}
@@ -404,28 +397,14 @@
 			layer_show('管理员信息', 'admin-show', 360, 400);
 		}
 
-		/*产品-添加*/
-		function product_add(title, url) {
-			var index = layer.open({
-				type : 2,
-				title : title,
-				content : url
-			});
-			layer.full(index);
-		}
-		/*用户-添加*/
-		function member_add(title, url, w, h) {
-			layer_show(title, url, w, h);
-		}
-
 		/* 退出  */
 		function logout() {
 			$.ajax({
 				type : 'GET',
-				dataType : "jsonp",
-				url : 'http://localhost:8086/admin/logout',
+				dataType : "json",
+				url : '/admin/logout',
 				success : function(data) {
-					window.location.href = "http://localhost:8086/login";
+					window.location.href = "/login";
 				},
 				error : function(XMLHttpRequest) {
 					layer.alert('数据处理失败! 错误码:' + XMLHttpRequest.status

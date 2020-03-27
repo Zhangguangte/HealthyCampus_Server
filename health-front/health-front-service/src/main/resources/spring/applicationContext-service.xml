@@ -43,4 +43,7 @@
 	<dubbo:service
 		interface="com.muyou.front.service.TimeTableService"
 		ref="timeTableServiceImpl" timeout="600000" />
+	<dubbo:service
+		interface="com.muyou.front.service.ArticleService"
+		ref="articleServiceImpl" timeout="600000" />
 </beans>

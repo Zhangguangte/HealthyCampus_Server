@@ -97,13 +97,13 @@
             focusCleanup:false,
             success:"valid",
             submitHandler:function(form){
-                var index = layer.load(3);
+                var index1 = layer.load(3);
                 $(form).ajaxSubmit({
                     url: "/system/shiro/update",
                     type: "POST",
                     dataType: 'json',
                     success: function (data) {
-                        layer.close(index);
+                        layer.close(index1);
                         if (data.success == true) {
                             parent.refresh();
                             parent.msgSuccess("编辑成功!");

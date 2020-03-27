@@ -40,6 +40,7 @@
              <button class="btn btn-lock" type="button" id="unlock">
                  <i class="icon-arrow-right"></i>
              </button>
+             <input hidden id="account">
         </form>
     </div>
 </div>
@@ -50,7 +51,6 @@
 <script>
 	$(function(){
 		LOCK.userInfo();
-		
 		//防止返回
 		if(window.history && window.history.pushState) {
 			window.onpopstate=function () {
@@ -58,7 +58,6 @@
 		            window.history.forward(1);
 			};
 		}
-		
 		//在IE中必须得有这两行
 	    window.history.pushState('forward', null, '');
 	    window.history.forward(1);
@@ -68,23 +67,22 @@
 		userInfo : function() {
 			var _ticket = $.cookie("HEALTH_TOKEN");
 			if (!_ticket) {
-				location.href ="http://localhost:8086/login";
+				location.href ="/login";
 			}
-			
-		  	$.ajax({
+			$.ajax({
 		        type: 'GET',
-		        dataType : "jsonp",
-		        url : "http://localhost:8086/admin/token/" + _ticket,
+		        dataType : "json",
+		        url : "/admin/token/" + _ticket,
 		        success:function (data) {
 		            if(data.success==true){
 		            	 $("#username").html(data.result.name);
+		            	 $("#account").val(data.result.account);
 		            }else {
 		                layer.alert(data.message,{title: '错误信息',icon: 2});
 		            }
 		        },
 		        error:function(XMLHttpRequest){
 		            layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
-		            location.href ="http://localhost:8082/login";
 		        }
 		    });
 		},
@@ -92,22 +90,18 @@
 		    if(time > 0)
 		    	$("#locked").html("剩余" + time + "次机会");
 		    else
-		    	location.href ="http://localhost:8086/login";
+		    	location.href ="/login";
 	    },
 		unlock : function(time){
-			
 			var pass = $("#password").val();
-			
 			//输入非空
-			if("" == pass)
-			{  
+			if("" == pass){  
 				layer.msg("输入不为空");
 				return ;
 			}
-			
 			var _ticket = $.cookie("HEALTH_TOKEN");
 			if (!_ticket) {
-				location.href ="http://localhost:8086/login";
+				location.href ="/login";
 			}
 			
 		  	$.ajax({
@@ -115,7 +109,7 @@
 		        dataType : "jsonp",
 		        url : "http://localhost:8086/admin/unlock",
 		        data :{
-		        	username : $("#username").html() ,
+		        	account : $("#account").val() ,
 		        	password : pass ,
 		        	token : _ticket
 		        },
@@ -129,6 +123,7 @@
 		        },
 		        error:function(XMLHttpRequest){
 		            layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
+		            LOCK.restTime(time);
 		        }
 		    });
 		}

@@ -12,5 +12,5 @@ public interface TokenService {
 
 	Result<Object> getAdminByToken(String token);
 	
-	UserVo getUserByToken(String token,String id);
+	UserVo getUserByToken(String id,String token);
 }

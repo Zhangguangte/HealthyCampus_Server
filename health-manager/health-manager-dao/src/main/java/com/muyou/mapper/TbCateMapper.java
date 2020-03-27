@@ -28,15 +28,21 @@ public interface TbCateMapper {
 
 	Integer updateByPrimaryKey(TbCate record);
 
+	/**
+	 * 前台
+	 */
+	List<String> selectCanteenCate(@Param("id") Integer id, @Param("cname1") String cname1,
+			@Param("cname2") String cname2);
+
+	/**
+	 * 后台
+	 * 
+	 * @return
+	 */
+
 	List<TbCate> selectItemCate(@Param("itemId") Integer itemId, @Param("type") Integer type);
 
 	List<String> selectCateNameByItemIdAndType(@Param("itemId") Integer itemId, @Param("type") Integer type);
 
-
-
-
-
-
-
-
+	List<String> selectSubCateNameByPIdAndType(@Param("parentId") Integer parentId, @Param("type") Integer type);
 }

@@ -178,13 +178,13 @@
         focusCleanup:false,
         success:"valid",
         submitHandler:function(form){
-            index = layer.load(3);
+        	var index1 = layer.load(3);
             $(form).ajaxSubmit({
 	            url: "/item/timetable/add",
 	            type: "POST",
 	            dataType: "json",
 	            success: function(data) {
-	            	layer.close(index);
+	            	layer.close(index1);
                     if(data.success==true){
                         if(parent.location.pathname!='/'){
                             parent.COURSE.getCourseList();
@@ -201,7 +201,7 @@
                             });
                         }
                     }else{
-                    	layer.close(index);
+                    	layer.close(index1);
                         layer.alert(data.message, {title: '错误信息',icon: 2});
                     }
 	            },

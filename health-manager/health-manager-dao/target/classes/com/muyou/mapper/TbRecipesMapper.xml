@@ -12,13 +12,13 @@
     <result column="practice" property="practice" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="calorie" property="calorie" jdbcType="VARCHAR" />
+    <result column="calorie" property="calorie" jdbcType="DECIMAL" />
     <result column="components" property="components" jdbcType="VARCHAR" />
-    <result column="weeks" property="weeks" jdbcType="VARCHAR" />
     <result column="physique" property="physique" jdbcType="VARCHAR" />
     <result column="created" property="created" jdbcType="TIMESTAMP" />
     <result column="updated" property="updated" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="BIT" />
+    <result column="classify" property="classify" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -80,7 +80,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, name, functional, flavor, ingredients, process, time, practice, url, type, calorie, 
-    components, weeks, physique, created, updated, status
+    components, physique, created, updated, status, classify
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.muyou.pojo.TbRecipesExample" >
     select
@@ -112,19 +112,19 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.muyou.pojo.TbRecipes" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.muyou.pojo.TbRecipes" >
     insert into tb_recipes (id, name, functional, 
       flavor, ingredients, process, 
       time, practice, url, 
       type, calorie, components, 
-      weeks, physique, created, 
-      updated, status)
+      physique, created, updated, 
+      status, classify)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{functional,jdbcType=VARCHAR}, 
       #{flavor,jdbcType=VARCHAR}, #{ingredients,jdbcType=VARCHAR}, #{process,jdbcType=VARCHAR}, 
       #{time,jdbcType=VARCHAR}, #{practice,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{calorie,jdbcType=VARCHAR}, #{components,jdbcType=VARCHAR}, 
-      #{weeks,jdbcType=VARCHAR}, #{physique,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
-      #{updated,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT})
+      #{type,jdbcType=INTEGER}, #{calorie,jdbcType=DECIMAL}, #{components,jdbcType=VARCHAR}, 
+      #{physique,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=BIT}, #{classify,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.muyou.pojo.TbRecipes" >
     insert into tb_recipes
@@ -165,9 +165,6 @@
       <if test="components != null" >
         components,
       </if>
-      <if test="weeks != null" >
-        weeks,
-      </if>
       <if test="physique != null" >
         physique,
       </if>
@@ -179,6 +176,9 @@
       </if>
       <if test="status != null" >
         status,
+      </if>
+      <if test="classify != null" >
+        classify,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -213,13 +213,10 @@
         #{type,jdbcType=INTEGER},
       </if>
       <if test="calorie != null" >
-        #{calorie,jdbcType=VARCHAR},
+        #{calorie,jdbcType=DECIMAL},
       </if>
       <if test="components != null" >
         #{components,jdbcType=VARCHAR},
-      </if>
-      <if test="weeks != null" >
-        #{weeks,jdbcType=VARCHAR},
       </if>
       <if test="physique != null" >
         #{physique,jdbcType=VARCHAR},
@@ -232,6 +229,9 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=BIT},
+      </if>
+      <if test="classify != null" >
+        #{classify,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -275,13 +275,10 @@
         type = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.calorie != null" >
-        calorie = #{record.calorie,jdbcType=VARCHAR},
+        calorie = #{record.calorie,jdbcType=DECIMAL},
       </if>
       <if test="record.components != null" >
         components = #{record.components,jdbcType=VARCHAR},
-      </if>
-      <if test="record.weeks != null" >
-        weeks = #{record.weeks,jdbcType=VARCHAR},
       </if>
       <if test="record.physique != null" >
         physique = #{record.physique,jdbcType=VARCHAR},
@@ -294,6 +291,9 @@
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=BIT},
+      </if>
+      <if test="record.classify != null" >
+        classify = #{record.classify,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -312,13 +312,13 @@
       practice = #{record.practice,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
-      calorie = #{record.calorie,jdbcType=VARCHAR},
+      calorie = #{record.calorie,jdbcType=DECIMAL},
       components = #{record.components,jdbcType=VARCHAR},
-      weeks = #{record.weeks,jdbcType=VARCHAR},
       physique = #{record.physique,jdbcType=VARCHAR},
       created = #{record.created,jdbcType=TIMESTAMP},
       updated = #{record.updated,jdbcType=TIMESTAMP},
-      status = #{record.status,jdbcType=BIT}
+      status = #{record.status,jdbcType=BIT},
+      classify = #{record.classify,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -354,13 +354,10 @@
         type = #{type,jdbcType=INTEGER},
       </if>
       <if test="calorie != null" >
-        calorie = #{calorie,jdbcType=VARCHAR},
+        calorie = #{calorie,jdbcType=DECIMAL},
       </if>
       <if test="components != null" >
         components = #{components,jdbcType=VARCHAR},
-      </if>
-      <if test="weeks != null" >
-        weeks = #{weeks,jdbcType=VARCHAR},
       </if>
       <if test="physique != null" >
         physique = #{physique,jdbcType=VARCHAR},
@@ -373,6 +370,9 @@
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=BIT},
+      </if>
+      <if test="classify != null" >
+        classify = #{classify,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -388,19 +388,40 @@
       practice = #{practice,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
-      calorie = #{calorie,jdbcType=VARCHAR},
+      calorie = #{calorie,jdbcType=DECIMAL},
       components = #{components,jdbcType=VARCHAR},
-      weeks = #{weeks,jdbcType=VARCHAR},
       physique = #{physique,jdbcType=VARCHAR},
       created = #{created,jdbcType=TIMESTAMP},
       updated = #{updated,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=BIT}
+      status = #{status,jdbcType=BIT},
+      classify = #{classify,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   
-	<!-- 前台 -->
+    <!-- 前台 -->
   <select id="getRecipesByThreeMeals" resultMap="BaseResultMap">
-  	SELECT * from tb_recipes limit 0,15
+  	SELECT * from tb_recipes where id in ${ids}
+  </select>
+  
+  <select id="selectItemByClassify" resultMap="BaseResultMap">
+  	 SELECT * from tb_recipes 
+  	 where classify like #{search} and status = 1 order by id desc LIMIT #{row},#{count}
+  </select>
+  
+  <select id="getRecommendRecipes" resultMap="BaseResultMap">
+  	SELECT 
+  		*
+  	FROM 
+  		tb_recipes
+  	WHERE 
+  	  status = 1
+  	<if test="null != physique and ''!=physique ">
+  		and physique = #{physique}
+  	</if>
+  	ORDER BY 
+  		RAND()
+    limit 
+    	0,15
   </select>
   
  <!-- 后台 -->
@@ -474,6 +495,5 @@
 		    ${orderCol}
 		    ${orderDir}
   	</select>
-
-	
+  	
 </mapper>

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.muyou.common.constant.ItemConstant;
+import com.muyou.common.constant.RedisConstant;
 import com.muyou.common.form.RequestForm;
 import com.muyou.common.redis.JedisClient;
 import com.muyou.common.util.JsonUtils;
@@ -19,19 +21,25 @@ import com.muyou.front.vo.FoodRecommendVo;
 import com.muyou.front.vo.FoodVo;
 import com.muyou.front.vo.IngredientResultVo;
 import com.muyou.front.vo.RecipesListVo;
+import com.muyou.mapper.TbCateMapper;
 import com.muyou.mapper.TbClassifyMapper;
 import com.muyou.mapper.TbIngredientsMapper;
 import com.muyou.mapper.TbRecipesMapper;
-import com.muyou.pojo.TbClassify;
+import com.muyou.pojo.TbCate;
+import com.muyou.pojo.TbCateExample;
 import com.muyou.pojo.TbIngredients;
 import com.muyou.pojo.TbIngredientsExample;
 import com.muyou.pojo.TbRecipes;
-import com.muyou.pojo.TbRecipesExample;
 
 @Service
 public class RecipesServiceImpl implements RecipesService {
 
 	private final static String[] titles = { "早餐", "午餐", "晚餐" };
+
+	private final static String[] weeks = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
+
+	private final static String[] classify = { "人群膳食 ", "疾病调理", "功能调理", "脏腑调理" };
+
 	private DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
 	@Autowired
@@ -44,19 +52,16 @@ public class RecipesServiceImpl implements RecipesService {
 	private TbClassifyMapper classifyMapper;
 
 	@Autowired
-	private JedisClient jedisClient;
+	private TbCateMapper cateMapper;
 
-	@Value("${RECIPES_MEALS}")
-	private String RECIPES_MEALS;
+	@Autowired
+	private JedisClient jedisClient;
 
 	@Value("${RECIPES_DETAIL}")
 	private String RECIPES_DETAIL;
 
 	@Value("${INGREDIENT_DETAIL}")
 	private String INGREDIENT_DETAIL;
-
-	@Value("${RECIPES_FUNCTION}")
-	private String RECIPES_FUNCTION;
 
 	@Value("${RECIPES_LIST}")
 	private String RECIPES_LIST;
@@ -74,10 +79,11 @@ public class RecipesServiceImpl implements RecipesService {
 	@Override
 	public List<FoodMenuVo> getRecipesByThreeMeals(RequestForm requestForm) {
 
+		System.out.println(requestForm.getMap().get("place"));
+
 		try {
-			String json = jedisClient.hget(
-					RECIPES_MEALS + ":" + requestForm.getContent() + ":" + requestForm.getQuest_id(),
-					requestForm.getContent());
+			String json = jedisClient.hget(ItemConstant.RECIPES_MEALS, requestForm.getMap().get("place") + ":"
+					+ requestForm.getMap().get("week") + ":" + requestForm.getMap().get("type"));
 			if (StringUtils.isNotBlank(json)) {
 				return JsonUtils.jsonToList(json, FoodMenuVo.class);
 			}
@@ -85,34 +91,54 @@ public class RecipesServiceImpl implements RecipesService {
 			e.printStackTrace();
 		}
 
-		List<TbRecipes> recipes = recipesMapper.getRecipesByThreeMeals(requestForm.getQuest_id(),
-				requestForm.getContent());
-		if (null == recipes)
+		// 获得食堂目录ID
+		TbCateExample example = new TbCateExample();
+		TbCateExample.Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(requestForm.getMap().get("place"));
+		criteria.andTypeEqualTo(ItemConstant.CATE_CATTEN);
+		criteria.andIsParentEqualTo(true);
+		List<TbCate> cateList = cateMapper.selectByExample(example);
+
+		if (null == cateList || cateList.size() < 1)
 			return null;
+
+		// 获取食谱所有ID节点
+		List<String> ids = cateMapper.selectCanteenCate(cateList.get(0).getId(),
+				weeks[Integer.valueOf(requestForm.getMap().get("week"))],
+				titles[Integer.valueOf(requestForm.getMap().get("type"))]);
+		if (null == ids || ids.size() < 1)
+			return null;
+
+		List<TbRecipes> recipes = recipesMapper.getRecipesByThreeMeals("(" + String.join(",", ids) + ")");
+		if (null == recipes || recipes.size() < 1)
+			return null;
+
 		float sum = 0;
-		List<FoodMenuVo> list = new LinkedList<>();
+		List<FoodMenuVo> result = new LinkedList<>();
 
 		// -1代表标题;-2代表菜肴项
 		FoodMenuVo foodMenuVo = new FoodMenuVo();
-		foodMenuVo.setDishName(titles[requestForm.getRow()]);
+		foodMenuVo.setDishName(titles[Integer.valueOf(requestForm.getMap().get("type"))]);
 		foodMenuVo.setMold(-1);
 
 		for (TbRecipes recipe : recipes) {
-			sum += Float.parseFloat(recipe.getCalorie());
-			list.add(new FoodMenuVo(recipe));
+			sum += recipe.getCalorie().floatValue();
+			result.add(new FoodMenuVo(recipe));
 		}
 
 		foodMenuVo.setCalorie(decimalFormat.format(sum));
-		list.add(0, foodMenuVo);
+		result.add(0, foodMenuVo);
 
 		try {
-			jedisClient.hset(RECIPES_MEALS + ":" + requestForm.getContent() + ":" + requestForm.getQuest_id(),
-					requestForm.getContent(), JsonUtils.objectToJson(list));
+			jedisClient.hset(
+					ItemConstant.RECIPES_MEALS, requestForm.getMap().get("place") + ":"
+							+ requestForm.getMap().get("week") + ":" + requestForm.getMap().get("type"),
+					JsonUtils.objectToJson(result));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return list;
+		return result;
 	}
 
 	// 获得菜肴细节
@@ -210,12 +236,12 @@ public class RecipesServiceImpl implements RecipesService {
 		return ingredientResultVo;
 	}
 
-	// 功能食谱
+	// 食谱分类
 	@Override
 	public RecipesListVo getRecipesList(RequestForm requestForm) {
 
 		try {
-			String json = jedisClient.hget(RECIPES_FUNCTION, requestForm.getType() + "");
+			String json = jedisClient.hget(RedisConstant.RECIPES_CLASSIFY, requestForm.getType() + "");
 			if (StringUtils.isNotBlank(json)) {
 				return JsonUtils.jsonToPojo(json, RecipesListVo.class);
 			}
@@ -223,21 +249,31 @@ public class RecipesServiceImpl implements RecipesService {
 			e.printStackTrace();
 		}
 
-		TbClassify reClassify = classifyMapper.selectByPrimaryKey(requestForm.getType());
-		if (null == reClassify)
+		// 获得食谱子目录
+		TbCateExample example = new TbCateExample();
+		TbCateExample.Criteria criteria = example.createCriteria();
+		criteria.andTypeEqualTo(ItemConstant.CATE_RECIPES);
+		criteria.andIsParentEqualTo(true);
+		criteria.andStatusEqualTo(ItemConstant.OPEN);
+		criteria.andParentIdEqualTo(ItemConstant.CATE_RECIPES_PARENT);
+		criteria.andNameEqualTo(classify[requestForm.getType()]);
+		List<TbCate> cateList = cateMapper.selectByExample(example);
+		List<String> list = cateMapper.selectSubCateNameByPIdAndType(cateList.get(0).getId(),
+				ItemConstant.CATE_RECIPES);
+		if (null == list || list.size() < 1)
 			return null;
-		String[] clas = reClassify.getClassify().split(",");
-		if (null == clas || clas.length == 0)
-			return null;
-		List<FoodMenuVo> result = getFoodList(clas[0], requestForm.getRow());
+
+		// 获取子目录下的所有节点
+		List<FoodMenuVo> result = getFoodList(list.get(0), requestForm.getRow());
 		if (null == result || result.size() == 0)
 			return null;
+		
 		RecipesListVo reListVo = new RecipesListVo();
 		reListVo.setFoodList(result);
-		reListVo.setClassList(java.util.Arrays.asList(clas));
+		reListVo.setClassList(list);
 
 		try {
-			jedisClient.hset(RECIPES_FUNCTION, requestForm.getType() + "", JsonUtils.objectToJson(reListVo));
+			jedisClient.hset(RedisConstant.RECIPES_CLASSIFY, requestForm.getType() + "", JsonUtils.objectToJson(reListVo));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

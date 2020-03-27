@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.muyou.common.constant.HealthConstant;
 import com.muyou.common.exception.GlobalException;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.redis.JedisClient;
@@ -56,7 +57,10 @@ public class ContentServiceImpl implements ContentService {
 		for (TbPanelContent content : list) {
 			if (content.getArticleId() != null) {
 				TbArticle article = articleMapper.selectByPrimaryKey(content.getArticleId());
-				content.setArticleName(article.getName());
+				if (null != article)
+					content.setArticleName(article.getTitle());
+				else
+					content.setArticleName("文章已删除！");
 			}
 		}
 
@@ -74,12 +78,18 @@ public class ContentServiceImpl implements ContentService {
 	public int addPanelContent(TbPanelContent tbPanelContent) {
 		tbPanelContent.setCreated(new Date());
 		tbPanelContent.setUpdated(new Date());
+
+		if (0 == tbPanelContent.getType()) {
+			tbPanelContent.setFullUrl(HealthConstant.HTML_PATH + tbPanelContent.getArticleId() + ".html");
+		}
+
 		if (panelContentMapper.insert(tbPanelContent) < 1) {
 			throw new GlobalException("添加首页板块内容失败");
 		}
 
 		try {
 			jedisClient.del(CONTENT_PANEL);
+			jedisClient.del(HealthConstant.BANNER);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -95,6 +105,7 @@ public class ContentServiceImpl implements ContentService {
 
 		try {
 			jedisClient.del(CONTENT_PANEL);
+			jedisClient.del(HealthConstant.BANNER);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -107,12 +118,16 @@ public class ContentServiceImpl implements ContentService {
 		TbPanelContent old = getTbPanelContentById(tbPanelContent.getId());
 		tbPanelContent.setCreated(old.getCreated());
 		tbPanelContent.setUpdated(new Date());
+		if (0 == tbPanelContent.getType()) {
+			tbPanelContent.setFullUrl(HealthConstant.HTML_PATH + tbPanelContent.getArticleId() + ".html");
+		}
 		if (panelContentMapper.updateByPrimaryKey(tbPanelContent) != 1) {
 			throw new GlobalException("更新板块内容失败");
 		}
 
 		try {
 			jedisClient.del(CONTENT_PANEL);
+			jedisClient.del(HealthConstant.BANNER);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

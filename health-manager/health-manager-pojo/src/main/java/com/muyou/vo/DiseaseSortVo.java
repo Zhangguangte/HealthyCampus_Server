@@ -1,6 +1,8 @@
-package com.muyou.common.pojo;
+package com.muyou.vo;
 
 import java.io.Serializable;
+
+import com.muyou.pojo.TbDisease;
 
 public class DiseaseSortVo implements Serializable {
 	public String id;
@@ -10,12 +12,12 @@ public class DiseaseSortVo implements Serializable {
 
 	public DiseaseSortVo() {}
 	
-//	public DiseaseSortVo(TbDisease disease) {
-//		this.id = disease.getId() + "";
-//		this.title = disease.getDiseaseName();
-//		this.introduction = disease.getDiseaseIntroduce();
-//		this.url = disease.getDiseaseUrl();
-//	}
+	public DiseaseSortVo(TbDisease disease) {
+		this.id = disease.getId() + "";
+		this.title = disease.getName();
+		this.introduction = disease.getIntroduce();
+		this.url = disease.getUrl();
+	}
 
 	public String getId() {
 		return id;

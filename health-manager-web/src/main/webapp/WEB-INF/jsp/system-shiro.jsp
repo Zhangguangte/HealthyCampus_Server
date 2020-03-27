@@ -186,10 +186,11 @@
                     layer.close(index);
                     if(data.success!=true){
                         layer.alert(data.message,{title: '错误信息',icon: 2});
+                    }else{
+                    	layer.msg('已删除!',{icon:1,time:1000});
+                        shiroCount();
+                        refresh();
                     }
-                    layer.msg('已删除!',{icon:1,time:1000});
-                    shiroCount();
-                    refresh();
                 },
                 error:function(XMLHttpRequest){
                     layer.close(index);

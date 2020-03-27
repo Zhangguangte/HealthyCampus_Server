@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.muyou.common.annotation.SystemControllerLog;
+import com.muyou.common.constant.HealthConstant;
 import com.muyou.common.form.LoginForm;
 import com.muyou.common.pojo.Result;
 import com.muyou.common.util.CookieUtils;
@@ -28,9 +28,6 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
-	@Value("${TOKEN_KEY}")
-	private String TOKEN_KEY;
-	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
 	@SystemControllerLog(description="管理员登录系统")
@@ -43,7 +40,7 @@ public class AdminController {
 		System.out.println(result);
 		
 		if (null != result) {	//登录成功
-			CookieUtils.setCookie(request, response, TOKEN_KEY, (String)result.getResult());
+			CookieUtils.setCookie(request, response, HealthConstant.TOKEN_KEY, (String)result.getResult());
 			return new ResultUtil<Object>().setData(null);
 		} else {		//失败
 			return new ResultUtil<Object>().setErrorMsg("用户名或密码错误");
@@ -56,7 +53,7 @@ public class AdminController {
     public Object adminLogout(HttpServletRequest request,HttpServletResponse response, String callback){
 
 		//获得客服端的Cookie
-		String token = CookieUtils.getCookieValue(request, TOKEN_KEY);
+		String token = CookieUtils.getCookieValue(request, HealthConstant.TOKEN_KEY);
 		
 		//不存在，返回
 		if(StringUtils.isBlank(token))
@@ -66,7 +63,7 @@ public class AdminController {
 		adminService.adminLogout(token);
 		
 		//删除客服端的Cookie
-		CookieUtils.deleteCookie(request, response, TOKEN_KEY);
+		CookieUtils.deleteCookie(request, response, HealthConstant.TOKEN_KEY);
 		
 		if (StringUtils.isNotBlank(callback)) {
 			MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(null);
@@ -79,11 +76,8 @@ public class AdminController {
 	
 	@RequestMapping(value = "/unlock",method = RequestMethod.GET)
 	@ResponseBody
-    public Object unLock(String username,String password,String token,String callback ) throws UnsupportedEncodingException{
-		//转化为中文
-		username = new String(username.getBytes("iso8859-1"), "utf-8");
-		
-		Result<Object> result =  adminService.unLock(username,password,token);
+    public Object unLock(String account,String password,String token,String callback ) throws UnsupportedEncodingException{
+		Result<Object> result =  adminService.unLock(account,password,token);
 		
 		if (StringUtils.isNotBlank(callback)) {
 			MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(result);

@@ -20,11 +20,11 @@ public interface AdminService {
 	
 	/**
 	 * 解锁屏幕
-	 * @param username
+	 * @param account
 	 * @param password
 	 * @param token
 	 * @return
 	 */
-	Result<Object> unLock(String username,String password,String token);
+	Result<Object> unLock(String account,String password,String token);
 
 }

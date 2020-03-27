@@ -27,7 +27,6 @@ public class LectureController {
 	public LectureVo getLectureDetail(@RequestBody RequestForm requestForm) throws ServiceException {
 		if (StringUtil.isEmpty(requestForm.getQuest_id()))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
-
 		LectureVo lectureVo = lectureService.getLectureDetail(requestForm);
 		if (null == lectureVo)
 			throw new ServiceException(ResponseBuilder.ERROR_DATA_LOSE);

@@ -18,22 +18,23 @@ public class FoodVo implements Serializable {
 	public String productionTime;
 	public boolean collect;
 
-	public FoodVo() {}
-	
+	public FoodVo() {
+	}
+
 	public FoodVo(TbRecipes recipes) {
-		this.id = recipes.getId()+"";
+		this.id = recipes.getId() + "";
 		this.dishName = recipes.getName();
 		this.practice = recipes.getPractice();
 		this.ingredients = recipes.getIngredients();
 		this.pictureUrl = recipes.getUrl();
 		this.mainProcess = recipes.getProcess();
 		this.productionTime = recipes.getTime();
-		this.calorie = recipes.getCalorie();
+		this.calorie = recipes.getCalorie() + "";
 		this.components = recipes.getComponents();
 		this.flavor = recipes.getFlavor();
-	
+
 	}
-	
+
 	public String getDishName() {
 		return dishName;
 	}
@@ -117,6 +118,7 @@ public class FoodVo implements Serializable {
 	public String getId() {
 		return id;
 	}
+
 	public void setCollect(boolean collect) {
 		this.collect = collect;
 	}

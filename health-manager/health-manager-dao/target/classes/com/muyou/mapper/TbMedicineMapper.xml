@@ -398,10 +398,18 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
-  <!--  客服端	 -->
-  	<select id="getAllMedicine" resultMap="BaseResultMap">
-		select * from tb_medicine where c2=#{classifyName} ORDER
-		BY id LIMIT #{start},15
+  <!--  前台	 -->
+  	<select id="selectItemByClassify" resultMap="BaseResultMap">
+		SELECT 
+			*
+	    FROM 
+	    	(tb_medicine m RIGHT JOIN tb_item_rela_cate r on m.id = r.item_id ) RIGHT JOIN tb_cate c on r.cate_id = c.id
+	    WHERE 
+	      c.id = #{cid}
+	    ORDER BY
+		  m.id desc
+		LIMIT 
+			#{page},#{row}
 	</select>
 
 	<select id="getAllMedicineByKey" resultMap="BaseResultMap"

@@ -64,6 +64,7 @@ public class FriendshipServiceImpl implements FriendshipService {
 		List<TbUser> list = userMapper.allFriend(userId);
 		if (null == list)
 			return null;
+		
 		List<AddressListVo> result = new ArrayList<AddressListVo>();
 		for (TbUser user : list) {
 			result.add(new AddressListVo(user));

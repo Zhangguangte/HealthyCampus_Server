@@ -111,7 +111,6 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.muyou.pojo.TbAdmin" >
-   
    	<selectKey order="BEFORE" resultType="String" keyProperty="account">
    		select max(account)+1 from tb_admin
    	</selectKey>   
@@ -384,13 +383,13 @@
 
 	<select id="getRoles" resultType="String">
 		SELECT
-		r.name
+			r.name
 		FROM
-		tb_admin a
+			tb_admin a
 		JOIN
-		tb_role r ON a.roleId = r.id
+			tb_role r ON a.roleId = r.id
 		WHERE
-		a.name = #{name}
+			a.account = #{name}
 	</select>
 	
 	<select id="selectItemByIds" resultMap="BaseResultMap">
@@ -414,7 +413,7 @@
 		    JOIN tb_role_perm rp ON rp.roleId = a.roleId
 			JOIN tb_permission p ON rp.permissionId = p.id
 	    WHERE
-			a.name = #{username}
+			a.account = #{username}
   	</select>
   
 </mapper>

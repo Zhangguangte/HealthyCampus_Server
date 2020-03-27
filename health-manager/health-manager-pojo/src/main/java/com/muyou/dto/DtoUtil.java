@@ -114,7 +114,7 @@ public class DtoUtil {
 
 	public static RecipesVo TbRecipes2RecipesVo(TbRecipes recipes) {
 		RecipesVo recipesVo = new RecipesVo();
-		recipesVo.setCalorie(recipes.getCalorie());
+		recipesVo.setCalorie("" + recipes.getCalorie());
 		recipesVo.setFlavor(recipes.getFlavor());
 		recipesVo.setFunctional(recipes.getFunctional());
 		recipesVo.setName(recipes.getName());
@@ -131,7 +131,7 @@ public class DtoUtil {
 
 	public static TbRecipes RecipesVo2TbRecipes(RecipesVo recipesVo) {
 		TbRecipes recipes = new TbRecipes();
-		recipes.setCalorie(recipesVo.getCalorie());
+		recipes.setCalorie(Long.valueOf(recipesVo.getCalorie()));
 		recipes.setFlavor(recipesVo.getFlavor());
 		recipes.setFunctional(recipesVo.getFunctional());
 		recipes.setName(recipesVo.getName());

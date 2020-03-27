@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.muyou.common.constant.HealthConstant;
+import com.muyou.common.constant.RedisConstant;
 import com.muyou.common.exception.GlobalException;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.pojo.Result;
@@ -50,9 +52,6 @@ public class SystemServiceImpl implements SystemService {
 	@Autowired
 	private JedisClient jedisClient;
 
-	@Value("${PAGE_BROWSE}")
-	private String PAGE_BROWSE;
-
 	@Value("${SYS_PRE}")
 	private String SYS_PRE;
 
@@ -62,17 +61,11 @@ public class SystemServiceImpl implements SystemService {
 	@Value("${SHIRO_COUNT}")
 	private String SHIRO_COUNT;
 
-	@Value("${SHIRO_LIST}")
-	private String SHIRO_LIST;
-
-	@Value("${LOG_COUNT}")
-	private String LOG_COUNT;
-
 	@Override
 	public List<TbShiroFilter> getShiroFilter() {
 
 		try {
-			String json = jedisClient.get(SHIRO_LIST);
+			String json = jedisClient.get(RedisConstant.SHIRO_LIST);
 			if (StringUtils.isNotBlank(json))
 				return JsonUtils.jsonToList(json, TbShiroFilter.class);
 		} catch (Exception e) {
@@ -85,7 +78,7 @@ public class SystemServiceImpl implements SystemService {
 		List<TbShiroFilter> result = tbShiroFilterMapper.selectByExample(example);
 
 		try {
-			jedisClient.set(SHIRO_LIST, JsonUtils.objectToJson(result));
+			jedisClient.set(RedisConstant.SHIRO_LIST, JsonUtils.objectToJson(result));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -119,7 +112,7 @@ public class SystemServiceImpl implements SystemService {
 		int result = tbShiroFilterMapper.insert(tbShiroFilter);
 		if (1 == result) {
 			try {
-				jedisClient.del(SHIRO_LIST);
+				jedisClient.del(RedisConstant.SHIRO_LIST);
 				jedisClient.del(SHIRO_COUNT);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -133,7 +126,7 @@ public class SystemServiceImpl implements SystemService {
 		int result = tbShiroFilterMapper.updateByPrimaryKey(tbShiroFilter);
 		if (1 == result) {
 			try {
-				jedisClient.del(SHIRO_LIST);
+				jedisClient.del(RedisConstant.SHIRO_LIST);
 				jedisClient.del(SHIRO_COUNT);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -147,7 +140,7 @@ public class SystemServiceImpl implements SystemService {
 		int result = tbShiroFilterMapper.deleteByPrimaryKey(id);
 		if (1 == result) {
 			try {
-				jedisClient.del(SHIRO_LIST);
+				jedisClient.del(RedisConstant.SHIRO_LIST);
 				jedisClient.del(SHIRO_COUNT);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -177,7 +170,7 @@ public class SystemServiceImpl implements SystemService {
 
 		// 缓存中是否有数据
 		try {
-			String json = jedisClient.get(PAGE_BROWSE + ":" + year);
+			String json = jedisClient.get(HealthConstant.PAGE_BROWSE + ":" + year);
 			if (StringUtils.isNotBlank(json)) {
 				list = JsonUtils.jsonToList(json, Integer.class);
 				r = 1;
@@ -191,7 +184,7 @@ public class SystemServiceImpl implements SystemService {
 			TbDataExample example = new TbDataExample();
 			example.setOrderByClause("create_time desc");
 			Criteria criteria = example.createCriteria();
-			criteria.andTypeEqualTo(PAGE_BROWSE + ":" + year);
+			criteria.andTypeEqualTo(HealthConstant.PAGE_BROWSE + ":" + year);
 			datas = dataMapper.selectByExample(example);
 			if (null != datas && datas.size() > 0)
 				r = 2;
@@ -207,19 +200,19 @@ public class SystemServiceImpl implements SystemService {
 					list.add(new Integer(0));
 				}
 				list.set(month, list.get(month) + 1);
-				result.setRecordsTotal(datas.get(0).getNum() + 1);
+				result.setRecordsTotal(list.get(0) + 1);
 
 				// mysql
 				TbData data = new TbData();
 				data.setCreateTime(new Date());
-				data.setDescription(JsonUtils.objectToJson(jedisClient.get(PAGE_BROWSE + ":" + year)));
-				data.setNum(Integer.valueOf(jedisClient.get(PAGE_BROWSE + ":" + year + "NUM")));
-				data.setType(PAGE_BROWSE + ":" + year);
+				data.setDescription("网站点击量");
+				data.setNum(0);
+				data.setType(HealthConstant.PAGE_BROWSE + ":" + year);
 				dataMapper.insert(data);
 
 				// redis
-				jedisClient.set(PAGE_BROWSE + ":" + year, JsonUtils.objectToJson(list));
-				jedisClient.incr(PAGE_BROWSE + ":" + year + "NUM");
+				jedisClient.set(HealthConstant.PAGE_BROWSE + ":" + year, JsonUtils.objectToJson(list));
+				jedisClient.incr(HealthConstant.PAGE_BROWSE + ":" + year + "NUM");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -230,20 +223,20 @@ public class SystemServiceImpl implements SystemService {
 				// 是否增加
 				if (isIncr) {
 					list.set(month, list.get(month) + 1);
-					jedisClient.set(PAGE_BROWSE + ":" + year, JsonUtils.objectToJson(list));
-					result.setRecordsTotal(jedisClient.incr(PAGE_BROWSE + ":" + year + "NUM").intValue());
+					jedisClient.set(HealthConstant.PAGE_BROWSE + ":" + year, JsonUtils.objectToJson(list));
+					result.setRecordsTotal(jedisClient.incr(HealthConstant.PAGE_BROWSE + ":" + year + "NUM").intValue());
 
 					// 如果访问量到底100的倍数,添加入mysql
 					if (0 == list.get(month) % 100) {
 						TbData data = new TbData();
 						data.setCreateTime(new Date());
-						data.setDescription(JsonUtils.objectToJson(jedisClient.get(PAGE_BROWSE + ":" + year)));
-						data.setNum(Integer.valueOf(jedisClient.get(PAGE_BROWSE + ":" + year + "NUM")));
-						data.setType(PAGE_BROWSE + ":" + year);
+						data.setDescription(JsonUtils.objectToJson(jedisClient.get(HealthConstant.PAGE_BROWSE + ":" + year)));
+						data.setNum(Integer.valueOf(jedisClient.get(HealthConstant.PAGE_BROWSE + ":" + year + "NUM")));
+						data.setType(HealthConstant.PAGE_BROWSE + ":" + year);
 						dataMapper.insert(data);
 					}
 				} else
-					result.setRecordsTotal(Integer.valueOf(jedisClient.get(PAGE_BROWSE + ":" + year + "NUM")));
+					result.setRecordsTotal(Integer.valueOf(jedisClient.get(HealthConstant.PAGE_BROWSE + ":" + year + "NUM")));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -260,8 +253,8 @@ public class SystemServiceImpl implements SystemService {
 
 			// 如果redis正常,且无数据
 			try {
-				jedisClient.set(PAGE_BROWSE + ":" + year, JsonUtils.objectToJson(list));
-				jedisClient.incr(PAGE_BROWSE + ":" + year + "NUM");
+				jedisClient.set(HealthConstant.PAGE_BROWSE + ":" + year, JsonUtils.objectToJson(list));
+				jedisClient.incr(HealthConstant.PAGE_BROWSE + ":" + year + "NUM");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -312,7 +305,7 @@ public class SystemServiceImpl implements SystemService {
 	@Override
 	public int countLog() {
 		try {
-			String json = jedisClient.get(LOG_COUNT);
+			String json = jedisClient.get(HealthConstant.LOG_COUNT);
 			if (StringUtils.isNotBlank(json))
 				return Integer.valueOf(json);
 		} catch (Exception e) {
@@ -323,7 +316,7 @@ public class SystemServiceImpl implements SystemService {
 		int result = tbLogMapper.countByExample(example);
 
 		try {
-			jedisClient.set(LOG_COUNT, result + "");
+			jedisClient.set(HealthConstant.LOG_COUNT, result + "");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -340,8 +333,6 @@ public class SystemServiceImpl implements SystemService {
 		List<TbLog> list = tbLogMapper.selectByExample(example);
 		PageInfo<TbLog> pageInfo = new PageInfo<>(list);
 
-		System.out.println(orderCol + " " + orderDir);
-		
 		result.setRecordsFiltered((int) pageInfo.getTotal());
 		result.setRecordsTotal(Math.toIntExact(countLog()));
 
@@ -356,7 +347,7 @@ public class SystemServiceImpl implements SystemService {
 		int result = tbLogMapper.deleteByPrimaryKey(id);
 		if (result == 1)
 			try {
-				jedisClient.del(LOG_COUNT);
+				jedisClient.del(HealthConstant.LOG_COUNT);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -369,7 +360,7 @@ public class SystemServiceImpl implements SystemService {
 			throw new GlobalException("保存日志失败");
 		}
 		try {
-			jedisClient.del(LOG_COUNT);
+			jedisClient.del(HealthConstant.LOG_COUNT);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

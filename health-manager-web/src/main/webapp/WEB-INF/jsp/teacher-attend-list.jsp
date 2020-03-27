@@ -265,7 +265,7 @@
     	getCourseList : function(){
     		loading(true);
     		$.ajax({
-                url:"/item/timetable/list/"+649+"/"+$("#cYear").val()+"/"+$("#semester").val(),
+                url:"/item/timetable/list/"+$("#cYear").val()+"/"+$("#semester").val(),
                 type: 'GET',
                 dataType: "json",
                 success:function (data) {

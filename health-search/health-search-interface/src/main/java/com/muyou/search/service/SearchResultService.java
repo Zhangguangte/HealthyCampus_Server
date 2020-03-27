@@ -2,8 +2,8 @@ package com.muyou.search.service;
 
 import java.util.List;
 
-import com.muyou.common.pojo.DiseaseSortVo;
-import com.muyou.common.pojo.MedicineListVo;
+import com.muyou.vo.DiseaseSortVo;
+import com.muyou.vo.MedicineListVo;
 
 public interface SearchResultService {
 

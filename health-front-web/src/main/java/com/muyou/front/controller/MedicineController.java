@@ -20,6 +20,7 @@ import com.muyou.front.vo.MedicineDetailVo;
 import com.muyou.front.vo.MedicineVo;
 import com.muyou.search.service.SearchResultService;
 import com.muyou.sso.service.CollectService;
+import com.muyou.vo.MedicineListVo;
 
 @Controller
 @RequestMapping("/medicine")
@@ -33,10 +34,10 @@ public class MedicineController {
 
 	@Autowired(required = false)
 	private SearchResultService searchResultService;
-	
-	/*@Value("${MEDICINE_SEARCH_COUNT}")
-	private Integer MEDICINE_SEARCH_COUNT;*/
-	
+
+	@Value("${MEDICINE_SEARCH_COUNT}")
+	private Integer MEDICINE_SEARCH_COUNT;
+
 	// 获得所有的分类
 	@RequestMapping("/getClassify")
 	@ResponseBody
@@ -47,35 +48,32 @@ public class MedicineController {
 		return result;
 	}
 
-//	// 获得所有的药品根据分类
-//	@RequestMapping("/getAllMedicine")
-//	@ResponseBody
-//	public List<MedicineListVo> getAllMedicine(@RequestBody RequestForm form) throws ServiceException,Exception {
-//		if (StringUtil.isEmpty(form.getContent()))
-//			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
-//		
-//		
-//		List<MedicineListVo> result = searchResultService.searchMedicine(form.getContent(), "md_type", form.getRow(), MEDICINE_SEARCH_COUNT);
-//		
-//		
-//		if (null == result)
-//			throw new ServiceException(ResponseBuilder.ERROR_DATA_LOSE);
-//		return result;
-//	}
-//
-//	// 获得所有的药品根据关键字和范围
-//	@RequestMapping("/getAllMedicineByKey")
-//	@ResponseBody
-//	public List<MedicineListVo> getAllMedicineByKey(@RequestBody RequestForm form) throws ServiceException,Exception {
-//		if (StringUtil.isEmpty(form.getQuest_id()) || StringUtil.isEmpty(form.getContent()))
-//			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
-//		
-//		List<MedicineListVo> result = searchResultService.searchMedicine(form.getContent(), form.getQuest_id(), form.getRow(), MEDICINE_SEARCH_COUNT);
-//		
-//		if (null == result)
-//			throw new ServiceException(ResponseBuilder.ERROR_MEDICINE_NOT_FOUND);
-//		return result;
-//	}
+	// 获得所有的药品根据分类
+	@RequestMapping("/getAllMedicine")
+	@ResponseBody
+	public List<MedicineListVo> getAllMedicine(@RequestBody RequestForm form) throws ServiceException, Exception {
+		if (StringUtil.isEmpty(form.getContent()))
+			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
+		List<MedicineListVo> result = medicineService.getAllMedicine(form);
+		if (null == result)
+			throw new ServiceException(ResponseBuilder.ERROR_DATA_LOSE);
+		return result;
+	}
+
+	// 获得所有的药品根据关键字和范围
+	@RequestMapping("/getAllMedicineByKey")
+	@ResponseBody
+	public List<MedicineListVo> getAllMedicineByKey(@RequestBody RequestForm form) throws ServiceException, Exception {
+		if (StringUtil.isEmpty(form.getQuest_id()) || StringUtil.isEmpty(form.getContent()))
+			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
+
+		List<MedicineListVo> result = searchResultService.searchMedicine(form.getContent(), form.getQuest_id(),
+				form.getRow(), MEDICINE_SEARCH_COUNT);
+
+		if (null == result)
+			throw new ServiceException(ResponseBuilder.ERROR_MEDICINE_NOT_FOUND);
+		return result;
+	}
 
 	// 获得药品详细信息
 	@RequestMapping("/getMedicineDetail")

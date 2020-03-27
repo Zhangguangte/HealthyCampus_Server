@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import com.muyou.common.constant.HealthConstant;
 import com.muyou.common.exception.GlobalException;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.redis.JedisClient;
@@ -57,9 +58,6 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private JedisClient jedisClient;
 
-	@Value("${ROLE_TEA}")
-	private Integer ROLE_TEA;
-
 	@Value("${ITEM_TEACHER}")
 	private Integer ITEM_TEACHER;
 
@@ -83,9 +81,6 @@ public class AdminServiceImpl implements AdminService {
 
 	@Value("${ROLE_EXPIRE}")
 	private Integer ROLE_EXPIRE;
-
-	@Value("${ADMIN_EXPIRE}")
-	private Integer ADMIN_EXPIRE;
 
 	@Value("${ITEM_CATE_LIST}")
 	private String ITEM_CATE_LIST;
@@ -215,7 +210,7 @@ public class AdminServiceImpl implements AdminService {
 		admin.setState(1);
 		admin.setCreateTime(new Date());
 		admin.setUpdateTime(new Date());
-		admin.setRoleid(ROLE_TEA);
+		admin.setRoleid(HealthConstant.ROLE_TEA);
 		admin.setLogo("");
 		String no = UUID.randomUUID().toString().substring(0, 15);
 		admin.setNo(no);
@@ -760,6 +755,7 @@ public class AdminServiceImpl implements AdminService {
 
 		try {
 			jedisClient.hdel(ROLE, LIST);
+			jedisClient.hdel(ROLE, ROLE_PERMS);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -820,15 +816,15 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public void addPermission(TbPermission tbPermission) {
-		int result = permissionMapper.insert(tbPermission);
-		if (1 == result)
-			try {
-				jedisClient.hdel(PERMISS, LIST);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		else
+		if(permissionMapper.insert(tbPermission)<0)
 			throw new GlobalException("添加权限失败");
+
+		try {
+			jedisClient.hdel(PERMISS, LIST);
+			jedisClient.hdel(PERMISS, COUNT);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -858,13 +854,14 @@ public class AdminServiceImpl implements AdminService {
 	public int updatePermission(TbPermission tbPermission) {
 		if (permissionMapper.updateByPrimaryKey(tbPermission) != 1) {
 			throw new GlobalException("更新权限失败");
-		} else {
-			try {
-				jedisClient.hdel(PERMISS, LIST);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		} 
+		
+		try {
+			jedisClient.hdel(PERMISS, LIST);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
 		return 1;
 	}
 

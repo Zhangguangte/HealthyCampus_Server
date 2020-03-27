@@ -147,8 +147,7 @@
 	    focusCleanup:false,
 	    success:"valid",
 	    submitHandler:function(form){
-	        var index = layer.load(3);
-
+	        var index1 = layer.load(3);
 	        $("#content").val().replace("&", "&amp;");
 	    	$("#content").val().replace("<", "&lt;");
 	    	$("#content").val().replace(">", "&gt;");
@@ -159,7 +158,7 @@
 	            type: "POST",
 	            dataType: "json",
 	            success: function(data) {
-	            	layer.close(index);
+	            	layer.close(index1);
                     if(data.success==true){
                         if(parent.location.pathname!='/'){
                             parent.lectureCount();
@@ -180,7 +179,7 @@
                     }
 	            },
 	            error:function(XMLHttpRequest) {
-	                layer.close(index);
+	                layer.close(index1);
 	                layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
 	            }
 	        });

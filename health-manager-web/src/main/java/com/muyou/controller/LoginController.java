@@ -10,17 +10,19 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.muyou.common.annotation.SystemControllerLog;
+import com.muyou.common.constant.HealthConstant;
 import com.muyou.common.form.LoginForm;
 import com.muyou.common.pojo.Result;
 import com.muyou.common.util.CookieUtils;
+import com.muyou.common.util.JsonUtils;
 import com.muyou.common.util.ResultUtil;
 import com.muyou.service.LoginService;
 
@@ -30,9 +32,6 @@ public class LoginController {
 
 	@Autowired
 	private LoginService loginService;
-
-	@Value("${TOKEN_KEY}")
-	private String TOKEN_KEY;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
@@ -47,6 +46,7 @@ public class LoginController {
 			// MD5加密
 			String md5Pass = DigestUtils.md5DigestAsHex(password.getBytes());
 			UsernamePasswordToken token = new UsernamePasswordToken(username, md5Pass);
+			CookieUtils.setCookie(request, response, HealthConstant.TOKEN_KEY, (String)result.getResult());
 			try {
 				subject.login(token);
 				return new ResultUtil<Object>().setData(null);
@@ -63,20 +63,17 @@ public class LoginController {
 	@ResponseBody
 	@SystemControllerLog(description = "管理员注销系统")
 	public Object adminLogout(HttpServletRequest request, HttpServletResponse response) {
-
+		Subject subject = SecurityUtils.getSubject();
+        subject.logout();
 		// 获得客服端的Cookie
-		String token = CookieUtils.getCookieValue(request, TOKEN_KEY);
-
+		String token = CookieUtils.getCookieValue(request, HealthConstant.TOKEN_KEY);
 		// 不存在，返回
 		if (StringUtils.isBlank(token))
 			return new ResultUtil<Object>().setData(null);
-
 		// 删除Redis内的用户数据
 		loginService.adminLogout(token);
-
 		// 删除客服端的Cookie
-		CookieUtils.deleteCookie(request, response, TOKEN_KEY);
-
+		CookieUtils.deleteCookie(request, response, HealthConstant.TOKEN_KEY);
 		return new ResultUtil<Object>().setData(null);
 	}
 
@@ -87,4 +84,12 @@ public class LoginController {
 		username = new String(username.getBytes("iso8859-1"), "utf-8");
 		return loginService.unLock(username, password, token);
 	}
+	
+	@RequestMapping(value="/token/{token}",method = RequestMethod.GET,produces="text/html;charset=utf-8")
+	@ResponseBody
+	public Object getUserByToken(@PathVariable String token, String callback) {
+		return JsonUtils.objectToJson(loginService.getAdminByToken(token));
+		
+	}
+	
 }

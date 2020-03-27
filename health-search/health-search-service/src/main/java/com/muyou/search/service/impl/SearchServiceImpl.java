@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.muyou.common.constant.ItemConstant;
 import com.muyou.common.pojo.Result;
 import com.muyou.common.pojo.SolrInfo;
 import com.muyou.common.redis.JedisClient;
@@ -64,12 +65,6 @@ public class SearchServiceImpl implements SearchService {
 	@Value("${SOLR_INDEX_EXPIRE}")
 	private Integer SOLR_INDEX_EXPIRE;
 
-	@Value("${RELA_DEP}")
-	private Integer RELA_DEP;
-
-	@Value("${RELA_PAR}")
-	private Integer RELA_PAR;
-
 	@Override
 	public Result<Object> getInfo() {
 		try {
@@ -82,6 +77,8 @@ public class SearchServiceImpl implements SearchService {
 				e.printStackTrace();
 			}
 
+			System.out.println("http://" + SOLR_IP + ":" + SOLR_PORT + SOLR_ADDRESS);
+			
 			// 1.请求数据
 			String info = HttpUtil.sendGet("http://" + SOLR_IP + ":" + SOLR_PORT + SOLR_ADDRESS);
 			// 2.获得xml个数数据，转化为文档
@@ -90,6 +87,8 @@ public class SearchServiceImpl implements SearchService {
 			Element rootElement = document.getRootElement();
 			// 4.获得子元素
 			Element element = XmlUtils.getChildElement(rootElement, "lst");
+		
+			System.out.println(222);
 
 			// 5.创建实例
 			SolrInfo solrInfo = new SolrInfo();
@@ -104,6 +103,8 @@ public class SearchServiceImpl implements SearchService {
 			List<Element> elements2 = element.element("arr").elements("str");
 			solrInfo.setNodesNum(elements2.size());
 
+			System.out.println(111);
+			
 			// 1.通过每个collection下的shards的state从而判断是否是可用
 			// 2.确定每个可用时,设置status为green,否则为yellow或red
 			// 3.如果非green,再通过对应shards下的core_nodes
@@ -132,7 +133,6 @@ public class SearchServiceImpl implements SearchService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 			return new ResultUtil<Object>().setData(solrInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -161,12 +161,12 @@ public class SearchServiceImpl implements SearchService {
 				document.addField("di_url", searchItem.getUrl());
 
 				// 科室
-				list = itemMapper.getDiseaseType(searchItem.getId(), RELA_DEP);
+				list = itemMapper.getDiseaseType(searchItem.getId(), ItemConstant.RELA_DEP);
 				document.addField("di_depart", String.join(",", list));
 				list.clear();
 
 				// 部位
-				list = itemMapper.getDiseaseType(searchItem.getId(), RELA_PAR);
+				list = itemMapper.getDiseaseType(searchItem.getId(),  ItemConstant.RELA_PAR);
 				document.addField("di_part", String.join(",", list));
 				solrServer.add(document);
 

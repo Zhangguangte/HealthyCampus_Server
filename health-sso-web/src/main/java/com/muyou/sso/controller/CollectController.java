@@ -41,7 +41,6 @@ public class CollectController {
 	@RequestMapping("/getAllCollect")
 	@ResponseBody
 	public List<CollectVo> getAllCollect(HttpServletRequest request) throws ServiceException {
-
 		String user = (String) request.getAttribute("USER");
 		if (StringUtil.isEmpty(user))
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);

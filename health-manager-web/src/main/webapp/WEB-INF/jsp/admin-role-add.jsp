@@ -144,13 +144,13 @@
         focusCleanup:false,
         success:"valid",
         submitHandler:function(form){
-            layer.close(index);
+            var index1 = layer.load(3);
             $(form).ajaxSubmit({
                 url: "/admin/addRole",
                 type: "POST",
                 dataType: "json",
                 success: function(data) {
-                    layer.close(index);
+                    layer.close(index1);
                     if(data.success==true){
                         parent.roleCount();
                         parent.refresh();
@@ -162,7 +162,7 @@
                     }
                 },
                 error:function(XMLHttpRequest) {
-                    layer.close(index);
+                    layer.close(index1);
                     layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
                 }
             });

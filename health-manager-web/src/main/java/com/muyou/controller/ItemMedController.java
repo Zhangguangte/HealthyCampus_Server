@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.muyou.common.annotation.SystemControllerLog;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.pojo.Result;
 import com.muyou.common.util.ResultUtil;
@@ -23,7 +22,6 @@ public class ItemMedController {
 	private ItemMedService itemMedService;
 
 	@RequestMapping(value = "/{itemId}", method = RequestMethod.GET)
-	@SystemControllerLog(description="登录系统")
 	@ResponseBody
 	public Result<MedicineVo> getItemById(@PathVariable Integer itemId) {
 		return new ResultUtil<MedicineVo>().setData(itemMedService.getItemById(itemId));
@@ -40,8 +38,6 @@ public class ItemMedController {
 	public DataTablesResult getItemList(int draw, int start, int length, int cid,
 			@RequestParam("search[value]") String search, @RequestParam("order[0][column]") int orderCol,
 			@RequestParam("order[0][dir]") String orderDir, String searchItem, String minDate, String maxDate) {
-
-		System.out.println("****");
 
 		// 获取客户端需要排序的列
 		String[] cols = { "m.id", "m.price", "m.created", "m.updated" };

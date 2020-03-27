@@ -1,13 +1,15 @@
 package com.muyou.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import com.muyou.common.constant.HealthConstant;
 import com.muyou.common.form.LoginForm;
 import com.muyou.common.pojo.Result;
 import com.muyou.common.redis.JedisClient;
@@ -28,17 +30,14 @@ public class LoginServiceImpl implements LoginService {
 	@Autowired
 	private JedisClient jedisClient;
 
-	@Value("${ASESSION_EXPIRE}")
-	private Integer ASESSION_EXPIRE;
-
-	@Value("${ASESSION}")
-	private String ASESSION;
-
 	@Override
 	public Result<Object> adminLogin(LoginForm dataForm) {
 		// 账号查询
 		TbAdminExample example = new TbAdminExample();
 		TbAdminExample.Criteria criteria = example.createCriteria();
+
+		System.out.println("getAccount:" + dataForm.getAccount());
+
 		criteria.andAccountEqualTo(dataForm.getAccount());
 		// 账号查询用户
 		List<TbAdmin> list = adminMapper.selectByExample(example);
@@ -59,8 +58,8 @@ public class LoginServiceImpl implements LoginService {
 		String token = UUID.randomUUID().toString();
 
 		try {
-			jedisClient.set(ASESSION + token, JsonUtils.objectToJson(user));
-			jedisClient.expire(ASESSION + token, ASESSION_EXPIRE);
+			jedisClient.set(HealthConstant.ASESSION + ":" + token, JsonUtils.objectToJson(user));
+			jedisClient.expire(HealthConstant.ASESSION + ":" +  token, HealthConstant.ASESSION_EXPIRE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -71,7 +70,7 @@ public class LoginServiceImpl implements LoginService {
 	@Override
 	public int adminLogout(String token) {
 		try {
-			jedisClient.del(ASESSION + token);
+			jedisClient.del(HealthConstant.ASESSION + ":" + token);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -94,8 +93,8 @@ public class LoginServiceImpl implements LoginService {
 			TbAdmin user = list.get(0);
 			user.setPassword(null);
 			try {
-				jedisClient.set(ASESSION + token, JsonUtils.objectToJson(user));
-				jedisClient.expire(ASESSION + token, ASESSION_EXPIRE);
+				jedisClient.set(HealthConstant.ASESSION + ":" + token, JsonUtils.objectToJson(user));
+				jedisClient.expire(HealthConstant.ASESSION + ":" + token, HealthConstant.ASESSION_EXPIRE);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -103,5 +102,22 @@ public class LoginServiceImpl implements LoginService {
 		} else {
 			return new ResultUtil<>().setErrorMsg("密码错误");
 		}
+	}
+
+	@Override
+	public Result<Object> getAdminByToken(String token) {
+
+		String json = jedisClient.get(HealthConstant.ASESSION + ":" + token);
+		if (StringUtils.isBlank(json))
+			return new ResultUtil<>().setErrorMsg("登录过期，请重新登录");
+
+		// 重置过期时间
+		jedisClient.expire(HealthConstant.ASESSION + ":" + token, HealthConstant.ASESSION_EXPIRE);
+		Result<Object> result = new ResultUtil<>().setData(JsonUtils.jsonToPojo(json, TbAdmin.class));
+
+		SimpleDateFormat sdp1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		result.setMessage(sdp1.format(((TbAdmin) result.getResult()).getCreateTime()));
+
+		return result;
 	}
 }

@@ -3,13 +3,11 @@
 <mapper namespace="com.muyou.mapper.TbArticleMapper" >
   <resultMap id="BaseResultMap" type="com.muyou.pojo.TbArticle" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="sub_title" property="subTitle" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
     <result column="introduction" property="introduction" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="BIT" />
     <result column="created" property="created" jdbcType="TIMESTAMP" />
     <result column="updated" property="updated" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -72,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, title, sub_title, content, pic_url, introduction, status, created, updated
+    id, title, content, pic_url, introduction, status, created, updated
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.muyou.pojo.TbArticleExample" >
     select
@@ -104,15 +102,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.muyou.pojo.TbArticle" >
-    insert into tb_article (id, name, title, 
-      sub_title, content, pic_url, 
-      introduction, status, created, 
-      updated)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-      #{subTitle,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, 
-      #{introduction,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
-      #{updated,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.muyou.pojo.TbArticle" useGeneratedKeys="true" keyProperty="id">
+    insert into tb_article (id, title, content, 
+      pic_url, introduction, status, 
+      created, updated)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{picUrl,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{status,jdbcType=BIT}, 
+      #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.muyou.pojo.TbArticle" >
     insert into tb_article
@@ -120,14 +116,8 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="name != null" >
-        name,
-      </if>
       <if test="title != null" >
         title,
-      </if>
-      <if test="subTitle != null" >
-        sub_title,
       </if>
       <if test="content != null" >
         content,
@@ -152,14 +142,8 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="subTitle != null" >
-        #{subTitle,jdbcType=VARCHAR},
       </if>
       <if test="content != null" >
         #{content,jdbcType=VARCHAR},
@@ -171,7 +155,7 @@
         #{introduction,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
+        #{status,jdbcType=BIT},
       </if>
       <if test="created != null" >
         #{created,jdbcType=TIMESTAMP},
@@ -193,14 +177,8 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
       <if test="record.title != null" >
         title = #{record.title,jdbcType=VARCHAR},
-      </if>
-      <if test="record.subTitle != null" >
-        sub_title = #{record.subTitle,jdbcType=VARCHAR},
       </if>
       <if test="record.content != null" >
         content = #{record.content,jdbcType=VARCHAR},
@@ -212,7 +190,7 @@
         introduction = #{record.introduction,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null" >
-        status = #{record.status,jdbcType=VARCHAR},
+        status = #{record.status,jdbcType=BIT},
       </if>
       <if test="record.created != null" >
         created = #{record.created,jdbcType=TIMESTAMP},
@@ -228,13 +206,11 @@
   <update id="updateByExample" parameterType="map" >
     update tb_article
     set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
       title = #{record.title,jdbcType=VARCHAR},
-      sub_title = #{record.subTitle,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=VARCHAR},
       pic_url = #{record.picUrl,jdbcType=VARCHAR},
       introduction = #{record.introduction,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=BIT},
       created = #{record.created,jdbcType=TIMESTAMP},
       updated = #{record.updated,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -244,14 +220,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.muyou.pojo.TbArticle" >
     update tb_article
     <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="subTitle != null" >
-        sub_title = #{subTitle,jdbcType=VARCHAR},
       </if>
       <if test="content != null" >
         content = #{content,jdbcType=VARCHAR},
@@ -263,7 +233,7 @@
         introduction = #{introduction,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
-        status = #{status,jdbcType=VARCHAR},
+        status = #{status,jdbcType=BIT},
       </if>
       <if test="created != null" >
         created = #{created,jdbcType=TIMESTAMP},
@@ -276,15 +246,30 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.muyou.pojo.TbArticle" >
     update tb_article
-    set name = #{name,jdbcType=VARCHAR},
-      title = #{title,jdbcType=VARCHAR},
-      sub_title = #{subTitle,jdbcType=VARCHAR},
+    set title = #{title,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       pic_url = #{picUrl,jdbcType=VARCHAR},
       introduction = #{introduction,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
+      status = #{status,jdbcType=BIT},
       created = #{created,jdbcType=TIMESTAMP},
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="getBannerList" parameterType="Integer" resultType="com.muyou.vo.BannerVo">
+  	SELECT 
+		c.full_url url,
+		c.pic_url imageUrl,
+		a.title title
+	from 
+		tb_panel_content c ,tb_article a 
+	WHERE 
+		c.panel_id = #{panelId}
+	AND
+		a.id = c.article_id
+	ORDER BY 
+		c.created desc
+  </select>
+  
+  
 </mapper>

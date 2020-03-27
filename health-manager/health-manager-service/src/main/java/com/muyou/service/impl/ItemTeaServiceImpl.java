@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.muyou.common.constant.HealthConstant;
 import com.muyou.common.exception.GlobalException;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.redis.JedisClient;
@@ -17,7 +18,6 @@ import com.muyou.common.util.JsonUtils;
 import com.muyou.mapper.TbAdminMapper;
 import com.muyou.mapper.TbCateMapper;
 import com.muyou.mapper.TbItemRelaCateMapper;
-import com.muyou.mapper.TbRoleMapper;
 import com.muyou.pojo.TbAdmin;
 import com.muyou.pojo.TbAdminExample;
 import com.muyou.pojo.TbAdminExample.Criteria;
@@ -39,15 +39,7 @@ public class ItemTeaServiceImpl implements ItemTeaService {
 
 	@Autowired
 	private TbAdminMapper adminMapper;
-
-	@Autowired
-	private TbRoleMapper roleMapper;
-
-	@Value("${ROLE_TEA}")
-	private Integer ROLE_TEA;
 	
-	
-
 	@Value("${ITEM_COUNT}")
 	private String ITEM_COUNT;
 
@@ -96,7 +88,7 @@ public class ItemTeaServiceImpl implements ItemTeaService {
 		TbAdminExample example = new TbAdminExample();
 		example.setOrderByClause(orderCol + " " + orderDir);
 		Criteria criteria = example.createCriteria();
-		criteria.andRoleidEqualTo(ROLE_TEA);
+		criteria.andRoleidEqualTo(HealthConstant.ROLE_TEA);
 		List<TbAdmin> list = adminMapper.selectByExample(example);
 		for (TbAdmin admin : list) {
 			admin.setPassword(null);
@@ -124,7 +116,7 @@ public class ItemTeaServiceImpl implements ItemTeaService {
 
 		TbAdminExample example = new TbAdminExample();
 		Criteria criteria = example.createCriteria();
-		criteria.andRoleidEqualTo(ROLE_TEA);
+		criteria.andRoleidEqualTo(HealthConstant.ROLE_TEA);
 		int count = adminMapper.countByExample(example);
 		DataTablesResult result = new DataTablesResult();
 		result.setRecordsTotal(count);
@@ -150,7 +142,7 @@ public class ItemTeaServiceImpl implements ItemTeaService {
 		criteria.andParentIdEqualTo(cid);
 		List<TbCate> cateList = cateMapper.selectByExample(example);
 		// 合并所有id
-		StringBuilder sBuilder = new StringBuilder();
+		StringBuilder sBuilder = new StringBuilder("");
 		for (TbCate tbCate : cateList) {
 			sBuilder.append(tbCate.getRemark() + ",");
 		}
@@ -194,7 +186,7 @@ public class ItemTeaServiceImpl implements ItemTeaService {
 
 	@Override
 	public int updateItem(Integer id, TbAdmin admin) {
-
+		
 
 		return 1;
 	}

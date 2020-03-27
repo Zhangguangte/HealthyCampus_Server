@@ -28,7 +28,6 @@ public interface TbTimetableMapper {
 
     int updateByPrimaryKey(TbTimetable record);
     
-    // ǰ̨
- 	List<TbTimetable> selectItemByClass(@Param("cls") String cls);
+ 	List<TbTimetable> selectItemByClass(@Param("type") Integer type,@Param("id") Integer id,@Param("year") String year,@Param("semester") String semester);
 
 }

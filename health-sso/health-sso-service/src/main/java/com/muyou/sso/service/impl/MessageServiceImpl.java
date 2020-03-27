@@ -20,6 +20,8 @@ import com.muyou.mapper.TbMessageListMapper;
 import com.muyou.mapper.TbMessageMapper;
 import com.muyou.mapper.TbUserMapper;
 import com.muyou.pojo.TbMessage;
+import com.muyou.pojo.TbMessageExample;
+import com.muyou.pojo.TbMessageExample.Criteria;
 import com.muyou.pojo.TbMessageList;
 import com.muyou.pojo.TbUser;
 import com.muyou.sso.pojo.MessageListVo;
@@ -40,9 +42,6 @@ public class MessageServiceImpl implements MessageService {
 	@Autowired
 	private JedisClient jedisClient;
 
-	@Value("${MESSAGE_LAST}")
-	private String MESSAGE_LAST;
-
 	@Value("${MESSAGE_ROOM}")
 	private String MESSAGE_ROOM;
 
@@ -52,16 +51,6 @@ public class MessageServiceImpl implements MessageService {
 	// 现存最后一条消息
 	@Override
 	public List<MessageListVo> lastMessage(String userId) {
-
-		try {
-			String json = jedisClient.hget(MESSAGE_LAST, userId);
-			if (StringUtils.isNotBlank(json)) {
-				return JsonUtils.jsonToList(json, MessageListVo.class);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		List<TbMessage> list = messageMapper.lastMessage(userId);
 		if (null == list || list.size() == 0)
 			return null;
@@ -69,13 +58,6 @@ public class MessageServiceImpl implements MessageService {
 		for (TbMessage message : list) {
 			result.add(new MessageListVo(message));
 		}
-
-		try {
-			jedisClient.hset(MESSAGE_LAST, userId, JsonUtils.objectToJson(result));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		return result;
 	}
 
@@ -109,15 +91,19 @@ public class MessageServiceImpl implements MessageService {
 	// 查询房间号
 	@Override
 	public List<MessageListVo> getDoctorRoom(String userId) {
+		
+		System.out.println(userId);
+		
 		try {
 			String json = jedisClient.hget(MESSAGE_ROOM, userId);
 			if (StringUtils.isNotBlank(json)) {
+				System.out.println(json);
 				return JsonUtils.jsonToList(json, MessageListVo.class);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		System.out.println(111);
 		List<TbMessageList> list = messagelistMapper.getDoctorRoom(userId);
 		if (null == list || list.size() == 0)
 			return null;
@@ -138,7 +124,6 @@ public class MessageServiceImpl implements MessageService {
 	// 所有消息根据房间号
 	@Override
 	public List<MessageListVo> allChatByRoomId(RequestForm requestForm, String userId) {
-
 		try {
 			List<String> json = jedisClient.lrange(MESSAGE_LIST + ":" + requestForm.getQuest_id(),
 					requestForm.getRow() * 15, (requestForm.getRow() + 1) * 15);
@@ -167,8 +152,6 @@ public class MessageServiceImpl implements MessageService {
 				jedisClient.lpush(MESSAGE_LIST + ":" + requestForm.getQuest_id(),
 						JsonUtils.objectToJson(result.get(i)));
 			}
-			if (requestForm.getRow() == 0)
-				jedisClient.hdel(MESSAGE_LAST, userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -176,6 +159,24 @@ public class MessageServiceImpl implements MessageService {
 		return result;
 	}
 
+	// 所有消息根据房间号
+	@Override
+	public List<MessageListVo> lastestMessage(RequestForm requestForm, String userId) {
+
+		TbMessageExample example = new TbMessageExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andRoomIdEqualTo(requestForm.getQuest_id());
+		criteria.andCreateTimeGreaterThan(requestForm.getContent());
+		List<TbMessage> list = messageMapper.selectByExample(example);
+		if (null == list || list.size() == 0)
+			return null;
+		List<MessageListVo> result = new ArrayList<MessageListVo>();
+		for (TbMessage message : list) {
+			result.add(new MessageListVo(message));
+		}
+		return result;
+	}
+		
 	// 所有消息根据两个用户ID
 	@Override
 	public List<MessageListVo> allChatByUid(RequestForm requestForm, String userId) throws ServiceException {
@@ -203,8 +204,7 @@ public class MessageServiceImpl implements MessageService {
 		messagelistMapper.addUnread(chatForm.getRoom_id(), userId);
 
 		try {
-			jedisClient.lpush(MESSAGE_LIST + ":" + chatForm.getRoom_id(), JsonUtils.objectToJson(message));
-			jedisClient.hdel(MESSAGE_LAST, userId);
+			jedisClient.lpush(MESSAGE_LIST + ":" + chatForm.getRoom_id(), JsonUtils.objectToJson(new MessageListVo(message)));
 		} catch (Exception e) {
 			// jedisClient.ltrim(chatForm.getRoom_id(), 0, -1);
 			e.printStackTrace();
@@ -229,8 +229,7 @@ public class MessageServiceImpl implements MessageService {
 		messagelistMapper.addUnread(chatForm.getRoom_id(), userId);
 
 		try {
-			jedisClient.lpush(MESSAGE_LIST + ":" + chatForm.getRoom_id(), JsonUtils.objectToJson(message));
-			jedisClient.hdel(MESSAGE_LAST, userId);
+			jedisClient.lpush(MESSAGE_LIST + ":" + chatForm.getRoom_id(), JsonUtils.objectToJson(new MessageListVo(message)));
 		} catch (Exception e) {
 			jedisClient.ltrim(chatForm.getRoom_id(), 0, -1);
 			e.printStackTrace();

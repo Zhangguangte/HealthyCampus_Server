@@ -795,62 +795,52 @@ public class TbRecipesExample {
             return (Criteria) this;
         }
 
-        public Criteria andCalorieEqualTo(String value) {
+        public Criteria andCalorieEqualTo(Long value) {
             addCriterion("calorie =", value, "calorie");
             return (Criteria) this;
         }
 
-        public Criteria andCalorieNotEqualTo(String value) {
+        public Criteria andCalorieNotEqualTo(Long value) {
             addCriterion("calorie <>", value, "calorie");
             return (Criteria) this;
         }
 
-        public Criteria andCalorieGreaterThan(String value) {
+        public Criteria andCalorieGreaterThan(Long value) {
             addCriterion("calorie >", value, "calorie");
             return (Criteria) this;
         }
 
-        public Criteria andCalorieGreaterThanOrEqualTo(String value) {
+        public Criteria andCalorieGreaterThanOrEqualTo(Long value) {
             addCriterion("calorie >=", value, "calorie");
             return (Criteria) this;
         }
 
-        public Criteria andCalorieLessThan(String value) {
+        public Criteria andCalorieLessThan(Long value) {
             addCriterion("calorie <", value, "calorie");
             return (Criteria) this;
         }
 
-        public Criteria andCalorieLessThanOrEqualTo(String value) {
+        public Criteria andCalorieLessThanOrEqualTo(Long value) {
             addCriterion("calorie <=", value, "calorie");
             return (Criteria) this;
         }
 
-        public Criteria andCalorieLike(String value) {
-            addCriterion("calorie like", value, "calorie");
-            return (Criteria) this;
-        }
-
-        public Criteria andCalorieNotLike(String value) {
-            addCriterion("calorie not like", value, "calorie");
-            return (Criteria) this;
-        }
-
-        public Criteria andCalorieIn(List<String> values) {
+        public Criteria andCalorieIn(List<Long> values) {
             addCriterion("calorie in", values, "calorie");
             return (Criteria) this;
         }
 
-        public Criteria andCalorieNotIn(List<String> values) {
+        public Criteria andCalorieNotIn(List<Long> values) {
             addCriterion("calorie not in", values, "calorie");
             return (Criteria) this;
         }
 
-        public Criteria andCalorieBetween(String value1, String value2) {
+        public Criteria andCalorieBetween(Long value1, Long value2) {
             addCriterion("calorie between", value1, value2, "calorie");
             return (Criteria) this;
         }
 
-        public Criteria andCalorieNotBetween(String value1, String value2) {
+        public Criteria andCalorieNotBetween(Long value1, Long value2) {
             addCriterion("calorie not between", value1, value2, "calorie");
             return (Criteria) this;
         }
@@ -922,76 +912,6 @@ public class TbRecipesExample {
 
         public Criteria andComponentsNotBetween(String value1, String value2) {
             addCriterion("components not between", value1, value2, "components");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksIsNull() {
-            addCriterion("weeks is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksIsNotNull() {
-            addCriterion("weeks is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksEqualTo(String value) {
-            addCriterion("weeks =", value, "weeks");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksNotEqualTo(String value) {
-            addCriterion("weeks <>", value, "weeks");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksGreaterThan(String value) {
-            addCriterion("weeks >", value, "weeks");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksGreaterThanOrEqualTo(String value) {
-            addCriterion("weeks >=", value, "weeks");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksLessThan(String value) {
-            addCriterion("weeks <", value, "weeks");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksLessThanOrEqualTo(String value) {
-            addCriterion("weeks <=", value, "weeks");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksLike(String value) {
-            addCriterion("weeks like", value, "weeks");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksNotLike(String value) {
-            addCriterion("weeks not like", value, "weeks");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksIn(List<String> values) {
-            addCriterion("weeks in", values, "weeks");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksNotIn(List<String> values) {
-            addCriterion("weeks not in", values, "weeks");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksBetween(String value1, String value2) {
-            addCriterion("weeks between", value1, value2, "weeks");
-            return (Criteria) this;
-        }
-
-        public Criteria andWeeksNotBetween(String value1, String value2) {
-            addCriterion("weeks not between", value1, value2, "weeks");
             return (Criteria) this;
         }
 
@@ -1242,6 +1162,76 @@ public class TbRecipesExample {
 
         public Criteria andStatusNotBetween(Boolean value1, Boolean value2) {
             addCriterion("status not between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIsNull() {
+            addCriterion("classify is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIsNotNull() {
+            addCriterion("classify is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyEqualTo(String value) {
+            addCriterion("classify =", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyNotEqualTo(String value) {
+            addCriterion("classify <>", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyGreaterThan(String value) {
+            addCriterion("classify >", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyGreaterThanOrEqualTo(String value) {
+            addCriterion("classify >=", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyLessThan(String value) {
+            addCriterion("classify <", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyLessThanOrEqualTo(String value) {
+            addCriterion("classify <=", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyLike(String value) {
+            addCriterion("classify like", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyNotLike(String value) {
+            addCriterion("classify not like", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIn(List<String> values) {
+            addCriterion("classify in", values, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyNotIn(List<String> values) {
+            addCriterion("classify not in", values, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyBetween(String value1, String value2) {
+            addCriterion("classify between", value1, value2, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyNotBetween(String value1, String value2) {
+            addCriterion("classify not between", value1, value2, "classify");
             return (Criteria) this;
         }
     }

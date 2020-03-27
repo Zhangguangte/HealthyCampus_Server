@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -41,14 +42,18 @@ public class testSpell {
 
 	@Test
 	public void testDate() {
-
 		long dateStr = Long.valueOf("1584098617000");
 		Date date = new Date(dateStr);
 		String stringDate = DateUtil.getStringDate(date);
-		
-		
 		System.out.println(stringDate);
-
+	}
+	
+	@Test
+	public void testDelFile() {
+		File file = new File("H:\\FreeMaeker\\9531.html");
+		if (!file.isDirectory()) { 	// 表示该文件不是文件夹
+			file.delete();
+		}
 	}
 
 }

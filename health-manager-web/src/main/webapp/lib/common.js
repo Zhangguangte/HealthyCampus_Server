@@ -59,3 +59,21 @@ function dateAll(data){
     }
     return (y+"-"+m+"-"+d+" "+h+":"+mm+":"+ss);
 }
+
+/*时间转换3*/
+function date3(data){
+    if(data==null||data==""){
+        return "";
+    }
+    var time = new Date(data);
+    var y = time.getFullYear();//年
+    var m = time.getMonth() + 1;//月
+    if (m >= 0 && m <= 9) {
+        m = "0" + m;
+    }
+    var d = time.getDate();//日
+    if (d >= 0 && d <= 9) {
+        d = "0" + d;
+    }
+    return (y+"-"+m+"-"+d);
+}

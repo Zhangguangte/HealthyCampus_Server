@@ -331,7 +331,7 @@
 	            var index = layer.load(3);
 	            $.ajax({
 	                type: 'GET',
-	                url: '/item/cate/canteen/add/'+id+"/"+pid+"/"+name,
+	                url: '/item/cate/canteen/add/'+id+"/"+pid+"/"+name.replace("/","&"),
 	                dataType: 'json',
 	                success: function(data){
 	                    layer.close(index);
@@ -408,7 +408,7 @@
             ids=ids.substring(0,ids.length-1);
         }
         if(names.length>0){
-        	names=names.substring(0,names.length-1);
+        	names=names.substring(0,names.length-1).replace("/","&");
         }
         
         layer.confirm('确认要添加所选的'+count+'条数据吗？',{icon:0},function(index){

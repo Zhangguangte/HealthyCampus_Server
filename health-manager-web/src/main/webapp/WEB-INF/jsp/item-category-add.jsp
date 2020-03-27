@@ -29,6 +29,7 @@
         <input type="text" hidden class="input-text" value="true" id="isParent" name="isParent">
         <input type="text" hidden class="input-text" value="1" id="status" name="status">
         <input type="text" hidden class="input-text" value="1" id="sortOrder" name="sortOrder">
+        <input type="text" hidden class="input-text" value="1" id="remark" name="remark">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">
                 <span class="c-red">*</span>
@@ -69,6 +70,9 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
+    
+    $("#remark").val(parent.remark);
+    
     /*文本输入限制*/
     $(".textarea").Huitextarealength({
         minlength:0,
@@ -106,11 +110,12 @@
         focusCleanup:false,
         success:"valid",
         submitHandler:function(form){
-            var index = layer.load(3);
+            var index1 = layer.load(3);
             $(form).ajaxSubmit({
-                url: "/item/cat/add?type="+parent.cate_type,
+                url: "/item/cate/add?type="+parent.cate_type,
                 type: "POST",
                 success: function(data) {
+                	 layer.close(index1);
                     if(data.success==true){
                         parent.initTree();
                         parent.msgSuccess("添加成功!");
@@ -121,7 +126,7 @@
                     }
                 },
                 error:function(XMLHttpRequest) {
-                    layer.close(index);
+                    layer.close(index1);
                     layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status,{title: '错误信息',icon: 2});
                 }
             });

@@ -93,13 +93,13 @@
             focusCleanup:false,
             success:"valid",
             submitHandler:function(form){
-                index = layer.load(3);
+            	var index1 = layer.load(3);
                 $(form).ajaxSubmit({
                     url: "/item/timetable/atttend/update",
                     type: "POST",
                     dataType: "json",
                     success: function (data) {
-                        layer.close(index);
+                        layer.close(index1);
                         if (data.success == true) {
                             parent.msgSuccess("编辑成功!");
                             parent.refresh();
@@ -110,7 +110,7 @@
                         }
                     },
                     error: function (XMLHttpRequest) {
-                        layer.close(index);
+                        layer.close(index1);
                         layer.alert('数据处理失败! 错误码:' + XMLHttpRequest.status, {
                             title: '错误信息',
                             icon: 2

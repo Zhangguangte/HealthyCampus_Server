@@ -1,15 +1,6 @@
 package com.muyou.service;
 
-import com.muyou.common.pojo.Result;
-
 public interface RedisService {
-
-	/**
-	 * 获取首页缓存
-	 * 
-	 * @return
-	 */
-	String getIndexRedis();
 
 	/**
 	 * 获取讲座缓存

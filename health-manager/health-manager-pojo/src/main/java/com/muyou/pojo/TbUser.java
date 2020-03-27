@@ -31,6 +31,8 @@ public class TbUser implements Serializable{
 
     private String lastModifyTime;
 
+    private String birthday;
+
     public Integer getNo() {
         return no;
     }
@@ -141,5 +143,13 @@ public class TbUser implements Serializable{
 
     public void setLastModifyTime(String lastModifyTime) {
         this.lastModifyTime = lastModifyTime == null ? null : lastModifyTime.trim();
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday == null ? null : birthday.trim();
     }
 }

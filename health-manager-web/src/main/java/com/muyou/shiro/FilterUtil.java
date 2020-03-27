@@ -42,8 +42,8 @@ public class FilterUtil {
 		try {
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/json");
-			// out = response.getWriter();
-			// out.println(new Gson().toJson(resultMap));
+			out = response.getWriter();
+			out.println(new Gson().toJson(resultMap));
 		} catch (Exception e) {
 			log.error(e + "输出JSON出错");
 			e.printStackTrace();

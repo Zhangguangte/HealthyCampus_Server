@@ -5,6 +5,7 @@ import java.util.List;
 import com.muyou.common.form.RequestForm;
 import com.muyou.front.vo.MedicineDetailVo;
 import com.muyou.front.vo.MedicineVo;
+import com.muyou.vo.MedicineListVo;
 
 /**
  * 药品服务
@@ -16,8 +17,8 @@ public interface MedicineService {
 	// 获得所有的分类
 	 List<MedicineVo> getClassify();
 
-//	// 获得所有的药品根据分类
-//	 List<MedicineListVo> getAllMedicine(RequestForm requestForm);
+	// 获得所有的药品根据分类
+	 List<MedicineListVo> getAllMedicine(RequestForm requestForm);
 //
 //	// 获得所有的药品根据关键字和范围
 //	 List<MedicineListVo> getAllMedicineByKey(RequestForm requestForm);

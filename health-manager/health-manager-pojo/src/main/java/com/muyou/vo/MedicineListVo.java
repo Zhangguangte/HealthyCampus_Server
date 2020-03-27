@@ -1,6 +1,8 @@
-package com.muyou.common.pojo;
+package com.muyou.vo;
 
 import java.io.Serializable;
+
+import com.muyou.pojo.TbMedicine;
 
 public class MedicineListVo implements Serializable{
 	
@@ -13,15 +15,15 @@ public class MedicineListVo implements Serializable{
 
 	public MedicineListVo() {}
 	
-//	public MedicineListVo(TbMedicine medicine) {
-//		this.id = medicine.getGoodsId()+"";
-//		this.price = medicine.getPrice()+"";
-//		this.goodName = medicine.getGoodsName();
-//		this.description = medicine.getManufacturer();
-//		//1.代表处方药;0.代表非处方药
-//		this.isOct = "1".equals(medicine.getIsOtc())?"处方药":"非处方药";
-//		this.image = medicine.getLogo();
-//	}
+	public MedicineListVo(TbMedicine medicine) {
+		this.id = medicine.getId()+"";
+		this.price = medicine.getPrice()+"";
+		this.goodName = medicine.getGoodsName();
+		this.description = medicine.getManufacturer();
+		//1.代表处方药;0.代表非处方药
+		this.isOct = "1".equals(medicine.getOtc())?"处方药":"非处方药";
+		this.image = medicine.getLogo();
+	}
 
 	public String getId() {
 		return id;

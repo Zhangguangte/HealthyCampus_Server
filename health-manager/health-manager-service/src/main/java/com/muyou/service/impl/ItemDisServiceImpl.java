@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.muyou.common.constant.ItemConstant;
 import com.muyou.common.exception.GlobalException;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.redis.JedisClient;
@@ -68,12 +69,6 @@ public class ItemDisServiceImpl implements ItemDisService {
 	@Value("${ITEM_ID}")
 	private String ITEM_ID;
 
-	@Value("${RELA_DEP}")
-	private Integer RELA_DEP;
-
-	@Value("${RELA_PAR}")
-	private Integer RELA_PAR;
-
 	@Value("${ITEM_EXPIRE}")
 	private Integer ITEM_EXPIRE;
 
@@ -104,7 +99,7 @@ public class ItemDisServiceImpl implements ItemDisService {
 		List<String> cidList = new LinkedList<String>();
 
 		// 获得科室数据
-		List<TbCate> list = cateMapper.selectItemCate(id, RELA_DEP);
+		List<TbCate> list = cateMapper.selectItemCate(id, ItemConstant.RELA_DEP);
 		for (TbCate tbCate : list) {
 			cateList.add(tbCate.getName());
 			cidList.add(tbCate.getId() + "");
@@ -113,7 +108,7 @@ public class ItemDisServiceImpl implements ItemDisService {
 		result.setDepart(cateList);
 
 		// 获得部位数据
-		list = cateMapper.selectItemCate(id, RELA_PAR);
+		list = cateMapper.selectItemCate(id, ItemConstant.RELA_PAR);
 		cateList = new LinkedList<String>();
 		cidList = new LinkedList<String>();
 		for (TbCate tbCate : list) {
@@ -169,10 +164,10 @@ public class ItemDisServiceImpl implements ItemDisService {
 		List<String> cateList;
 		for (TbDisease tbDisease : list) {
 			// 获得科室数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(tbDisease.getId(), RELA_DEP);
+			cateList = cateMapper.selectCateNameByItemIdAndType(tbDisease.getId(), ItemConstant.RELA_DEP);
 			tbDisease.setDepart(String.join(",", cateList));
 			// 获得部位数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(tbDisease.getId(), RELA_PAR);
+			cateList = cateMapper.selectCateNameByItemIdAndType(tbDisease.getId(), ItemConstant.RELA_PAR);
 			tbDisease.setPart(String.join(",", cateList));
 		}
 
@@ -226,10 +221,10 @@ public class ItemDisServiceImpl implements ItemDisService {
 		List<String> cateList;
 		for (TbDisease tbDisease : list) {
 			// 获得科室数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(tbDisease.getId(), RELA_DEP);
+			cateList = cateMapper.selectCateNameByItemIdAndType(tbDisease.getId(), ItemConstant.RELA_DEP);
 			tbDisease.setDepart(String.join(",", cateList));
 			// 获得部位数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(tbDisease.getId(), RELA_PAR);
+			cateList = cateMapper.selectCateNameByItemIdAndType(tbDisease.getId(), ItemConstant.RELA_PAR);
 			tbDisease.setPart(String.join(",", cateList));
 		}
 
@@ -261,7 +256,7 @@ public class ItemDisServiceImpl implements ItemDisService {
 
 		// 部位数据
 		itemRelaCate.setItemId(disease.getId());
-		itemRelaCate.setType(RELA_PAR);
+		itemRelaCate.setType(ItemConstant.RELA_PAR);
 		for (String pid : diseaseVo.getPid()) {
 			if (StringUtils.isBlank(pid))
 				continue;
@@ -271,7 +266,7 @@ public class ItemDisServiceImpl implements ItemDisService {
 
 		// 科室数据
 		itemRelaCate.setItemId(disease.getId());
-		itemRelaCate.setType(RELA_DEP);
+		itemRelaCate.setType(ItemConstant.RELA_DEP);
 		for (String did : diseaseVo.getDid()) {
 			if (StringUtils.isBlank(did))
 				continue;
@@ -374,7 +369,7 @@ public class ItemDisServiceImpl implements ItemDisService {
 		TbItemRelaCate itemRelaCate = new TbItemRelaCate();
 		// 部位数据
 		itemRelaCate.setItemId(id);
-		itemRelaCate.setType(RELA_PAR);
+		itemRelaCate.setType(ItemConstant.RELA_PAR);
 		for (String pid : diseaseVo.getPid()) {
 			if (StringUtils.isBlank(pid))
 				continue;
@@ -384,7 +379,7 @@ public class ItemDisServiceImpl implements ItemDisService {
 
 		// 科室数据
 		itemRelaCate.setItemId(id);
-		itemRelaCate.setType(RELA_DEP);
+		itemRelaCate.setType(ItemConstant.RELA_DEP);
 		for (String did : diseaseVo.getDid()) {
 			if (StringUtils.isBlank(did))
 				continue;

@@ -27,22 +27,12 @@ public class DictController {
 	@Autowired
 	private DictService dictService;
 
-	@RequestMapping(value = "/777")
-	@ResponseBody
-	public String gettest(HttpServletResponse response) {
-		System.out.println("77777777");
-
-		response.addHeader(DictConstant.LAST_MODIFIED, String.valueOf(System.currentTimeMillis()));
-		response.addHeader(DictConstant.ETAG, String.valueOf(System.currentTimeMillis()));
-		return "7777";
-	}
-
 	@RequestMapping(value = "/getDictList", produces = "text/plain;charset=utf-8")
 	@ResponseBody
 	public String getDictExtList(HttpServletResponse response) {
 		Map<Object, Object> map = dictService.getRemoteList(DictConstant.EXT_KEY);
 		Boolean bol = (Boolean) map.get(DictConstant.NEW);
-		System.out.println("999999999");
+		System.out.println("getDictExtList:999999999");
 		// if (bol)
 		// return (String) map.get(DictConstant.EXT_KEY);
 
@@ -56,7 +46,7 @@ public class DictController {
 	public String getStopDictList(HttpServletResponse response) {
 		Map<Object, Object> map = dictService.getRemoteList(DictConstant.STOP_KEY);
 		Boolean bol = (Boolean) map.get(DictConstant.NEW);
-		System.out.println("88888");
+		System.out.println("getStopDictList:88888");
 
 		// if (bol)
 		// return (String) map.get(DictConstant.STOP_KEY);

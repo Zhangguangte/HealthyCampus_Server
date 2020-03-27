@@ -254,13 +254,13 @@
 	        	return;
 	        }
 	        
-	        var index = layer.load(3);
+	        var index1 = layer.load(3);
 	        $(form).ajaxSubmit({
 	            url: "/item/library/update/"+parent.getId(),
 	            type: "POST",
 	            dataType: "json",
 	            success: function(data) {
-	                layer.close(index);
+	                layer.close(index1);
 	                if(data.success==true){
 	                    parent.refresh();
 	                    parent.msgSuccess("编辑成功!");

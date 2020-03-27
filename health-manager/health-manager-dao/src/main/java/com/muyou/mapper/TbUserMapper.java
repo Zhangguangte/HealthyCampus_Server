@@ -1,13 +1,9 @@
 package com.muyou.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
-
 import com.muyou.pojo.TbUser;
 import com.muyou.pojo.TbUserExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface TbUserMapper {
 	int countByExample(TbUserExample example);
@@ -24,19 +20,6 @@ public interface TbUserMapper {
 
 	TbUser selectByPrimaryKey(Integer no);
 
-	// ******************************************
-
-	// 用户是否存在:账号、电话
-	TbUser findUserByAccountOrPhone(@Param("account") String account);
-
-	// 获得所有好友，通讯录
-	List<TbUser> allFriend(@Param("user_id") String userId);
-
-	// 用户是否存在:账号
-	public TbUser findByAccount(String account);
-
-	// ******************************************
-
 	int updateByExampleSelective(@Param("record") TbUser record, @Param("example") TbUserExample example);
 
 	int updateByExample(@Param("record") TbUser record, @Param("example") TbUserExample example);
@@ -44,4 +27,12 @@ public interface TbUserMapper {
 	int updateByPrimaryKeySelective(TbUser record);
 
 	int updateByPrimaryKey(TbUser record);
+
+	TbUser findUserByAccountOrPhone(@Param("account") String account);
+
+	List<TbUser> allFriend(@Param("user_id") String userId);
+
+	public TbUser findByAccount(String account);
+	
+	void updateUsername(@Param("ids") String ids,@Param("nickname") String nickname);
 }

@@ -13,14 +13,46 @@ public class MessageVo implements Serializable{
     public MessageVo() {
     }
 
+	public String getId() {
+		return id;
+	}
 
-//    public MessageVo(OfflineMessage msg) {
-//        this.id = msg.getId();
-//        Message _msg = msg.getMessage();
-//        this.fromId = _msg.getFromId();
-//        this.type = _msg.getType();
-//        this.content = _msg.getContentMap();
-//        this.create_time = _msg.getCreateTime();
-//    }
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getFromId() {
+		return fromId;
+	}
+
+	public void setFromId(String fromId) {
+		this.fromId = fromId;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Map<String, Object> getContent() {
+		return content;
+	}
+
+	public void setContent(Map<String, Object> content) {
+		this.content = content;
+	}
+
+	public String getCreate_time() {
+		return create_time;
+	}
+
+	public void setCreate_time(String create_time) {
+		this.create_time = create_time;
+	}
+
+
 
 }

@@ -57,6 +57,8 @@
 	    	return "/item/cate/list?type="+CATE_CLA+"&factor=0"; 
 		else if(parent.cls == -1)
 	    	return "/item/cate/list?type="+CATE_COL+"&factor=0"; 
+		else if(parent.cls == 2)
+	    	return "/item/cate/cls?year="+parent.year; 
 	};
 
 	var setting = {

@@ -127,6 +127,9 @@
             "ajax": {
                 url: url,
                 type: 'GET',
+                "error" : function (){
+                	
+                }
             },
             "columns": [
                 { "data": null,

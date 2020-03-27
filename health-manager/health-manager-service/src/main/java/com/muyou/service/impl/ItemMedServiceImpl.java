@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.muyou.common.constant.ItemConstant;
 import com.muyou.common.exception.GlobalException;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.redis.JedisClient;
@@ -67,9 +68,6 @@ public class ItemMedServiceImpl implements ItemMedService {
 
 	@Value("${MEDICINE}")
 	private String MEDICINE;
-
-	@Value("${RELA_MED}")
-	private Integer RELA_MED;
 
 	@Value("${ITEM_DETAIL_ID}")
 	private String ITEM_DETAIL_ID;
@@ -122,7 +120,7 @@ public class ItemMedServiceImpl implements ItemMedService {
 		List<String> cateList;
 		for (TbMedicine medicine : list) {
 			// 获得分类数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(medicine.getId(), RELA_MED);
+			cateList = cateMapper.selectCateNameByItemIdAndType(medicine.getId(), ItemConstant.RELA_MED);
 			medicine.setcName(String.join(",", cateList));
 		}
 
@@ -173,7 +171,7 @@ public class ItemMedServiceImpl implements ItemMedService {
 		// 获得分类数据
 		List<String> cateList = new LinkedList<String>();
 		List<String> cidList = new LinkedList<String>();
-		List<TbCate> list = cateMapper.selectItemCate(id, RELA_MED);
+		List<TbCate> list = cateMapper.selectItemCate(id, ItemConstant.RELA_MED);
 		for (TbCate tbCate : list) {
 			cateList.add(tbCate.getName());
 			cidList.add(tbCate.getId() + "");
@@ -232,7 +230,7 @@ public class ItemMedServiceImpl implements ItemMedService {
 		TbItemRelaCate itemRelaCate = new TbItemRelaCate();
 		// 分类数据
 		itemRelaCate.setItemId(medicine.getId());
-		itemRelaCate.setType(RELA_MED);
+		itemRelaCate.setType(ItemConstant.RELA_MED);
 		for (String cid : medicineVo.getCid()) {
 			if (StringUtils.isBlank(cid))
 				continue;
@@ -333,7 +331,7 @@ public class ItemMedServiceImpl implements ItemMedService {
 		TbItemRelaCate itemRelaCate = new TbItemRelaCate();
 		// 分类数据
 		itemRelaCate.setItemId(id);
-		itemRelaCate.setType(RELA_MED);
+		itemRelaCate.setType(ItemConstant.RELA_MED);
 		for (String cid : medicineVo.getCid()) {
 			if (StringUtils.isBlank(cid))
 				continue;

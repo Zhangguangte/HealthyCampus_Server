@@ -46,6 +46,8 @@
 		<shiro.version>1.4.0</shiro.version>
 		<aspectjrt.version>1.6.12</aspectjrt.version>
 		<aspectjweaver.version>1.6.12</aspectjweaver.version>
+		<freemarker.version>2.3.23</freemarker.version>
+		 <javassist.version>3.24.1-GA</javassist.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -310,6 +312,17 @@
 				<artifactId>aspectjweaver</artifactId>
 				<version>${aspectjweaver.version}</version>
 			</dependency>
+			<!-- freemarker -->
+			<dependency>
+				<groupId>org.freemarker</groupId>
+				<artifactId>freemarker</artifactId>
+				<version>${freemarker.version}</version>
+			</dependency>
+			<dependency>
+		        <groupId>org.javassist</groupId>
+		        <artifactId>javassist</artifactId>
+		        <version>${javassist.version}</version>
+    		</dependency>
 		</dependencies>
 	</dependencyManagement>
 

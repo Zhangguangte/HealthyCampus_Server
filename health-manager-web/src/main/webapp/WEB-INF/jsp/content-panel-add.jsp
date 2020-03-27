@@ -132,12 +132,12 @@
         focusCleanup:false,
         success:"valid",
         submitHandler:function(form){
-            var index = layer.load(3);
+            var index1 = layer.load(3);
             $(form).ajaxSubmit({
                 url: "/panel/add",
                 type: "POST",
                 success: function(data) {
-                    layer.close(index);
+                    layer.close(index1);
                     if(data.success==true){
                         layer.alert("添加成功!",{icon: 1}, function(index){
                             parent.initTree();
@@ -149,8 +149,7 @@
                     }
                 },
                 error:function(XMLHttpRequest, textStatus, errorThrown) {
-                    layer.close(index);
-                    alert(JSON.parse(XMLHttpRequest.responseText).message);
+                    layer.close(index1);
                     layer.alert('数据处理失败! 错误码:' + XMLHttpRequest.status, {title: '错误信息', icon: 2});
                 }
             });

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -50,7 +51,6 @@ public class SystemLogAspect {
 	// @Pointcut("execution(* *..controller..*Controller*.*(..))")
 	@Pointcut("@annotation(com.muyou.common.annotation.SystemControllerLog)")
 	public void controllerAspect() {
-		System.out.println("========controllerAspect===========");
 		log.info("========controllerAspect===========");
 	}
 
@@ -72,7 +72,7 @@ public class SystemLogAspect {
 	 */
 	@Before("controllerAspect()")
 	public void doBefore(JoinPoint joinPoint) throws InterruptedException {
-		System.out.println("99999999999999");
+		System.out.println("SystemLogAspect:doBefore");
 		// 线程绑定变量（该数据只有当前请求的线程可见）
 		Date beginTime = new Date();
 		beginTimeThreadLocal.set(beginTime);
@@ -86,11 +86,11 @@ public class SystemLogAspect {
 	 */
 	@After("controllerAspect()")
 	public void after(JoinPoint joinPoint) {
-		System.out.println(5555);
+		System.out.println("SystemLogAspect:after");
+		System.out.println(SecurityUtils.getSubject().getPrincipals());
 		try {
-			String username = "77";
-			// String username = SecurityUtils.getSubject().getPrincipal().toString();
-			if (null != username) {
+			String username = (String) SecurityUtils.getSubject().getPrincipal();
+			if (null != username || "null".equals(username)) {
 				TbLog tbLog = new TbLog();
 				// 日志标题
 				tbLog.setName(getControllerMethodDescription(joinPoint));
@@ -143,12 +143,11 @@ public class SystemLogAspect {
 	 */
 	@AfterThrowing(pointcut = "serviceAspect()", throwing = "e")
 	public void doAfterThrowing(JoinPoint joinPoint, Throwable e) {
-		System.out.println(4444);
+		System.out.println("SystemLogAspect:doAfterThrowing");
 
 		try {
-			// String username = SecurityUtils.getSubject().getPrincipal().toString();
-			String username = "77";
-			if (null != username) {
+			String username = (String) SecurityUtils.getSubject().getPrincipal();
+			if (null != username || "null".equals(username)) {
 				TbLog tbLog = new TbLog();
 				// 日志标题
 				tbLog.setName(getControllerMethodDescription(joinPoint));
@@ -199,7 +198,7 @@ public class SystemLogAspect {
 
 		public SaveSystemLogThread(TbLog tbLog, SystemService systemService) {
 
-			System.out.println(333);
+			System.out.println("SystemLogAspect:SaveSystemLogThread");
 
 			this.tbLog = tbLog;
 			this.systemService = systemService;
@@ -221,7 +220,7 @@ public class SystemLogAspect {
 	 */
 	public static String getControllerMethodDescription(JoinPoint joinPoint) throws Exception {
 
-		System.out.println(111);
+		System.out.println("SystemLogAspect:getControllerMethodDescription");
 
 		// 获取目标类名
 		String targetName = joinPoint.getTarget().getClass().getName();

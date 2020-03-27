@@ -1,4 +1,3 @@
-com\muyou\service\impl\ItemRecServiceImpl$1.class
 com\muyou\service\impl\SystemServiceImpl.class
 com\muyou\service\impl\UserServiceImpl.class
 com\muyou\service\impl\ItemMedServiceImpl$1.class
@@ -10,6 +9,7 @@ com\muyou\service\impl\ItemTimServiceImpl.class
 com\muyou\service\impl\RedisServiceImpl.class
 com\muyou\service\impl\AdminServiceImpl.class
 com\muyou\service\impl\DictServiceImpl.class
+com\muyou\service\impl\ItemStuServiceImpl.class
 com\muyou\service\impl\ItemRecServiceImpl.class
 com\muyou\service\impl\ItemDisServiceImpl$1.class
 com\muyou\service\impl\ItemDisServiceImpl.class

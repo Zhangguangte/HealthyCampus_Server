@@ -48,5 +48,25 @@ public interface UserService {
 	// 查询用户，根据电话
 	public int searchPhone(RegisterFrom dataForm);
 
-
+	/**
+	 * 更新用户
+	 * @param id
+	 * @param userVo
+	 * @return
+	 */
+	public int updateUser(String id,UserVo userVo)  throws ServiceException;
+	
+	
+	/**
+	 * 更新学生信息
+	 * @param id
+	 * @param form
+	 * @return
+	 */
+	public int updateStudent(String id,RequestForm form)  throws ServiceException;
+	
+	/**
+	 * 更新头像
+	 */
+	public int updateUser(String id,String url) throws ServiceException;
 }

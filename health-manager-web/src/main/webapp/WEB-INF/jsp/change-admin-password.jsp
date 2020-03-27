@@ -90,12 +90,12 @@
             focusCleanup:false,
             success:"valid",
             submitHandler:function(form){
-                var index = layer.load(3);
+                var index1 = layer.load(3);
                 $(form).ajaxSubmit({
                     url: "/admin/changePass",
                     type: "POST",
                     success: function(data) {
-                        layer.close(index);
+                        layer.close(index1);
                         if(data.success==true){
                             parent.msgSuccess("修改成功!");
                             var index = parent.layer.getFrameIndex(window.name);

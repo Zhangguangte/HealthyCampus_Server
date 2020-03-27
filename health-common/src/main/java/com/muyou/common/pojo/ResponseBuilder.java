@@ -47,14 +47,34 @@ public class ResponseBuilder implements Serializable{
     private int status;
     private int code;
     private String message;
-
+    private Object result;
+    
+    public ResponseBuilder() {
+    }
+    
     public ResponseBuilder(int status, int code, String message) {
         this.status = status;
         this.code = code;
         this.message = message;
     }
 
-    public int getCode() {
+    public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public Object getResult() {
+		return result;
+	}
+
+	public void setResult(Object result) {
+		this.result = result;
+	}
+
+	public int getCode() {
         return code;
     }
 

@@ -21,10 +21,10 @@ public class ServiceExceptionResolver implements HandlerExceptionResolver{
 			Exception ex) {
 		ModelAndView model = new ModelAndView();
 		ServiceException serviceException ;
+		ex.printStackTrace();
 		if (ex instanceof ServiceException) {
 			serviceException = (ServiceException)ex;
-		}else
-		{
+		}else{
 			System.out.println("ex.getCause()"+ex.getCause());
 			System.out.println("ex.getMessage()"+ex.getMessage());
 			serviceException = new ServiceException(ResponseBuilder.ERROR_BAD_SERVER);

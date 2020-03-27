@@ -244,13 +244,13 @@
                 return;
             }
 	    	$("#rest").val($("#sum").val());
-	        var index = layer.load(3);
+	        var index1 = layer.load(3);
 	        $(form).ajaxSubmit({
 	            url: "/item/library/add",
 	            type: "POST",
 	            dataType: "json",
 	            success: function(data) {
-	            	layer.close(index);
+	            	layer.close(index1);
                     if(data.success==true){
                         if(parent.location.pathname!='/'){
                             parent.libraryCount();
@@ -271,7 +271,7 @@
                     }
 	            },
 	            error:function(XMLHttpRequest) {
-	                layer.close(index);
+	                layer.close(index1);
 	                layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
 	            }
 	        });

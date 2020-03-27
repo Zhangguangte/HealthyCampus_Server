@@ -36,7 +36,7 @@ public class RecipesController {
 	@RequestMapping("/getRecipesByThreeMeals")
 	@ResponseBody
 	public List<FoodMenuVo> getRecipesByThreeMeals(@RequestBody RequestForm requestForm) throws ServiceException {
-		if (StringUtil.isEmpty(requestForm.getQuest_id()) || StringUtil.isEmpty(requestForm.getContent()))
+		if (null == requestForm.getMap())
 			throw new ServiceException(ResponseBuilder.ERROR_INVALID_PARAMETER);
 		List<FoodMenuVo> result = recipesService.getRecipesByThreeMeals(requestForm);
 		if (null == result)
@@ -87,10 +87,7 @@ public class RecipesController {
 	@RequestMapping("/getRecipesList")
 	@ResponseBody
 	public RecipesListVo getRecipesList(@RequestBody RequestForm requestForm) throws ServiceException {
-		RecipesListVo result = recipesService.getRecipesList(requestForm);
-		if (null == result)
-			throw new ServiceException(ResponseBuilder.ERROR_DATA_LOSE);
-		return result;
+		return recipesService.getRecipesList(requestForm);
 	}
 
 	// 食谱列单

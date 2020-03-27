@@ -240,9 +240,13 @@
     var tname = "";
     
     var courseList,ids;
+    
     var Timetable;
+    
+    var cid = "649";
+    
     var COURSE = {
-    	loadCourse : function(){
+    	loadCourse : function(){	//加载课表
     		$("#coursesTable").html("");
     		 // 实例化(初始化课表)
     	    Timetable = new Timetables({
@@ -270,10 +274,10 @@
     	       }
     	     });
     	},
-    	getCourseList : function(){
+    	getCourseList : function(){		//获取课表信息
     		loading(true);
     		$.ajax({
-                url:"/item/timetable/list/"+649+"/"+$("#cYear").val()+"/"+$("#semester").val(),
+                url:"/item/timetable/list/"+$("#cYear").val()+"/"+$("#semester").val(),
                 type: 'GET',
                 dataType: "json",
                 success:function (data) {
@@ -295,7 +299,7 @@
                 }
             });
     	},
-    	weeks : function(weeks){
+    	weeks : function(weeks){	
     		switch(weeks)
     		{
     		case "周一":

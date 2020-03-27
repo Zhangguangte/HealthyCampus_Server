@@ -1,5 +1,6 @@
 package com.muyou.mapper;
 
+import com.muyou.pojo.TbDisease;
 import com.muyou.pojo.TbMedicine;
 import com.muyou.pojo.TbMedicineExample;
 import java.util.List;
@@ -29,7 +30,7 @@ public interface TbMedicineMapper {
     int updateByPrimaryKey(TbMedicine record);
     
     //客户端
-    List<TbMedicine> getAllMedicine(@Param("classifyName") String classifyName, @Param("start") int start);
+	List<TbMedicine> selectItemByClassify(@Param("cid") int cid, @Param("page") int page, @Param("row") int row);
 
 	List<TbMedicine> getAllMedicineByKey(@Param("scope") String scope, @Param("content") String content,
 			@Param("start") int start);

@@ -17,13 +17,6 @@ public class RedisController {
 	@Autowired
 	private RedisService redisService;
 
-	@RequestMapping(value = "/index/list", method = RequestMethod.GET)
-	@ResponseBody
-	public Result<Object> getIndexRedis() {
-		String json = redisService.getIndexRedis();
-		return new ResultUtil<Object>().setData(json);
-	}
-
 	@RequestMapping(value = "/lecture/list", method = RequestMethod.GET)
 	@ResponseBody
 	public Result<Object> getLectureRedis() {
@@ -108,7 +101,7 @@ public class RedisController {
 		return new ResultUtil<Object>().setData(null);
 	}
 	
-	@RequestMapping(value = "/log/list", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/log/list", method = RequestMethod.GET)
 	@ResponseBody
 	public Result<Object> getLogRedis() {
 		String json = redisService.getLogRedis();
@@ -120,5 +113,5 @@ public class RedisController {
 	public Result<Object> updateLogRedis() {
 		redisService.updateLogRedis();
 		return new ResultUtil<Object>().setData(null);
-	}
+	}*/
 }

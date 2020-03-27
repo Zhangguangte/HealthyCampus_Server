@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.muyou.common.constant.ItemConstant;
 import com.muyou.common.exception.GlobalException;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.redis.JedisClient;
@@ -69,9 +70,6 @@ public class ItemRecServiceImpl implements ItemRecService {
 	@Value("${ITEM_ID}")
 	private String ITEM_ID;
 
-	@Value("${RELA_REC}")
-	private Integer RELA_REC;
-
 	@Value("${ITEM_EXPIRE}")
 	private Integer ITEM_EXPIRE;
 
@@ -102,7 +100,7 @@ public class ItemRecServiceImpl implements ItemRecService {
 		List<String> cidList = new LinkedList<String>();
 
 		// 获得分类数据
-		List<TbCate> list = cateMapper.selectItemCate(id, RELA_REC);
+		List<TbCate> list = cateMapper.selectItemCate(id, ItemConstant.RELA_REC);
 		for (TbCate tbCate : list) {
 			cateList.add(tbCate.getName());
 			cidList.add(tbCate.getId() + "");
@@ -187,7 +185,7 @@ public class ItemRecServiceImpl implements ItemRecService {
 		List<String> cateList;
 		for (TbRecipes recipes : list) {
 			// 获得分类数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(recipes.getId(), RELA_REC);
+			cateList = cateMapper.selectCateNameByItemIdAndType(recipes.getId(), ItemConstant.RELA_REC);
 			recipes.setCname(String.join(",", cateList));
 		}
 
@@ -216,7 +214,7 @@ public class ItemRecServiceImpl implements ItemRecService {
 		List<String> cateList;
 		for (TbRecipes recipes : list) {
 			// 获得分类数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(recipes.getId(), RELA_REC);
+			cateList = cateMapper.selectCateNameByItemIdAndType(recipes.getId(), ItemConstant.RELA_REC);
 			recipes.setCname(String.join(",", cateList));
 		}
 
@@ -258,7 +256,7 @@ public class ItemRecServiceImpl implements ItemRecService {
 		List<String> cateList;
 		for (TbRecipes recipes : list) {
 			// 获得分类数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(recipes.getId(), RELA_REC);
+			cateList = cateMapper.selectCateNameByItemIdAndType(recipes.getId(), ItemConstant.RELA_REC);
 			recipes.setCname(String.join(",", cateList));
 		}
 
@@ -290,7 +288,7 @@ public class ItemRecServiceImpl implements ItemRecService {
 		// 分类数据
 		TbItemRelaCate itemRelaCate = new TbItemRelaCate();
 		itemRelaCate.setItemId(recipes.getId());
-		itemRelaCate.setType(RELA_REC);
+		itemRelaCate.setType(ItemConstant.RELA_REC);
 		for (String cid : recipesVo.getCid()) {
 			if (StringUtils.isBlank(cid))
 				continue;
@@ -322,6 +320,7 @@ public class ItemRecServiceImpl implements ItemRecService {
 			jedisClient.del(ITEM_ID + ":" + RECIPES + ":" + id);
 			jedisClient.del(ITEM_DETAIL_ID + ":" + RECIPES + ":" + id);
 			jedisClient.del(ITEM_COUNT + ":" + RECIPES);
+			jedisClient.del(ItemConstant.RECIPES_MEALS);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -343,6 +342,7 @@ public class ItemRecServiceImpl implements ItemRecService {
 		try {
 			jedisClient.del(ITEM_ID + ":" + RECIPES + ":" + id);
 			jedisClient.del(ITEM_DETAIL_ID + ":" + RECIPES + ":" + id);
+			jedisClient.del(ItemConstant.RECIPES_MEALS);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -352,7 +352,6 @@ public class ItemRecServiceImpl implements ItemRecService {
 
 	@Override
 	public int updateItem(Integer id, RecipesVo recipesVo) {
-
 		TbRecipes oldRecipes = getNormalItemById(id);
 		TbRecipes recipes = DtoUtil.RecipesVo2TbRecipes(recipesVo);
 		recipes.setId(id);
@@ -374,7 +373,7 @@ public class ItemRecServiceImpl implements ItemRecService {
 
 		// 分类数据
 		itemRelaCate.setItemId(id);
-		itemRelaCate.setType(RELA_REC);
+		itemRelaCate.setType(ItemConstant.RELA_REC);
 		for (String did : recipesVo.getCid()) {
 			if (StringUtils.isBlank(did))
 				continue;
@@ -386,6 +385,7 @@ public class ItemRecServiceImpl implements ItemRecService {
 		try {
 			jedisClient.del(ITEM_ID + ":" + RECIPES + ":" + id);
 			jedisClient.del(ITEM_DETAIL_ID + ":" + RECIPES + ":" + id);
+			jedisClient.del(ItemConstant.RECIPES_MEALS);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -393,20 +393,5 @@ public class ItemRecServiceImpl implements ItemRecService {
 		return 1;
 	}
 
-	/**
-	 * 发送消息同步索引库
-	 * 
-	 * @param type
-	 * @param id
-	 */
-	public void sendRefreshESMessage(String type, int id) {
-		jmsTemplate.send(topicDestination, new MessageCreator() {
-			@Override
-			public Message createMessage(Session session) throws JMSException {
-				TextMessage textMessage = session.createTextMessage(type + "," + String.valueOf(id));
-				return textMessage;
-			}
-		});
-	}
 
 }

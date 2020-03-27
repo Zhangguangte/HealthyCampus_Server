@@ -6,11 +6,7 @@ import java.util.Date;
 public class TbArticle implements Serializable{
     private Integer id;
 
-    private String name;
-
     private String title;
-
-    private String subTitle;
 
     private String content;
 
@@ -18,7 +14,7 @@ public class TbArticle implements Serializable{
 
     private String introduction;
 
-    private String status;
+    private Boolean status;
 
     private Date created;
 
@@ -32,28 +28,12 @@ public class TbArticle implements Serializable{
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
-    }
-
-    public String getSubTitle() {
-        return subTitle;
-    }
-
-    public void setSubTitle(String subTitle) {
-        this.subTitle = subTitle == null ? null : subTitle.trim();
     }
 
     public String getContent() {
@@ -80,12 +60,12 @@ public class TbArticle implements Serializable{
         this.introduction = introduction == null ? null : introduction.trim();
     }
 
-    public String getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public Date getCreated() {

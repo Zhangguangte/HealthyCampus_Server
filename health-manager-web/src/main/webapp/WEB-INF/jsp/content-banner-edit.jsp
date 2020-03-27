@@ -34,10 +34,10 @@
 <div class="page-container">
     <form name="article-add" action="" method="post" class="form form-horizontal" id="article-add">
         <input type="text" hidden class="input-text" id="id" name="id">
-        <input type="text" hidden class="input-text" id="panelId" name="panelId">
         <input type="text" hidden class="input-text" id="position" name="position">
+        <input type="text" hidden class="input-text" id="panelId" name="panelId">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">所属板块：</label>
+            <label class="form-label col-xs-4 col-sm-2">所属板块:</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span id="name" name="name"></span>
             </div>
@@ -45,7 +45,7 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">
                 <span class="c-red">*</span>
-                类型：</label>
+                类型:</label>
             <div class="formControls col-xs-6 col-sm-3">
                 <select id="type" class="select-box" name="type">
                     <option value="0">关联文章</option>
@@ -54,33 +54,34 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>排序优先值：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>排序优先值:</label>
             <div class="formControls col-xs-8 col-sm-4">
                 <input type="text" class="input-text" placeholder="请输入0~9999，值越小排序越前" id="sortOrder" name="sortOrder">
             </div>
         </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">其他链接：</label>
+        <div class="row cl" id="otherUrl" style="display:none;">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>其他链接:</label>
             <div class="formControls col-xs-8 col-sm-4">
                 <input type="text" class="input-text" placeholder="http://" id="fullUrl" name="fullUrl">
             </div>
         </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">选择展示文章：</label>
+        <div class="row cl" id="selectContent">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择展示文章:</label>
             <div class="formControls col-xs-8 col-sm-6">
-                <input type="text" onclick="chooseArticle()" readonly class="input-text" placeholder="请点击选择按钮选择关联文章" id="title" name="title" style="width: 65%">
+				<input type="text" onclick="chooseArticle()" readonly class="input-text" placeholder="请点击选择按钮选择关联文章" id="title" name="title" style="width: 65%">
                 <input type="button" onclick="chooseArticle()" class="btn btn-secondary radius" value="选择关联文章">
             </div>
         </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">所选文章ID：</label>
+        <div class="row cl" id="selectID">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>所选文章ID:</label>
             <div class="formControls col-xs-8 col-sm-4">
                 <input type="text" onclick="chooseArticle()" readonly placeholder="请点击选择按钮选择关联文章" class="input-text" id="articleId" name="articleId">
             </div>
         </div>
-        <input type="text" name="picUrl" id="picUrl" hidden/>
+        <input type="text" name="picUrl" id="picUrl" value="" hidden/>
+        <input type="text" name="pUrl" id="pUrl" hidden/>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">展示图片上传：</label>
+            <label class="form-label col-xs-4 col-sm-2">展示图片上传:</label>
             <div class="formControls col-xs-5 col-sm-6">
                 <div class="uploader-list-container">
                     <div class="queueList">
@@ -148,11 +149,33 @@
         layer_show("选择展示文章","choose-article",900,600);
     }
 
-    function setIdAndTitle(id,title){
-        $("#articleId").val(id);
-        $("#title").val(title);
+    function setIdAndTitle(id,title,picUrl){
+    	 $("#articleId").val(id);
+         $("#title").val(title);
+         $("#pUrl").val(picUrl);
+         $("#imageUrl").attr("href",picUrl);
+         $("#imageShow").attr("src",picUrl);
+    }
+    
+    changeType(0 == parent.type);
+    
+    $("#type").change(function(){
+    	changeType(0 == $("#type option:selected").val());
+    })
+	
+    function changeType(bol){
+    	if(bol){
+			$("#otherUrl").hide();
+			$("#selectContent").show();
+			$("#selectID").show();
+		}else{
+			$("#otherUrl").show();
+			$("#selectContent").hide();
+			$("#selectID").hide();
+		}
     }
 
+    var images = "";
     //保存发布
     $("#article-add").validate({
         rules:{
@@ -169,7 +192,7 @@
             var type=$("#type").val();
             var fullUrl=$("#fullUrl").val();
             var selectArticleId=$("#articleId").val();
-            if((type==0&&selectArticleId=="")||(type==2&&selectArticleId=="")){
+            if((type==0&&selectArticleId=="")){
                 layer.alert('请选择关联文章! ', {title: '错误信息',icon: 0});
                 return;
             }
@@ -177,12 +200,22 @@
                 layer.alert('请填写跳转链接! ', {title: '错误信息',icon: 0});
                 return;
             }
-            var index = layer.load(3);
+            if(type==1&&$("#picUrl").val()==""){
+                layer.alert('请上传文章展示缩略图! ', {title: '错误信息',icon: 0});
+                return;
+            }
+            if(0 == type)
+            	$("#picUrl").val($("#pUrl").val());
+            else if(1 == type)
+            	$("#articleId").val("");
+                        	
+            	
+            var index1 = layer.load(3);
             $(form).ajaxSubmit({
                 url: "/content/update",
                 type: "POST",
                 success: function(data) {
-                    layer.close(index);
+                    layer.close(index1);
                     if(data.success==true){
                         parent.refresh();
                         parent.msgSuccess("编辑成功!");
@@ -193,7 +226,7 @@
                     }
                 },
                 error:function(XMLHttpRequest) {
-                    layer.close(index);
+                    layer.close(index1);
                     layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status,{title: '错误信息',icon: 2});
                 }
             });

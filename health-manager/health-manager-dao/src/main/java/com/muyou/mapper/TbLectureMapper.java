@@ -1,5 +1,6 @@
 package com.muyou.mapper;
 
+import com.muyou.pojo.TbDisease;
 import com.muyou.pojo.TbLecture;
 import com.muyou.pojo.TbLectureExample;
 import java.util.List;
@@ -29,9 +30,8 @@ public interface TbLectureMapper {
 	int updateByPrimaryKey(TbLecture record);
 
 	//前台
-	List<TbLecture> selectItemByCollege(@Param("college") String college,@Param("row") Integer row);
-	
-	
+	List<TbLecture> selectItemByClassify(@Param("cid") int cid, @Param("page") int page, @Param("row") int row);
+
 	// 后台
 	List<TbLecture> selectItemByCondition(@Param("cid") int cid, @Param("orderCol") String orderCol,
 			@Param("orderDir") String orderDir);

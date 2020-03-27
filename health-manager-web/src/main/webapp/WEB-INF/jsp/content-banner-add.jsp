@@ -36,7 +36,7 @@
         <input type="text" hidden class="input-text" id="panelId" name="panelId">
         <input type="text" hidden class="input-text" id="position" name="position">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">所属板块：</label>
+            <label class="form-label col-xs-4 col-sm-2">所属板块:</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span id="name" name="name"></span>
             </div>
@@ -44,42 +44,44 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">
                 <span class="c-red">*</span>
-                类型：</label>
+                类型:</label>
             <div class="formControls col-xs-6 col-sm-3">
                 <select id="type" class="select-box" name="type">
-                    <option value="0">关联文章</option>
                     <option value="1">其他链接</option>
+                    <option value="0">关联文章</option>
                 </select>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>排序优先值：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>排序优先值:</label>
             <div class="formControls col-xs-8 col-sm-4">
                 <input type="text" class="input-text" placeholder="请输入0~9999，值越小排序越前" id="sortOrder" name="sortOrder">
             </div>
         </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">其他链接：</label>
+        <div class="row cl" id="otherUrl" >
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>其他链接:</label>
             <div class="formControls col-xs-8 col-sm-4">
                 <input type="text" class="input-text" placeholder="http://" id="fullUrl" name="fullUrl">
             </div>
         </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">选择展示文章：</label>
+        <div class="row cl" id="selectContent" style="display:none;">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择展示文章:</label>
             <div class="formControls col-xs-8 col-sm-6">
 				<input type="text" onclick="chooseArticle()" readonly class="input-text" placeholder="请点击选择按钮选择关联文章" id="title" name="title" style="width: 65%">
                 <input type="button" onclick="chooseArticle()" class="btn btn-secondary radius" value="选择关联文章">
             </div>
         </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">所选文章ID：</label>
+        <div class="row cl" id="selectID" style="display:none;">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>所选文章ID:</label>
             <div class="formControls col-xs-8 col-sm-4">
                 <input type="text" onclick="chooseArticle()" readonly placeholder="请点击选择按钮选择关联文章" class="input-text" id="articleId" name="articleId">
             </div>
         </div>
         <input type="text" name="picUrl" id="picUrl" hidden/>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>轮播图图片上传：</label>
+        <input type="text" name="pUrl" id="pUrl" hidden/>
+        <div class="row cl" id="uImg">
+            <input type="text" hidden class="input-text" id="logo" name="logo" >
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>展示缩略图片上传：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <div class="uploader-list-container">
                     <div class="queueList">
@@ -92,7 +94,7 @@
                         <div class="progress"> <span class="text">0%</span> <span class="percentage"></span> </div>
                         <div class="info"></div>
                         <div class="btns">
-                            <div id="filePicker2"></div>
+                            <!-- <div id="filePicker2"></div> -->
                             <div class="uploadBtn">开始上传</div>
                         </div>
                     </div>
@@ -131,13 +133,27 @@
         layer_show("选择展示文章","choose-article",900,600);
     }
 
-    function setIdAndTitle(id,title){
+    function setIdAndTitle(id,title,picUrl){
         $("#articleId").val(id);
         $("#title").val(title);
+        $("#pUrl").val(picUrl);
     }
 
-    //默认图片
-    var images="";
+    $("#type").change(function(){
+    	if(0 == $("#type option:selected").val()){
+    		$("#uImg").hide();
+			$("#otherUrl").hide();
+			$("#selectContent").show();
+			$("#selectID").show();
+		}else{
+			$("#uImg").show();
+			$("#otherUrl").show();
+			$("#selectContent").hide();
+			$("#selectID").hide();
+		}
+    })
+	
+    
 
     //保存发布
     $("#article-add").validate({
@@ -155,7 +171,7 @@
             var type=$("#type").val();
             var fullUrl=$("#fullUrl").val();
             var selectArticleId=$("#articleId").val();
-            if((type==0&&selectArticleId=="")||(type==2&&selectArticleId=="")){
+            if((type==0&&selectArticleId=="")){
                 layer.alert('请选择关联文章! ', {title: '错误信息',icon: 0});
                 return;
             }
@@ -163,16 +179,22 @@
                 layer.alert('请填写跳转链接! ', {title: '错误信息',icon: 0});
                 return;
             }
-            if(images==""){
+            if(type==1&&images==""){
                 layer.alert('请上传文章展示缩略图! ', {title: '错误信息',icon: 0});
                 return;
             }
-            var index = layer.load(3);
+            
+            if(0 == type)
+            	$("#picUrl").val($("#pUrl").val());
+            else if(1 == type)
+            	$("#articleId").val("");
+            
+            var index1 = layer.load(3);
             $(form).ajaxSubmit({
                 url: "/content/add",
                 type: "POST",
                 success: function(data) {
-                    layer.close(index);
+                    layer.close(index1);
                     if(data.success==true){
                         parent.refresh();
                         parent.msgSuccess("添加成功!");
@@ -184,13 +206,16 @@
                     }
                 },
                 error:function(XMLHttpRequest) {
-                    layer.close(index);
+                    layer.close(index1);
                     layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status,{title: '错误信息',icon: 2});
                 }
             });
         }
     });
 
+  	//默认图片
+    var images="";
+  
     (function ($) {
         $('.skin-minimal input').iCheck({
             checkboxClass: 'icheckbox-blue',
@@ -714,10 +739,8 @@
             // 文件上传成功
             uploader.on( 'uploadSuccess', function( file,data ) {
             	if(data.success==true){
-            		images = data.result;
                 	$("#picUrl").val(data.result);
-                    $("#imageUrl").attr("href",data.result);
-                    $("#imageShow").attr("src",data.result);
+                	images=data.result;
                 }else{
                     layer.alert("上传失败:"+data.message)
                 }

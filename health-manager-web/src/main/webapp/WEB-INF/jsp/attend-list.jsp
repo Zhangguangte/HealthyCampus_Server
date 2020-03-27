@@ -23,15 +23,14 @@
     <title>考勤</title>
 </head>
 <style>
-	li { background-color: #f5fafe;border-bottom:1px solid #ddd;}
-	li:hover { cursor: pointer;background-color: #f5f5f5;}
+	.noactive { background-color: #f5fafe;border-bottom:1px solid #ddd;}
+	.noactive:hover { cursor: pointer;background-color: #f5f5f5;}
 	.list-view>.item {padding:5px;}
 	.table>tbody>tr>td{
         text-align:center;
     }
     .active{
 			background-color: #00a0e9;
-			color: #fff;
 			cursor:default;
 		}
 </style>
@@ -136,7 +135,7 @@
                     	{	if(row.sex == 1)
 	                    	    data = "http://192.168.2.134/group1/M00/00/00/wKgChl5s1oyAS_bLAAAfr9y-QVY626.png";
 	                    	else
-	                    		data = "http://192.168.2.134/group1/M00/00/00/wKgChl5s1qiAfRW3AAAf6omf-1g841.png";
+	                    		data = "http://192.168.2.134/group1/M00/00/00/wKgChl5yTi2AWrUkAAAf6omf-1g193.png";
                     	}
                     	return '<img src="'+data+'" style="width: 40px;height: 40px" alt="lose image" />';
                     }
@@ -198,11 +197,7 @@
                 {
                     "data": null,
                     render: function (data, type, row, meta) {
-                        if (row.state == 1) {
-                            return "<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"attend_edit('考勤信息编辑','attend-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a>";
-                        } else {
-                            return "<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"attend_edit('考勤信息编辑','attend-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a>";
-                        }
+                    	 return "<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"attend_edit('考勤信息编辑','attend-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a>";
                     }
                 }
             ],
@@ -240,11 +235,20 @@
 
     });
     
+    var dateStr = "";
+    var uLi;
+    
     $("ul").on("click","li",function(){
-		$("ul li").removeClass("active");
+    	if(dateStr == $(this).html())
+    		return ;
+    	dateStr = $(this).html();
+    	if(null != uLi){
+    		uLi.removeClass("active");
+    		uLi.addClass("noactive");
+		}
+		$(this).removeClass("noactive");
 		$(this).addClass("active");
-		$(this).removeAttr("onclick");
-		$(this).addClass("focus").css("pointer-events","none");;
+		uLi = $(this);
 	});
     
     var sid="",sname="",sex="",cname="",status="";
@@ -308,8 +312,8 @@
            		return ;
            	var con = data.result;
            	var html = "";
-            $.each(con, function(k,v) {//这里的函数参数是键值对的形式，k代表键名，v代表值
-            	html+="<li class=\"item\" onclick=\"atttend_list("+con[k].time+",'"+con[k].no+"')\">"+date(con[k].time)+"</li>";
+           	$.each(con, function(k,v) {//这里的函数参数是键值对的形式，k代表键名，v代表值
+            	html+="<li class=\"item noactive\" onclick=\"atttend_list("+con[k].time+",'"+con[k].no+"')\">"+date(con[k].time)+"</li>";
             });
             $("#dateList").append(html);
         },

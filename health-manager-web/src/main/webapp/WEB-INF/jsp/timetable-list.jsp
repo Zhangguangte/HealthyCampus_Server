@@ -136,7 +136,7 @@
     	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
     <form id="form-search" class="page-container">
     	<div class="row cl">
-            <label class="form-label col-xs-1 col-sm-1">日期范围:</label>
+            <label class="form-label col-xs-1 col-sm-2">日期范围:</label>
             <div class="formControls col-xs-2 col-sm-3">
                 <span class="select-box">
 				  <select class="select" size="1" name="cYear" id="cYear">

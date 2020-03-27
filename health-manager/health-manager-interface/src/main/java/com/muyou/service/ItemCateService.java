@@ -24,12 +24,22 @@ public interface ItemCateService {
 	List<ZTreeNode> getItemCateList(int parentId, int type);
 
 	/**
+	 * 获得班级分类树
+	 * 
+	 * @param parentId
+	 * @param year
+	 * @return
+	 */
+	List<ZTreeNode> getClsCate(int parentId, int year);
+
+	/**
 	 * 添加分类
+	 * 
 	 * @param cate
 	 * @param type
 	 * @return
 	 */
-	int addItemCate(TbCate cate,int type);
+	int addItemCate(TbCate cate, int type);
 
 	/**
 	 * 编辑分类
@@ -40,34 +50,53 @@ public interface ItemCateService {
 	int updateItemCate(TbCate cate);
 
 	/**
+	 * 编辑食堂分类
+	 * 
+	 * @param id
+	 * @param type
+	 * @return
+	 */
+	int updateItemCate(int id, int type);
+
+	/**
 	 * 删除单个分类
 	 * 
 	 * @param id
 	 */
-	void deleteItemCate(int id, int type);
+	int deleteItemCate(int id, int type);
+
+	/**
+	 * 删除食堂分类
+	 * 
+	 * @param id
+	 * @param type
+	 */
+	int delCanteen(int id, int type);
 
 	/**
 	 * 递归删除
 	 * 
 	 * @param id
 	 */
-	void deleteZTree(int id, int type);
+	int deleteZTree(int id, int type);
 
 	/**
 	 * 添加食堂食谱
+	 * 
 	 * @param id
 	 * @param parentId
 	 * @param name
 	 * @return
 	 */
-    int addCanteenItemCate(int id,int parentId,String name);
-    
-    /**
-     * 删除食堂食谱
-     * @param id
-     * @param parentId
-     * @return
-     */
-    int delCanteenItemCate(int id,int parentId);
-    
+	int addCanteenItemCate(int id, int parentId, String name);
+
+	/**
+	 * 删除食堂食谱
+	 * 
+	 * @param id
+	 * @param parentId
+	 * @return
+	 */
+	int delCanteenItemCate(int id, int parentId);
+
 }

@@ -2,23 +2,27 @@ package com.muyou.common.form;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.muyou.common.util.StringUtil;
 
-public class LoginForm implements Serializable{
+public class LoginForm implements Serializable {
 	private String device_id;
 	private String account;
 	private String password;
 
-    public LoginForm(String account, String password) {
+	public LoginForm() {
+	}
+	
+	public LoginForm(String account, String password) {
 		super();
 		this.account = account;
 		this.password = password;
 	}
 
 	public boolean validate() {
-        return StringUtil.isEmpty(account)
-                || StringUtil.isEmpty(password);
-    }
+		return StringUtils.isBlank(account) || StringUtils.isBlank(password);
+	}
 
 	public String getDevice_id() {
 		return device_id;
@@ -43,6 +47,5 @@ public class LoginForm implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-    
-    
+
 }

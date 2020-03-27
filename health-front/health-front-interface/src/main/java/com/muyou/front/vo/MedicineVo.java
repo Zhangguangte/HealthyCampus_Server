@@ -2,17 +2,16 @@ package com.muyou.front.vo;
 
 import java.io.Serializable;
 
-import com.muyou.pojo.TbClassify;
-
 public class MedicineVo implements Serializable {
 	private String typeName;
 	private String classifyName;
 
-	public MedicineVo() {}
-	
-	public MedicineVo(TbClassify classify) {
-		this.typeName = classify.getTitle();
-		this.classifyName = classify.getClassify();
+	public MedicineVo() {
+	}
+
+	public MedicineVo(String type, String classify) {
+		this.typeName = type;
+		this.classifyName = classify;
 	}
 
 	public String getTypeName() {

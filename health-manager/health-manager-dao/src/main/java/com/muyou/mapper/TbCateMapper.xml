@@ -304,6 +304,32 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
+	<!-- 前台 -->
+  	<select id="selectCanteenCate" resultType="String">
+  		SELECT 
+  			c3.remark 
+  		FROM 
+  			tb_cate c3 
+  		WHERE 
+  			c3.parent_id in 
+		(SELECT 
+			c2.id 
+		from 
+			tb_cate c2 
+		where 
+			c2.parent_id in  
+		(SELECT 
+			c1.id 
+		FROM 
+			tb_cate c1 
+		where 
+			c1.parent_id = #{id} 
+		and c1.type = 3 and c1.name = #{cname1}) 
+		and c2.name = #{cname2})
+  	</select>
+  
+  
+  	<!-- 后台 -->
   <select id="selectItemCate" resultMap="BaseResultMap" parameterType="Integer">
 	  select 
 	  	c.id,c.name 
@@ -328,6 +354,17 @@
 	  	r.item_id = #{itemId}
 	  and 
 	  	r.type = #{type}
+  </select>
+  
+   <select id="selectSubCateNameByPIdAndType" resultType="String" parameterType="Integer">
+	  select 
+	  	c.name 
+	  from 
+	  	tb_cate c
+	  where 
+	  	c.parent_id = #{parentId}
+	  and 
+	  	c.type = #{type}
   </select>
   
 </mapper>

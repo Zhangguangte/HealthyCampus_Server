@@ -20,50 +20,83 @@
     <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
-    <title>用户管理</title>
+    <title>学生列表</title>
+    <link rel="stylesheet" href="lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
 </head>
 <style>
     .table>tbody>tr>td{
         text-align:center;
     }
 </style>
-<body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户中心 <span class="c-gray en">&gt;</span> 用户管理 <a id="btn-refresh" class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div class="page-container">
-    <form id="form-search" class="text-c"> 日期范围：
-        <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'maxDate\')||\'%y-%M-%d\'}' })" id="minDate" name="minDate" class="input-text Wdate" style="width:120px;">
-        -
-        <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'minDate\')}',maxDate:'%y-%M-%d' })" id="maxDate" name="maxDate" class="input-text Wdate" style="width:120px;">
-        <input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱等信息" id="searchKey" name="searchKey">
-        <button id="searchButton" type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
-    </form>
-    <div class="cl pd-5 bg-1 bk-gray mt-20">
-        <span class="l">
-            <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a href="javascript:;" onclick="member_add('添加用户','member-add','','630')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a>
-        </span>
-        <span class="r">共有数据：<strong id="memberListCount">0</strong> 条</span>
-    </div>
-    <div class="mt-20" style="margin-bottom: 70px">
-        <table class="table table-border table-bordered table-hover table-bg table-sort" width="100%">
-            <thead>
-            <tr class="text-c">
-                <th width="30"><input type="checkbox" name="" value=""></th>
-                <th width="40">ID</th>
-                <th width="80">用户名</th>
-                <th width="40">性别</th>
-                <th width="90">手机</th>
-                <th width="100">邮箱</th>
-                <th width="120">地址</th>
-                <th width="90">创建时间</th>
-                <th width="90">更新时间</th>
-                <th width="50">状态</th>
-                <th width="110">操作</th>
-            </tr>
-            </thead>
-        </table>
-    </div>
+
+<body class="pos-r">
+<div class="pos-a" style="width:200px;left:0;top:0; bottom:0; height:100%; border-right:1px solid #e5e5e5; background-color:#f5f5f5; overflow:auto;">
+    <div>
+	    <span class="select-box">
+		  <select class="select" size="1" name="year" id="year">
+		    <option value="2020" selected>2020</option>
+		    <option value="2019">2019</option>
+		    <option value="2018">2018</option>
+		    <option value="2017">2017</option>
+		    <option value="2016">2016</option>
+		    <option value="2015">2015</option>
+		    <option value="2014">2014</option>
+		  </select>
+		</span>
+	</div>
+	<ul style="margin-top: 15px;margin-left: 20px">
+    	<i class="Hui-iconfont Hui-iconfont-fenlei"></i> 学院分类
+    </ul>
+    <ul id="treeDemo" style="margin-left: 10px" class="ztree"></ul>
 </div>
+<div style="margin-left:200px;">
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 学生管理 <span class="c-gray en">&gt;</span> 学生列表 <span class="c-gray en">&gt;</span><span id="category">所有学生</span> <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <form id="form-search" class="page-container">
+        <div class="text-c"> 日期范围：
+            <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'maxDate\')||\'%y-%M-%d\'}' })" id="minDate" name="minDate" class="input-text Wdate" style="width:120px;">
+            <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'minDate\')}',maxDate:'%y-%M-%d' })" id="maxDate" name="maxDate" class="input-text Wdate" style="width:120px;">
+            <input type="text" name="searchKey" id="searchKey" placeholder=" 学生学号、学生名称等" style="width:250px" class="input-text">
+            <button name="" id="searchButton" type="submit" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i> 搜学生</button>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20"> 
+        	<span class="l">
+        		<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+        			<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
+        		</a> 
+        		<a class="btn btn-primary radius" onclick="student_add('添加学生','student-add')" href="javascript:;">
+        			<i class="Hui-iconfont">&#xe600;</i> 添加学生
+        		</a>
+        	</span>
+        	<span class="r">
+        		共有数据:<strong id="itemListCount">0</strong> 条
+        	</span> 
+        </div>
+        <div class="mt-20">
+            <div class="mt-20" style="margin-bottom: 70px">
+                <table class="table table-border table-bordered table-bg table-hover table-sort" width="100%">
+                    <thead>
+                    <tr class="text-c">
+                        <th width="30"><input name="" type="checkbox" value=""></th>
+                        <th width="50">ID</th>
+                       <!--  <th width="100">头像</th> -->
+                        <th width="100">姓名</th>
+                        <th width="100">学号</th>
+                        <th width="70">班级</th>
+                      	<th width="70">出生日期</th>
+                        <th width="90">电话</th>
+                        <th width="30">性别</th>
+                        <th width="40">学年</th>
+                        <th width="100">创建时间</th>
+                        <th width="70">状态</th>
+                        <th width="70">操作</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
@@ -71,6 +104,7 @@
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
 <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
@@ -80,18 +114,24 @@
 <script type="text/javascript" src="lib/common.js"></script>
 <script type="text/javascript">
 
-    $(function() {
-        $('.table').dataTable({
+	var CATE_COL = 6;
+	
+	var CATE_CLS = 8;
+
+	var isFirst = true;
+	
+    /*datatables配置*/
+    $(document).ready(function () {
+        $('.table').DataTable({
             serverSide: true,//开启服务器模式
             "processing": true,//加载显示提示
             "ajax": {
-                url:"member/list",
+                url:"/item/student/list",
                 type: 'GET',
-                data:{
-                    "searchKey": "",
-                    "minDate": "",
-                    "maxDate": "",
-                },
+                dataType: "json",
+                data: {
+                	"cid":-1
+                }
             },
             "columns": [
                 { "data": null,
@@ -100,106 +140,260 @@
                     }
                 },
                 { "data": "id"},
-                { "data": "username",
-                    render: function(data,type, row, meta){
-                        return "<u style=\"cursor:pointer\" class=\"text-primary\" onclick=\"member_show('用户详情','member-show','360','400')\">"+data+"</a>";
+                /* { "data": "avator",
+                	render: function(data, type, row, meta) {
+                    	if(null == data || "" == data)
+                    	{	if(row.sex == 1)
+	                    	    data = "http://192.168.2.134/group1/M00/00/00/wKgChl5s1oyAS_bLAAAfr9y-QVY626.png";
+	                    	else
+	                    		data = "http://192.168.2.134/group1/M00/00/00/wKgChl5s1qiAfRW3AAAf6omf-1g841.png";
+                    	}
+                    	return '<img src="'+data+'" style="width: 40px;height: 40px" alt="lose image" />';
+                    }
+                }, */
+                { "data": "name",
+                    render: function(data, type, row, meta) {
+                        if (type === 'display') {
+                            if (data.length > 20) {
+                                return '<span title=' + data + '>' + data.substr(0, 20) + '...</span>';
+                            } else {
+                                return '<span title=' + data + '>' + data + '</span>';
+                            }
+                        }
+                        return data;
                     }
                 },
-                { "data": "sex"},
-                { "data": "phone"},
-                { "data": "email"},
-                { "data": "address"},
+                { "data": "no",
+                    render: function(data, type, row, meta) {
+                        if (type === 'display') {
+                            if (data.length > 20) {
+                                return '<span title=' + data + '>' + data.substr(0, 20) + '...</span>';
+                            } else {
+                                return '<span title=' + data + '>' + data + '</span>';
+                            }
+                        }
+                        return data;
+                    }
+                },
+                { "data": "cname",
+                    render: function(data, type, row, meta) {
+                        if (type === 'display') {
+                            if (data.length > 20) {
+                                return '<span title=' + data + '>' + data.substr(0, 20) + '...</span>';
+                            } else {
+                                return '<span title=' + data + '>' + data + '</span>';
+                            }
+                        }
+                        return data;
+                    }
+                },
+                { "data": "birthday",
+                	render: function(data, type, row, meta) {
+                		return date3(data);
+                    }			
+                },
+                { "data": "telephone",
+                	render: function(data, type, row, meta) {
+                        if (type === 'display') {
+                            if (data.length > 20) {
+                                return '<span title=' + data + '>' + data.substr(0, 20) + '...</span>';
+                            } else {
+                                return '<span title=' + data + '>' + data + '</span>';
+                            }
+                        }
+                        return data;
+                    }		
+                },
+                { "data": "sex",
+                	render: function(data, type, row, meta) {
+                         if (type === 'display') {
+                             if (1 == data) {
+                                 return '<span title="男">男</span>';
+                             } else {
+                                 return '<span title="女">女</span>';
+                             }
+                         }
+                         return data;
+                     }
+                },
+                { "data": "year",
+                	render: function(data, type, row, meta) {
+                        if (type === 'display') {
+                            if (data.length > 20) {
+                                return '<span title=' + data + '>' + data.substr(0, 20) + '...</span>';
+                            } else {
+                                return '<span title=' + data + '>' + data + '</span>';
+                            }
+                        }
+                        return data;
+                    }		
+                },
                 { "data": "created",
-                    render : function(data,type, row, meta) {
-                        return date(data);
-                    }
-                },
-                { "data": "updated",
                     render : function(data,type, row, meta) {
                         return date(data);
                     }
                 },
                 { "data": "state",
                     render : function(data,type, row, meta) {
-                        if(data==0){
+                        if(data==1){
+                            return "<span class=\"label label-success radius td-status\">使用</span>";
+                        }else if(data==0){
                             return "<span class=\"label label-defant radius td-status\">已停用</span>";
-                        }else if(data==1){
-                            return "<span class=\"label label-success radius td-status\">已启用</span>";
                         }else{
                             return "<span class=\"label label-warning radius td-status\">其它态</span>";
                         }
                     }
                 },
-                { "data": null,
-                    render : function(data,type, row, meta) {
-                        if(row.state==1){
-                            return "<a id=\"td-manage\" style=\"text-decoration:none\" onClick=\"member_stop(this,"+row.id+")\" href=\"javascript:;\" title=\"停用\"><i class=\"Hui-iconfont\">&#xe631;</i></a> <a title=\"编辑\" href=\"javascript:;\" onclick=\"member_edit('编辑','member-edit',"+row.id+",'','510')\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> <a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"change_password('修改密码','change-password',"+row.id+",'600','270')\" href=\"javascript:;\" title=\"修改密码\"><i class=\"Hui-iconfont\">&#xe63f;</i></a> <a title=\"删除\" href=\"javascript:;\" onclick=\"member_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
-                        } else{
-                            return "<a id=\"td-manage\" style=\"text-decoration:none\" onClick=\"member_start(this,"+row.id+")\" href=\"javascript:;\" title=\"启用\"><i class=\"Hui-iconfont\">&#xe6e1;</i></a> <a title=\"编辑\" href=\"javascript:;\" onclick=\"member_edit('编辑','member-edit',"+row.id+",'','510')\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> <a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"change_password('修改密码','change-password',"+row.id+",'600','270')\" href=\"javascript:;\" title=\"修改密码\"><i class=\"Hui-iconfont\">&#xe63f;</i></a> <a title=\"删除\" href=\"javascript:;\" onclick=\"member_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
+                {
+                    "data": null,
+                    render: function (data, type, row, meta) {
+                        if (row.state == 1) {
+                            return "<a style=\"text-decoration:none\" onClick=\"student_stop(this,"+row.id+")\" href=\"javascript:;\" title=\"下架\"><i class=\"Hui-iconfont\">&#xe6de;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"student_edit('学生信息编辑','student-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"student_del(this,"+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
+                        } else {
+                            return "<a style=\"text-decoration:none\" onClick=\"student_start(this,"+row.id+")\" href=\"javascript:;\" title=\"发布\"><i class=\"Hui-iconfont\">&#xe603;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"student_edit('学生信息编辑','student-edit',"+row.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a><a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"student_del(this,"+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
                         }
                     }
                 }
             ],
-            "aaSorting": [[ 7, "desc" ]],//默认第几个排序
+            "aaSorting": [[ 1, "asc" ]],//默认第几个排序
             "bStateSave": false,//状态保存
             "aoColumnDefs": [
-                //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-                {"orderable":false,"aTargets":[0,10]}// 制定列不参与排序
+                {"orderable":false,"aTargets":[0,2,3,4,5,6,7,8,9,10,11]}// 制定列不参与排序
             ],
+            searching : false, //去掉搜索框方法一
+            dom: '<"pull-left"B>ft<"pull-left"i>p', 
             language: {
                 url: '/lib/datatables/Chinese.json'
             },
             colReorder: true
         });
 
-        member_count();
-    })
+    });
 
-    /*统计用户数*/
-    function member_count(){
-        $.ajax({
-            url:"/member/count",
-            type:"GET",
-            success:function (data) {
-                $("#memberListCount").html(data.recordsTotal);
-            },
-            error:function(XMLHttpRequest){
-                layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status,{title: '错误信息',icon: 2});
+    function getAsyncUrl() {
+    	if(isFirst){
+        	isFirst = false;
+        	return "/item/cate/list?type="+CATE_COL+"&factor=0";
+    	}else
+        	return "/item/cate/cls?year="+$("#year option:selected").val(); 
+    };
+    
+    var cname = "";
+    
+    var setting = {
+        view: {
+            dblClickExpand: true,
+            showLine: false,
+            selectedMulti: false
+        },
+        data: {
+            simpleData: {
+                enable:true,
+                idKey: "id",
+                pIdKey: "pId",
+                rootPId: ""
             }
-        });
+        },
+        async: {
+            enable: true,
+            url: getAsyncUrl,
+            type: "GET",
+            contentType: "application/json",
+            autoParam: ["id"],
+        },
+        callback: {
+            onAsyncSuccess: function(){
+                layer.close(index);
+            },
+            beforeClick: function(treeId, treeNode) {
+                if (treeNode.isParent) {
+               	 	return false;
+                } else {
+                	cid=treeNode.id;
+                	cname=treeNode.name;
+                    $("#category").html(treeNode.name);
+                    var param = {
+                        "cid": treeNode.id,
+                    };
+                    var table = $('.table').DataTable();
+                    table.settings()[0].ajax.data = param;
+                    table.ajax.url( '/item/student/list').load();
+                }
+            }
+        }
+    };
+    
+    initTree();
+
+    function initTree(){
+        var t = $("#treeDemo");
+        t = $.fn.zTree.init(t, setting);
+        demoIframe = $("#testIframe");
+        var zTree = $.fn.zTree.getZTreeObj("tree");
     }
 
-    var Id="",username="",phone="",email="",description="",sex="",address="",created="",balance="",points="",file="";
-
-    /*用户-添加*/
-    function member_add(title,url,w,h){
-        layer_show(title,url,w,h);
+    /*初始化类别数据*/
+    var cid=-1;
+    /*多条件查询*/
+    $("#form-search").validate({
+        rules:{
+            minDate:{
+                required:true,
+            },
+            maxDate:{
+                required:true,
+            },
+            searchKey:{
+                required:false,
+            },
+        },
+        onkeyup:false,
+        focusCleanup:false,
+        success:"valid",
+        submitHandler:function(form){
+            var searchKey= $('#searchKey').val();
+            var minDate= $('#minDate').val();
+            var maxDate= $('#maxDate').val();
+            var param = {
+                "searchKey": searchKey,
+                "minDate": minDate,
+                "maxDate":maxDate,
+                "cid":cid
+            };
+            var table = $('.table').DataTable();
+            table.settings()[0].ajax.data = param;
+            table.ajax.url( '/item/student/listSearch').load();
+        }
+    });
+    
+    var year;
+    
+    $("#year").change(function(){
+    	isFirst = true;
+    	initTree();
+    	year = $("#year option:selected").val();
+	})
+    
+    var ID=0;
+    function setId(id){
+        ID=id;
     }
-    /*用户-查看*/
-    function member_show(title,url,w,h){
-        var table = $('.table').DataTable();
-        $('.table tbody').on( 'click', 'tr', function () {
-            username = table.row(this).data().username;
-            phone = table.row(this).data().phone;
-            email = table.row(this).data().email;
-            description = table.row(this).data().description;
-            sex = table.row(this).data().sex;
-            address = table.row(this).data().address;
-            created = table.row(this).data().created;
-            balance = table.row(this).data().balance;
-            points = table.row(this).data().points;
-            file = table.row(this).data().file;
-        });
-        layer_show(title,url,w,h);
+
+    function getId(){
+        return ID;
     }
 
-    /*用户-停用*/
-    function member_stop(obj,id){
-        layer.confirm('确认要停用ID为\''+id+'\'的会员吗？',{icon:0},function(index){
+    function msgSuccess(content){
+        layer.msg(content, {icon: 1,time:3000});
+    }
+    
+    /*学生-关闭*/
+    function student_stop(obj,id){
+        layer.confirm('确认要关闭ID为\''+id+'\'的学生吗？',{icon:0},function(index){
             var index = layer.load(3);
             $.ajax({
                 type: 'PUT',
-                url: '/member/stop/'+id,
+                url: '/item/student/stop/'+id,
                 dataType: 'json',
                 success: function(data){
                     layer.close(index);
@@ -208,23 +402,29 @@
                         return;
                     }
                     refresh();
-                    layer.msg('已停用!',{icon: 5,time:1000});
+                    layer.msg('已关闭!',{icon: 5,time:1000});
                 },
                 error:function(XMLHttpRequest){
                     layer.close(index);
                     layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status,{title: '错误信息',icon: 2});
                 }
             });
+
         });
     }
 
-    /*用户-启用*/
-    function member_start(obj,id){
-        layer.confirm('确认要启用ID为\''+id+'\'的会员吗？',{icon:3},function(index){
+    /*学生-添加*/
+    function student_add(title,url){
+        layer_show(title,url,"","400");
+    }
+    
+    /*学生-启动*/
+    function student_start(obj,id){
+        layer.confirm('确认要启动ID为\''+id+'\'的学生吗？',{icon:3},function(index){
             var index = layer.load(3);
             $.ajax({
                 type: 'PUT',
-                url: '/member/start/'+id,
+                url: '/item/student/start/'+id,
                 dataType: 'json',
                 success: function(data){
                     layer.close(index);
@@ -233,7 +433,7 @@
                         return;
                     }
                     refresh();
-                    layer.msg('已启用!',{icon: 6,time:1000});
+                    layer.msg('已启动!',{icon: 6,time:1000});
                 },
                 error:function(XMLHttpRequest){
                     layer.close(index);
@@ -242,39 +442,25 @@
             });
         });
     }
-
-    /*用户-编辑*/
-    function member_edit(title,url,id,w,h){
-        Id=id;
-        var table = $('.table').DataTable();
-        $('.table tbody').on( 'click', 'tr', function () {
-            username = table.row(this).data().username;
-            phone = table.row(this).data().phone;
-            email = table.row(this).data().email;
-            description = table.row(this).data().description;
-            sex = table.row(this).data().sex;
-            address = table.row(this).data().address;
+    
+    /*学生-编辑*/
+    function student_edit(title,url,id){
+        setId(id);
+        var index = layer.open({
+            type: 2,
+            title: title,
+            content: url
         });
-        layer_show(title,url,w,h);
+        layer.full(index);
     }
-
-    /*密码-修改*/
-    function change_password(title,url,id,w,h){
-        Id=id;
-        var table = $('.table').DataTable();
-        $('.table tbody').on( 'click', 'tr', function () {
-            username = table.row(this).data().username;
-        });
-        layer_show(title,url,w,h);
-    }
-
-    /*用户-删除*/
-    function member_del(obj,id){
-        layer.confirm('确认要删除ID为\''+id+'\'的会员吗？',{icon:0},function(index){
+    
+    /*学生-删除*/
+    function student_del(obj,id){
+        layer.confirm('确认要删除ID为\''+id+'\'的学生吗？',{icon:0},function(index){
             var index = layer.load(3);
             $.ajax({
-                type: 'PUT',
-                url: '/member/remove/'+id,
+                type: 'DELETE',
+                url: '/item/student/del/'+id,
                 dataType: 'json',
                 success: function(data){
                     layer.close(index);
@@ -282,14 +468,13 @@
                         layer.alert(data.message,{title: '错误信息',icon: 2});
                         return;
                     }
-                    member_count();
                     refresh();
                     layer.msg('已删除!',{icon:1,time:1000});
                 },
-                error:function(XMLHttpRequest){
+                error:function(XMLHttpRequest) {
                     layer.close(index);
                     layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status,{title: '错误信息',icon: 2});
-                }
+                },
             });
         });
     }
@@ -315,8 +500,8 @@
         layer.confirm('确认要删除所选的'+count+'条数据吗？',{icon:0},function(index){
             var index = layer.load(3);
             $.ajax({
-                type: 'PUT',
-                url: '/member/remove/'+ids,
+                type: 'DELETE',
+                url: '/item/student/del/'+ids,
                 dataType: 'json',
                 success:function(data){
                     layer.close(index);
@@ -325,7 +510,6 @@
                         return;
                     }
                     layer.msg('已删除!',{icon:1,time:1000});
-                    member_count();
                     refresh();
                 },
                 error:function(XMLHttpRequest){
@@ -335,40 +519,6 @@
             });
         });
     }
-
-    function msgSuccess(content){
-        layer.msg(content, {icon: 1,time:3000});
-    }
-    /*多条件查询*/
-    $("#form-search").validate({
-        rules:{
-            minDate:{
-                required:true,
-            },
-            maxDate:{
-                required:true,
-            },
-            searchKey:{
-                required:false,
-            },
-        },
-        onkeyup:false,
-        focusCleanup:false,
-        success:"valid",
-        submitHandler:function(form){
-            var searchKey= $('#searchKey').val();
-            var minDate= $('#minDate').val();
-            var maxDate= $('#maxDate').val();
-            var param = {
-                "searchKey": searchKey,
-                "minDate": minDate,
-                "maxDate":maxDate
-            };
-            var table = $('.table').DataTable();
-            table.settings()[0].ajax.data = param;
-            table.ajax.reload();
-        }
-    });
 </script>
 </body>
 </html>

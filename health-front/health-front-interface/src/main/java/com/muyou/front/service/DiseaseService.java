@@ -5,6 +5,7 @@ import java.util.List;
 import com.muyou.common.form.RequestForm;
 import com.muyou.front.vo.DiseaseDetailVo;
 import com.muyou.front.vo.DiseaseSortListVo;
+import com.muyou.vo.DiseaseSortVo;
 
 /**
  * 疾病
@@ -16,8 +17,8 @@ public interface DiseaseService {
 	// 疾病分类
 	 List<DiseaseSortListVo> getDiseaseSortList(RequestForm requestForm);
 
-//	// 分类疾病
-//	 List<DiseaseSortVo> getDiseaseSort(RequestForm requestForm);
+	// 分类疾病
+	 List<DiseaseSortVo> getDiseaseSort(RequestForm requestForm);
 
 	// 疾病详细
 	 DiseaseDetailVo getDiseaseDetail(RequestForm requestForm);

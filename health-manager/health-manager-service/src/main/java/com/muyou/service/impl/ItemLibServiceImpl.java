@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.muyou.common.constant.ItemConstant;
 import com.muyou.common.exception.GlobalException;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.redis.JedisClient;
@@ -48,9 +49,6 @@ public class ItemLibServiceImpl implements ItemLibService {
 	@Value("${ITEM_ID}")
 	private String ITEM_ID;
 
-	@Value("${RELA_LIB}")
-	private Integer RELA_LIB;
-
 	@Value("${ITEM_EXPIRE}")
 	private Integer ITEM_EXPIRE;
 
@@ -81,7 +79,7 @@ public class ItemLibServiceImpl implements ItemLibService {
 		List<String> cidList = new LinkedList<String>();
 
 		// 获得分类数据
-		List<TbCate> list = cateMapper.selectItemCate(id, RELA_LIB);
+		List<TbCate> list = cateMapper.selectItemCate(id, ItemConstant.RELA_LIB);
 		for (TbCate tbCate : list) {
 			cateList.add(tbCate.getName());
 			cidList.add(tbCate.getId() + "");
@@ -161,7 +159,7 @@ public class ItemLibServiceImpl implements ItemLibService {
 		List<String> cateList;
 		for (TbLibrary library : list) {
 			// 获得分类数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(library.getId(), RELA_LIB);
+			cateList = cateMapper.selectCateNameByItemIdAndType(library.getId(), ItemConstant.RELA_LIB);
 			library.setCname(String.join(",", cateList));
 		}
 
@@ -189,7 +187,7 @@ public class ItemLibServiceImpl implements ItemLibService {
 		List<String> cateList;
 		for (TbLibrary library : list) {
 			// 获得分类数据
-			cateList = cateMapper.selectCateNameByItemIdAndType(library.getId(), RELA_LIB);
+			cateList = cateMapper.selectCateNameByItemIdAndType(library.getId(), ItemConstant.RELA_LIB);
 			library.setCname(String.join(",", cateList));
 		}
 
@@ -222,7 +220,7 @@ public class ItemLibServiceImpl implements ItemLibService {
 
 		// 分类数据
 		itemRelaCate.setItemId(library.getId());
-		itemRelaCate.setType(RELA_LIB);
+		itemRelaCate.setType(ItemConstant.RELA_LIB);
 		for (String cid : libraryVo.getCid()) {
 
 			System.out.println(cid);
@@ -308,7 +306,7 @@ public class ItemLibServiceImpl implements ItemLibService {
 
 		// 分类数据
 		itemRelaCate.setItemId(id);
-		itemRelaCate.setType(RELA_LIB);
+		itemRelaCate.setType(ItemConstant.RELA_LIB);
 		for (String did : libraryVo.getCid()) {
 			if (StringUtils.isBlank(did))
 				continue;

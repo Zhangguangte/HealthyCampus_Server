@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.muyou.common.constant.ItemConstant;
 import com.muyou.common.pojo.DataTablesResult;
 import com.muyou.common.pojo.Result;
 import com.muyou.common.util.ResultUtil;
+import com.muyou.service.ItemCateService;
 import com.muyou.service.ItemRecService;
 import com.muyou.vo.RecipesVo;
 
@@ -26,6 +28,9 @@ public class ItemRecController {
 	@Autowired
 	private ItemRecService itemRecService;
 
+	@Autowired
+	private ItemCateService itemCateService;
+	
 	@RequestMapping(value = "/{itemId}", method = RequestMethod.GET)
 	@ResponseBody
 	public Result<RecipesVo> getItemById(@PathVariable Integer itemId) {
@@ -191,6 +196,7 @@ public class ItemRecController {
 	@ResponseBody
 	public Result<Object> updateItem(@PathVariable Integer id, RecipesVo recipesVo) {
 		itemRecService.updateItem(id, recipesVo);
+		itemCateService.updateItemCate(id,ItemConstant.CATE_CATTEN);
 		return new ResultUtil<Object>().setData(null);
 	}
 
@@ -213,6 +219,7 @@ public class ItemRecController {
 	public Result<Object> deleteItem(@PathVariable Integer[] ids) {
 		for (Integer id : ids) {
 			itemRecService.deleteItem(id);
+			itemCateService.delCanteen(id, ItemConstant.CATE_CATTEN);
 		}
 		return new ResultUtil<Object>().setData(null);
 	}

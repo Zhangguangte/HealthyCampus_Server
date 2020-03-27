@@ -77,6 +77,9 @@
 	<dubbo:service
 		interface="com.muyou.service.LoginService" ref="loginServiceImpl"
 		timeout="600000" /> 
+	<dubbo:service
+		interface="com.muyou.service.ItemStuService" ref="itemStuServiceImpl"
+		timeout="600000" /> 
 		
 		
 		

@@ -90,7 +90,6 @@
 <script type="text/javascript">
 
 	var CATE_MED=1;
-	
     /*datatables配置*/
     $(document).ready(function () {
         $('.table').DataTable({
@@ -102,7 +101,10 @@
                 dataType: "json",
                 data: {
                 	"cid":-1
-                }
+                },
+        		error : function (){
+        			
+        		}
             },
             "columns": [
             	{ "data": null,
@@ -244,7 +246,6 @@
         });
 
     });
-
     medicineCount();
 
     function medicineCount(){
@@ -296,7 +297,6 @@
             table.ajax.url( '/item/medicine/listSearch' ).load();
         }
     });
-
     var index = layer.load(3);
 
     var setting = {

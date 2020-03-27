@@ -14,6 +14,7 @@ import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.muyou.common.constant.ItemConstant;
 import com.muyou.common.redis.JedisClient;
 import com.muyou.pojo.TbDisease;
 import com.muyou.pojo.TbMedicine;
@@ -32,12 +33,6 @@ public class ItemListener implements MessageListener {
 
 	@Value("${SOLR_INDEX}")
 	private String SOLR_INDEX;
-
-	@Value("${RELA_DEP}")
-	private Integer RELA_DEP;
-
-	@Value("${RELA_PAR}")
-	private Integer RELA_PAR;
 
 	@Override
 	public void onMessage(Message message) {
@@ -108,11 +103,11 @@ public class ItemListener implements MessageListener {
 		document.addField("di_intro", disease.getIntroduce());
 		document.addField("di_url", disease.getUrl());
 		// 科室
-		list = itemMapper.getDiseaseType(disease.getId(), RELA_DEP);
+		list = itemMapper.getDiseaseType(disease.getId(), ItemConstant.RELA_DEP);
 		document.addField("di_depart", String.join(",", list));
 		list.clear();
 		// 部位
-		list = itemMapper.getDiseaseType(disease.getId(), RELA_PAR);
+		list = itemMapper.getDiseaseType(disease.getId(), ItemConstant.RELA_PAR);
 		document.addField("di_part", String.join(",", list));
 		solrServer.add(document);
 		solrServer.commit();

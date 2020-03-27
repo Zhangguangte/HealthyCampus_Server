@@ -266,13 +266,13 @@
                 layer.alert('请填写说明书! ', {title: '错误信息',icon: 0});
                 return;
             }
-	        var index = layer.load(3);
+	        var index1 = layer.load(3);
 	        $(form).ajaxSubmit({
 	            url: "/item/medicine/add",
 	            type: "POST",
 	            dataType: "json",
 	            success: function(data) {
-	            	layer.close(index);
+	            	layer.close(index1);
                     if(data.success==true){
                         if(parent.location.pathname!='/'){
                             parent.medicineCount();
@@ -293,7 +293,7 @@
                     }
 	            },
 	            error:function(XMLHttpRequest) {
-	                layer.close(index);
+	                layer.close(index1);
 	                layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
 	            }
 	        });

@@ -73,7 +73,7 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">角色：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <span class="select-box" style="width:150px;">
+                <span class="select-box" style="width:45%">
                     <select id="select" class="select" name="roleid" size="1"></select>
 			    </span>
             </div>
@@ -190,13 +190,13 @@
             focusCleanup:false,
             success:"valid",
             submitHandler:function(form){
-                var index = layer.load(3);
+                var index1 = layer.load(3);
                 $(form).ajaxSubmit({
                     url: "/admin/addAdmin",
                     type: "POST",
                     dataType: "json",
                     success: function (data) {
-                        layer.close(index);
+                        layer.close(index1);
                         if (data.success == true) {
                             parent.userCount();
                             parent.refresh();
@@ -208,7 +208,7 @@
                         }
                     },
                     error: function (XMLHttpRequest) {
-                        layer.close(index);
+                        layer.close(index1);
                         layer.alert('数据处理失败! 错误码:' + XMLHttpRequest.status + ' 错误信息:' + JSON.parse(XMLHttpRequest.responseText).message, {
                             title: '错误信息',
                             icon: 2
